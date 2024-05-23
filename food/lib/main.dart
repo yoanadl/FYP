@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
             backgroundColor: Colors.green, title: const Text("Flutter is fun")),
         body: Container(
-          child: Text('test hiiigg djrdjjdrgr'),
+          child: Text('test hiiigg djrdjjdrgrssssssssssssssssssss'),
           color: Colors.green,
         ),//trrrttr
         
