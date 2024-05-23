@@ -20,6 +20,13 @@ class MyApp extends StatelessWidget {
         body: Container(
           child: Text('test hiiigg djrdjjdrgr'),
         ),
+          child: Text('test'),
+          color: Colors.green,
+        ),//trrrttr
+        
+
+
+
       ),
     );
   }
