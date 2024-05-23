@@ -24,13 +24,13 @@ class MyApp extends StatelessWidget {
           title: const Text("Flutter is fun")
         ),
 
-        body: Container(
+        body: 
+        Container(
           child: Text('test'),
-          color: Colors.red,
+          color: Colors.blue,
         ),
         
-
-
+      
 
       ),
     );
