@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'pages/intro_page.dart';
+
 // import 'package:random_color/random_color.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,14 +17,8 @@ class MyApp extends StatelessWidget {
     // Color _color = _randomColor.randomColor();
 
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.green, title: const Text("Flutter is fun")),
-        body: Container(
-          child: Text('test sorarat'),
-          color: Colors.red,
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: IntroPage(),
     );
   }
 }
