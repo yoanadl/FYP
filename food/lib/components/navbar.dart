@@ -39,6 +39,7 @@ class Navbar extends StatelessWidget {
         currentIndex: currentIndex,
         selectedItemColor: const Color(0xff031927),
         onTap: onTap,
+        backgroundColor: Colors.white,
       
       ),
     );
