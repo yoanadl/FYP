@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
 
+      // Top App
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(80.0),
         child: AppBar(
@@ -123,7 +124,86 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         color: Colors.white,
         child: Center(
-          child: Text('Home Page Content'),
+          child: Column(
+            children: [
+
+              Text(
+                'Today\'s Information',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+
+              Container(
+                width: 350,
+                height: 190,
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Color(0xFFC8E0F4),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+
+                //heart rate
+
+                // calories
+
+                // steps
+
+              ),
+
+              SizedBox(height: 30),
+
+              Container(
+                width: 350,
+                height: 190,
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Color(0xFFC8E0F4),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+
+                child: Text(
+                  'Workout Plan', 
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+
+                
+              ),
+
+              SizedBox(height: 30),
+
+               Container(
+                width: 350,
+                height: 190,
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Color(0xFFC8E0F4),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+
+                child: Text(
+                  'Meal Plan', 
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+
+                
+              ),
+
+
+
+            ],
+          )
           
         ),
       ),
