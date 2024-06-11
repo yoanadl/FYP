@@ -125,14 +125,18 @@ class _HomePageState extends State<HomePage> {
         color: Colors.white,
         child: Center(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
 
-              Text(
-                'Today\'s Information',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Today\'s Information',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
               ),
 
@@ -142,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.only(top: 10),
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Color(0xFFC8E0F4),
+                  color: Color(0x99C8E0F4),
                   borderRadius: BorderRadius.circular(10),
                 ),
 
@@ -161,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                 height: 190,
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Color(0xFFC8E0F4),
+                  color: Color(0x99C8E0F4),
                   borderRadius: BorderRadius.circular(10),
                 ),
 
@@ -184,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                 height: 190,
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Color(0xFFC8E0F4),
+                  color: Color(0x99C8E0F4),
                   borderRadius: BorderRadius.circular(10),
                 ),
 
