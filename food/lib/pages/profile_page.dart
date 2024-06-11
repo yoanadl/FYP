@@ -96,7 +96,6 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            
             SizedBox(height: 20.0,),
             // profile image avatar
             CircleAvatar(
