@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class YourProfilePage extends StatelessWidget {
+class MyProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Profile'),
+        title: Text('My Profile'),
       ),
       body: Center(
         child: Column(
