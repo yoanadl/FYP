@@ -86,6 +86,10 @@ class ProfilePage extends StatelessWidget {
             Spacer(),
             Text(
               'Profile',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold
+              ),
             ),
             Spacer()
           ],
