@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'workout_page.dart';
+import 'community_page.dart';
+import 'profile_page.dart';
+import 'mealPlan_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +20,14 @@ class _HomePageState extends State<HomePage> {
 
   // track the currently selected item
   int _seletectedIndex = 0;
+
+  // define a list of widgets for each page
+  final List<Widget> _pages = [
+    WorkoutPage(),
+    CommunityPage(),
+    ProfilePage(),
+    MealPlanPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +140,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
+      
+            
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -140,7 +153,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-
+              
+      
               Container(
                 width: 350,
                 height: 190,
@@ -150,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                   color: Color(0x99C8E0F4),
                   borderRadius: BorderRadius.circular(10),
                 ),
-
+      
                 child: Row(
                   children: [
                     Expanded(
@@ -181,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-
+      
                     Expanded(
                       child: Column(
                         children: [
@@ -212,14 +226,14 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-
+      
                           Container(
                             padding: EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Colors.white, 
                               borderRadius: BorderRadius.circular(10),
                             ),
-
+      
                              child: Center(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -242,62 +256,68 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ))
                   ],
-
+      
                 )
                 
               ),
-
+      
               SizedBox(height: 30),
-
-              Container(
-                width: 350,
-                height: 190,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Color(0x99C8E0F4),
-                  borderRadius: BorderRadius.circular(10),
+      
+              InkWell(
+                onTap: () => Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => WorkoutPage()),
                 ),
-
-                child: Text(
-                  'Workout Plan', 
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                child: Container(
+                  width: 350,
+                  height: 190,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Color(0x99C8E0F4),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                )
-
                 
+                  child: Text(
+                    'Workout Plan', 
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                
+                  
+                ),
               ),
-
+      
               SizedBox(height: 30),
-
-               Container(
-                width: 350,
-                height: 190,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Color(0x99C8E0F4),
-                  borderRadius: BorderRadius.circular(10),
+      
+               InkWell(
+                onTap: () => Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => MealPlanPage()),
                 ),
-
-                child: Text(
-                  'Meal Plan', 
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                 child: Container(
+                  width: 350,
+                  height: 190,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Color(0x99C8E0F4),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                )
-
-                
-              ),
-
-
-
+                 
+                  child: Text(
+                    'Meal Plan', 
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                               ),
+               ),
             ],
-          )
-          
+          ),
         ),
       ),
 
