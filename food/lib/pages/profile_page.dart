@@ -20,15 +20,15 @@ class ProfilePage extends StatelessWidget {
 
   final List<RowData> rowData = [
 
-    RowData(icon: Icons.settings, text: 'Your Profile'),
-    RowData(icon: Icons.settings, text: 'My Goals & Dietary Preferences'),
-    RowData(icon: Icons.settings, text: 'My BMI'),
-    RowData(icon: Icons.settings, text: 'My Membership'),
+    RowData(icon: Icons.person, text: 'Your Profile'),
+    RowData(icon: Icons.flag, text: 'My Goals & Dietary Preferences'),
+    RowData(icon: Icons.monitor_weight, text: 'My BMI'),
+    RowData(icon: Icons.card_membership, text: 'My Membership'),
     RowData(icon: Icons.settings, text: 'Settings'),
-    RowData(icon: Icons.settings, text: 'Help Center'),
-    RowData(icon: Icons.settings, text: 'Privacy Policy'),
-    RowData(icon: Icons.settings, text: 'Terms and Conditions'),
-    RowData(icon: Icons.settings, text: 'Log Out'),
+    RowData(icon: Icons.help_center, text: 'Help Center'),
+    RowData(icon: Icons.privacy_tip, text: 'Privacy Policy'),
+    RowData(icon: Icons.article, text: 'Terms and Conditions'),
+    RowData(icon: Icons.logout, text: 'Log Out'),
 
   ];
 
