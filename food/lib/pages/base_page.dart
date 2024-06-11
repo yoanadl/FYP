@@ -5,9 +5,9 @@ import 'package:food/components/navbar.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'workout_page.dart';
-// import 'community_page.dart';
+import 'community_page.dart';
 import 'profile_page.dart';
-import 'mealPlan_page.dart';
+// import 'mealPlan_page.dart';
 import 'home_page.dart';
 
 class BasePage extends StatefulWidget {
@@ -26,7 +26,7 @@ class _HomePageState extends State<BasePage> {
   final List<Widget> _pages = [
     HomePage(),
     WorkoutPage(),
-    ProfilePage(),
+    CommunityPage(),
     ProfilePage(),
   ];
 

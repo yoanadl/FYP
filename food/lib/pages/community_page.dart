@@ -1,20 +1,9 @@
-
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 
-import '../components/navbar.dart';
-
 class CommunityPage extends StatelessWidget {
-
-  final int selectedIndex;
-  final Function(int) onTap;
-
-  const CommunityPage({
-    Key? key,
-    required this.selectedIndex,
-    required this.onTap,
-  }) : super(key: key);
+  const CommunityPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +15,10 @@ class CommunityPage extends StatelessWidget {
 
       body: Center(
         child: Text(
-          'Community Page',
+          'Commmunity Page',
           style: TextStyle(fontSize: 24),
         )
-      ),
-
-
-      bottomNavigationBar: Navbar(
-        currentIndex: selectedIndex,
-        onTap: onTap,
-      ),
+      )
     );
 
   }
