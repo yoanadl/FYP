@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
-import 'home_page.dart';
+import 'base_page.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context, 
       MaterialPageRoute(
-        builder: (context) => const HomePage(), 
+        builder: (context) => const BasePage(), 
         ),
       );
 

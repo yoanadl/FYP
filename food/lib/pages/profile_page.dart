@@ -11,7 +11,7 @@ class ProfilePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Workout Plan'),
+        title: Text('Profile Plan'),
       ),
 
       body: Center(

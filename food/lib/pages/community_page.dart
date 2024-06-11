@@ -3,15 +3,25 @@
 
 import 'package:flutter/material.dart';
 
+import '../components/navbar.dart';
+
 class CommunityPage extends StatelessWidget {
-  const CommunityPage({super.key});
+
+  final int selectedIndex;
+  final Function(int) onTap;
+
+  const CommunityPage({
+    Key? key,
+    required this.selectedIndex,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Workout Plan'),
+        title: Text('Community Page'),
       ),
 
       body: Center(
@@ -19,7 +29,13 @@ class CommunityPage extends StatelessWidget {
           'Community Page',
           style: TextStyle(fontSize: 24),
         )
-      )
+      ),
+
+
+      bottomNavigationBar: Navbar(
+        currentIndex: selectedIndex,
+        onTap: onTap,
+      ),
     );
 
   }

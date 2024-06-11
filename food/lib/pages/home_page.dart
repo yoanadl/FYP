@@ -5,29 +5,11 @@ import 'package:food/components/navbar.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'workout_page.dart';
-import 'community_page.dart';
-import 'profile_page.dart';
 import 'mealPlan_page.dart';
 
-class HomePage extends StatefulWidget {
+
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-
-  // track the currently selected item
-  int _seletectedIndex = 0;
-
-  // define a list of widgets for each page
-  final List<Widget> _pages = [
-    WorkoutPage(),
-    CommunityPage(),
-    ProfilePage(),
-    MealPlanPage(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -130,9 +112,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+
         ),
       ),
-
 
       body: Container(
         color: Colors.white,
@@ -320,15 +302,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-
-      bottomNavigationBar: Navbar(
-        currentIndex: _seletectedIndex,
-        onTap: (int index) {
-          setState(() {
-            _seletectedIndex = index;
-          });
-        }
-      ),
+  
     );
   }
 }
