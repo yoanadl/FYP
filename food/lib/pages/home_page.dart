@@ -93,7 +93,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 18,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -105,7 +105,7 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 18,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
