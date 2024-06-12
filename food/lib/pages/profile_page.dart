@@ -4,8 +4,12 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/Profile%20Settings/bmi_page.dart';
 import 'package:food/pages/Profile%20Settings/goals_preferences.dart';
+import 'package:food/pages/Profile%20Settings/help_center_page.dart';
 import 'package:food/pages/Profile%20Settings/membership_page.dart';
 import 'package:food/pages/Profile%20Settings/my_profile_page.dart';
+import 'package:food/pages/Profile%20Settings/privacy_policy_page.dart';
+import 'package:food/pages/Profile%20Settings/settings_page.dart';
+import 'package:food/pages/Profile%20Settings/terms_conditions_page.dart';
 
 class RowData{
   final IconData icon;
@@ -48,22 +52,22 @@ class ProfilePage extends StatelessWidget {
     RowData(
       icon: Icons.settings, 
       text: 'Settings',
-      destination: MyProfilePage(),
+      destination: SettingsPage(),
     ),
     RowData(
       icon: Icons.help_center,
       text: 'Help Center',
-      destination: MyProfilePage(),
+      destination: HelpCenterPage(),
     ),
     RowData(
       icon: Icons.privacy_tip, 
       text: 'Privacy Policy',
-      destination: MyProfilePage(),
+      destination: PrivacyPolicyPage(),
     ),
     RowData(
       icon: Icons.article, 
       text: 'Terms and Conditions',
-      destination: MyProfilePage(),
+      destination: TermsConditionsPage(),
       ),
     RowData(
       icon: Icons.logout, 
@@ -81,7 +85,6 @@ class ProfilePage extends StatelessWidget {
 
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
