@@ -67,7 +67,7 @@ class GoalsPreferences extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 50),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -91,12 +91,16 @@ class GoalsPreferences extends StatelessWidget {
                       ],
                     ),
 
-                    SizedBox(height: 20),
+                    SizedBox(height: 50),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
 
                         },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                            ),
                         child: Text('Edit'),
                       ),
                     ),
