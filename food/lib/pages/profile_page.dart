@@ -2,7 +2,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:food/pages/Profile%20Settings/goals_preferences.dart';
 import 'package:food/pages/Profile%20Settings/my_profile_page.dart';
 
 class RowData{
@@ -31,7 +31,7 @@ class ProfilePage extends StatelessWidget {
     RowData(
       icon: Icons.flag, 
       text: 'My Goals & Dietary Preferences',
-      destination: MyProfilePage(),
+      destination: GoalsPreferences()
       ),
     RowData(
       icon: Icons.monitor_weight, 
