@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/Profile%20Settings/bmi_page.dart';
 import 'package:food/pages/Profile%20Settings/goals_preferences.dart';
+import 'package:food/pages/Profile%20Settings/membership_page.dart';
 import 'package:food/pages/Profile%20Settings/my_profile_page.dart';
 
 class RowData{
@@ -42,7 +43,7 @@ class ProfilePage extends StatelessWidget {
     RowData(
       icon: Icons.card_membership, 
       text: 'My Membership',
-      destination: MyProfilePage(),
+      destination: MembershipPage(),
     ),
     RowData(
       icon: Icons.settings, 
