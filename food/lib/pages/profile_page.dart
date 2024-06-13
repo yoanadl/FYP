@@ -85,6 +85,7 @@ class ProfilePage extends StatelessWidget {
 
       appBar: AppBar(
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
