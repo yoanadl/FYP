@@ -11,7 +11,8 @@ import 'profile_page.dart';
 import 'home_page.dart';
 
 class BasePage extends StatefulWidget {
-  const BasePage({Key? key});
+  final int initialIndex;
+  const BasePage({Key? key, this.initialIndex = 0}):  super(key: key) ;
 
   @override
   State<BasePage> createState() => _HomePageState();
@@ -31,13 +32,16 @@ class _HomePageState extends State<BasePage> {
   ];
 
   @override
+  void initState() {
+    
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
+
+  @override
   Widget build(BuildContext context) {
 
-    String formattedDate = DateFormat('EEEE d MMMM').format(DateTime.now());
-
     return Scaffold(
-
-  
       body: Container(
         color: Colors.white, 
         child: Center(

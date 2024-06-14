@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
+import 'package:food/pages/base_page.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'workout_page.dart';
@@ -248,7 +249,7 @@ class HomePage extends StatelessWidget {
               InkWell(
                 onTap: () => Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => WorkoutPage()),
+                  MaterialPageRoute(builder: (context) => BasePage(initialIndex: 1)),
                 ),
                 child: Container(
                   width: 350,
