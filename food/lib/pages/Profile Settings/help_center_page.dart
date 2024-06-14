@@ -95,7 +95,10 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
         backgroundColor: Colors.white,
         title: Center(
           child: Text(
-            'Help Center'),
+            'Help Center',
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+            )),
         ),
       ),
 
