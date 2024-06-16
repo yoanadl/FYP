@@ -22,6 +22,7 @@ class WorkoutPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            Spacer()
           ],
         ),
       ),
@@ -177,6 +178,58 @@ class WorkoutPage extends StatelessWidget {
           ),
         ),
       ),
+      
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: PopupMenuButton<String>(
+              onSelected: (String result) {
+                if (result == 'new_workout') {
+                  // Handle create new workout
+                } else if (result == 'explore_workouts') {
+                  // Handle explore pre-made workouts
+                }
+              },
+              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                PopupMenuItem<String>(
+                  value: 'new_workout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.add, color: Colors.black),
+                      SizedBox(width: 10),
+                      Text('Create New Workout'),
+                    ],
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'explore_workouts',
+                  child: Row(
+                    children: [
+                      Icon(Icons.explore, color: Colors.black),
+                      SizedBox(width: 10),
+                      Text('Explore Pre-made Workouts'),
+                    ],
+                  ),
+                ),
+              ],
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.add, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+
+
+
     );
   }
 }

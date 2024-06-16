@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'workout_page.dart';
+import 'workout/workout_page.dart';
 import 'community_page.dart';
 import 'profile_page.dart';
 // import 'mealPlan_page.dart';

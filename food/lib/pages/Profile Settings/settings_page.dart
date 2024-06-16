@@ -7,7 +7,7 @@ import 'package:food/pages/Profile%20Settings/notification_settings.dart';
 import 'package:food/pages/Profile%20Settings/password_manager.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/pages/community_page.dart';
-import 'package:food/pages/workout_page.dart';
+import 'package:food/pages/workout/workout_page.dart';
 
 class RowData{
   final IconData icon;

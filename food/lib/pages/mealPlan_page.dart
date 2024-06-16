@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../components/navbar.dart';
 import 'community_page.dart';
-import 'workout_page.dart';
+import 'workout/workout_page.dart';
 import 'profile_page.dart';
 
 class MealPlan{
