@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:food/pages/workout/create_new_workout.dart';
 
 class WorkoutPage extends StatelessWidget {
   const WorkoutPage({Key? key}) : super(key: key);
@@ -187,7 +188,10 @@ class WorkoutPage extends StatelessWidget {
             child: PopupMenuButton<String>(
               onSelected: (String result) {
                 if (result == 'new_workout') {
-                  // Handle create new workout
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CreateNewWorkoutPage()),
+                  );
                 } else if (result == 'explore_workouts') {
                   // Handle explore pre-made workouts
                 }
