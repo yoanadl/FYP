@@ -12,17 +12,16 @@ class WorkoutPage extends StatelessWidget {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Spacer(),
             Text(
               'My Workouts',
               style: TextStyle(
                 fontSize: 25,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
               ),
             ),
-            Spacer()
           ],
         ),
       ),
@@ -33,7 +32,7 @@ class WorkoutPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.all(50),
+                margin: EdgeInsets.all(20),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Color(0xff031927),
@@ -53,16 +52,44 @@ class WorkoutPage extends StatelessWidget {
                   ],
                 ),
               ),
+              // search bar and filter icon row
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 300,
+                      height: 50,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Search Workouts',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    IconButton(
+                      icon: Icon(Icons.filter_list),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: TabBarView(
                   children: [
                     // Ongoing tab content
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 300,
+                    ListView(
+                      padding: EdgeInsets.all(16.0),
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Container(
+                            width: double.infinity,
                             height: 180,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(9),
@@ -70,9 +97,12 @@ class WorkoutPage extends StatelessWidget {
                             ),
                             child: Center(child: Text('Ongoing Workout 1')),
                           ),
-                          SizedBox(height: 20),
-                          Container(
-                            width: 300,
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Container(
+                            width: double.infinity,
                             height: 180,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(9),
@@ -80,9 +110,12 @@ class WorkoutPage extends StatelessWidget {
                             ),
                             child: Center(child: Text('Ongoing Workout 2')),
                           ),
-                          SizedBox(height: 20),
-                          Container(
-                            width: 300,
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Container(
+                            width: double.infinity,
                             height: 180,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(9),
@@ -90,26 +123,30 @@ class WorkoutPage extends StatelessWidget {
                             ),
                             child: Center(child: Text('Ongoing Workout 3')),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     // Completed tab content
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 300,
+                    ListView(
+                      padding: EdgeInsets.all(16.0),
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Container(
+                            width: double.infinity,
                             height: 180,
-                           decoration: BoxDecoration(
+                            decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(9),
                               color: Colors.grey[200],
                             ),
                             child: Center(child: Text('Completed Workout 1')),
                           ),
-                          SizedBox(height: 20),
-                          Container(
-                            width: 300,
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Container(
+                            width: double.infinity,
                             height: 180,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(9),
@@ -117,9 +154,12 @@ class WorkoutPage extends StatelessWidget {
                             ),
                             child: Center(child: Text('Completed Workout 2')),
                           ),
-                          SizedBox(height: 20),
-                          Container(
-                            width: 300,
+                        ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Container(
+                            width: double.infinity,
                             height: 180,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(9),
@@ -127,8 +167,8 @@ class WorkoutPage extends StatelessWidget {
                             ),
                             child: Center(child: Text('Completed Workout 3')),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -140,4 +180,3 @@ class WorkoutPage extends StatelessWidget {
     );
   }
 }
-

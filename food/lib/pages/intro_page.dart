@@ -3,6 +3,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:food/services/auth/auth_gate.dart';
 
 import '../services/auth/login_or_register.dart';
 import 'register_page.dart';
@@ -57,12 +58,12 @@ class IntroPage extends StatelessWidget {
                    
               const SizedBox(height: 100),
 
-              // start now button
+              // sign in button
               GestureDetector(
                 onTap: () => Navigator.push(
                   context,  
                   MaterialPageRoute(
-                    builder: (context) => LoginOrRegister()
+                    builder: (context) => AuthGate()
                     ),
                   ),
                 child: Padding(
