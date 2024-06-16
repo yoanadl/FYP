@@ -4,7 +4,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../auth/login_or_register.dart';
+import '../services/auth/login_or_register.dart';
 import 'register_page.dart';
 
 

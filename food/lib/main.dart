@@ -1,10 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:food/firebase_options.dart';
+import 'package:food/services/auth/auth_gate.dart';
 
 import 'pages/intro_page.dart';
 
 // import 'package:random_color/random_color.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp( const MyApp());
 }
 
@@ -18,7 +24,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IntroPage(),
+      home: const AuthGate(), 
     );
   }
 }

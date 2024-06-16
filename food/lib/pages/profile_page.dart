@@ -10,47 +10,68 @@ import 'package:food/pages/Profile%20Settings/my_profile_page.dart';
 import 'package:food/pages/Profile%20Settings/privacy_policy_page.dart';
 import 'package:food/pages/Profile%20Settings/settings_page.dart';
 import 'package:food/pages/Profile%20Settings/terms_conditions_page.dart';
+import 'package:food/pages/intro_page.dart';
+import 'package:food/pages/login_page.dart';
+import 'package:food/services/auth/auth_service.dart';
 
 class RowData{
   final IconData icon;
   final String text;
-  final Widget destination;
+  final Widget? destination;
 
   const RowData(
     {
       required this.icon, 
       required this.text,
-      required this.destination,
+      this.destination,
     }
   );
 }
+
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
-  final List<RowData> rowData = [
+  void logout(BuildContext context) async {
+    final authService = AuthService();
+    try {
+      await authService.signOut();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => IntroPage()),
+      );
+    } catch (error) {
+      // Handle errors from signOut
+      print('Error logging out: $error');
+    }
+  }
 
+  void handleLogout(BuildContext context) {
+    logout(context);
+  }
+
+  final List<RowData> rowData = [
     RowData(
-      icon: Icons.person, 
+      icon: Icons.person,
       text: 'Your Profile',
       destination: MyProfilePage(),
     ),
     RowData(
-      icon: Icons.flag, 
+      icon: Icons.flag,
       text: 'My Goals & Dietary Preferences',
-      destination: GoalsPreferences()
-      ),
+      destination: GoalsPreferences(),
+    ),
     RowData(
-      icon: Icons.monitor_weight, 
+      icon: Icons.monitor_weight,
       text: 'My BMI',
       destination: BmiPage(),
     ),
     RowData(
-      icon: Icons.card_membership, 
+      icon: Icons.card_membership,
       text: 'My Membership',
       destination: MembershipPage(),
     ),
     RowData(
-      icon: Icons.settings, 
+      icon: Icons.settings,
       text: 'Settings',
       destination: SettingsPage(),
     ),
@@ -60,29 +81,25 @@ class ProfilePage extends StatelessWidget {
       destination: HelpCenterPage(),
     ),
     RowData(
-      icon: Icons.privacy_tip, 
+      icon: Icons.privacy_tip,
       text: 'Privacy Policy',
       destination: PrivacyPolicyPage(),
     ),
     RowData(
-      icon: Icons.article, 
+      icon: Icons.article,
       text: 'Terms and Conditions',
       destination: TermsConditionsPage(),
-      ),
-    RowData(
-      icon: Icons.logout, 
-      text: 'Log Out',
-      destination: MyProfilePage(),
     ),
-
+    RowData(
+      icon: Icons.logout,
+      text: 'Log Out',
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
@@ -92,28 +109,23 @@ class ProfilePage extends StatelessWidget {
             Spacer(),
             Text(
               'Profile',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold
-              ),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
-            Spacer()
+            Spacer(),
           ],
         ),
       ),
-
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 20.0,),
+            SizedBox(height: 20.0),
             // profile image avatar
             CircleAvatar(
               backgroundColor: Colors.grey[100],
               radius: 50.0,
             ),
-
-            // name 
+            // name
             SizedBox(height: 15.0),
             Text(
               'John Doe',
@@ -121,39 +133,39 @@ class ProfilePage extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-
             SizedBox(height: 25.0),
-
-            // settings 
+            // settings
             Expanded(
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: rowData.length,
-                itemBuilder: (context, index) => buildRowItem(context, rowData[index]),
-                separatorBuilder: (context, index) => SizedBox(height: 5.0,),
-                ),
+                itemBuilder: (context, index) =>
+                    buildRowItem(context, rowData[index]),
+                separatorBuilder: (context, index) => SizedBox(height: 5.0),
+              ),
             ),
-
           ],
         ),
-      )
+      ),
     );
   }
-
- 
 
   // function to build each row
   Widget buildRowItem(BuildContext context, RowData data) {
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (context) => data.destination),
-        );
+        if (data.text == 'Log Out') {
+          handleLogout(context);
+        } else if (data.destination != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => data.destination!),
+          );
+        }
       },
       child: Container(
         color: Colors.grey[100],
-        margin:const EdgeInsets.symmetric(horizontal: 40.0),
+        margin: const EdgeInsets.symmetric(horizontal: 40.0),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
@@ -165,7 +177,7 @@ class ProfilePage extends StatelessWidget {
                   data.text,
                   style: TextStyle(
                     fontSize: 20.0,
-                  )
+                  ),
                 ),
               ),
               Spacer(),
@@ -177,4 +189,5 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+
 

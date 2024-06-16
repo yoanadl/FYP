@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-
+import 'package:food/pages/home_page.dart';
+import 'package:food/services/auth/auth_service.dart'; 
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 import 'base_page.dart';
@@ -20,23 +21,45 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  
   // text editing controller
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   // login method
-  void login() {
+  void login() async{
 
-    // backend authentication part here
+    // get instance of auth service
+    final _authService = AuthService();
 
+    // try sign in 
+    try {
+      await _authService.signInWithEmailPassword(
+        emailController.text, 
+        passwordController.text,
+      );
 
-    // navigate to home page
-    Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => const BasePage(), 
+      // navigate to the home page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (coontext) => HomePage())
+      );
+
+    }
+
+    // display any errors
+    catch (e) {
+
+      showDialog(
+        context: context, 
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
         ),
       );
+
+    }
+
+
 
   }
 

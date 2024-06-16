@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-
+import 'package:food/services/auth/auth_service.dart';
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 
@@ -21,11 +21,64 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
 
   // text editing controller
-  final TextEditingController fullNameController = TextEditingController();
+  // final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
+  void register() async {
+
+    // get auth service
+    final _authService = AuthService();
+
+    // check if passwords match ->  create user
+    if (passwordController.text == confirmPasswordController.text) {
+      // try creating user
+
+      try {
+        await _authService.signUpWithEmailPassword(
+          emailController.text, 
+          passwordController.text
+        );
+
+        showDialog(
+          context: context, 
+          builder: (context) => AlertDialog(
+            title: Text('Success'),
+            content: Text('Account created succesfully!'),
+          ),
+        );
+        
+      }
+
+      // display any errors
+      catch (e){
+        showDialog(
+          context: context, 
+          builder: (context) => AlertDialog(
+            // title: Text(e.toString()),
+            title: Text('Error'),
+            content: Text(e.toString()),
+          ),
+        );
+      }
+    }
+
+
+    // if passwords don't match -> show error
+
+    else {
+      showDialog(
+          context: context, 
+          builder: (context) => const AlertDialog(
+            title: Text("Passwords don't match!"),
+          ),
+        );
+
+    }
+    
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +124,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                 ),
               
-               // full name textfield
-              MyTextField(
-                controller: emailController, 
-                hintText: "Full Name", 
-                obscureText: false,  
-              ),
+              //  // full name textfield
+              // MyTextField(
+              //   controller: emailController, 
+              //   hintText: "Full Name", 
+              //   obscureText: false,  
+              // ),
 
               // email textfield
               MyTextField(
@@ -104,13 +157,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintText: "Confirm Password",
                 obscureText: true,
               ),
-
+ 
               const SizedBox(height: 20 ),
 
               // sign in button
               MyButton(
                 text: "Sign Up", 
-                onTap: () {}
+                onTap: register,
               ),
 
               const SizedBox(height: 10 ),

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "721747371912",
-    "project_id": "fyp-goodgrit",
-    "storage_bucket": "fyp-goodgrit.appspot.com"
+    "project_number": "607478788866",
+    "project_id": "fyp-goodgrit-a8601",
+    "storage_bucket": "fyp-goodgrit-a8601.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:721747371912:android:b741e41b7f2ed38eef7c3d",
+        "mobilesdk_app_id": "1:607478788866:android:754b50b5829591d0ae881b",
         "android_client_info": {
           "package_name": "com.example.food"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBESkrQHZluEpwqnRX1IsnpfWfPYx54OFE"
+          "current_key": "AIzaSyDcvWvRb9qDwNa1ix7iInv-D4du3n9_Q5o"
         }
       ],
       "services": {
