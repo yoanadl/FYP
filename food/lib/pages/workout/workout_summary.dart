@@ -8,7 +8,7 @@ import 'workout_page.dart';
 
 class WorkoutSummaryPage extends StatelessWidget {
   final String workoutTitle;
-  final int duration;
+  final List<int> duration;
   final List<String> activities;
 
   const WorkoutSummaryPage({
