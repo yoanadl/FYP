@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/services/auth/auth_service.dart';
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
+import '../services/auth/firestore_service.dart';
 
 class RegisterPage extends StatefulWidget {
 
@@ -25,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+ 
 
   void register() async {
 
@@ -33,12 +36,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
     // check if passwords match ->  create user
     if (passwordController.text == confirmPasswordController.text) {
-      // try creating user
 
+      // try creating user
       try {
-        await _authService.signUpWithEmailPassword(
+        UserCredential userCredential =  await _authService.signUpWithEmailPassword(
           emailController.text, 
-          passwordController.text
+          passwordController.text,
         );
 
         showDialog(

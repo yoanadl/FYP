@@ -15,7 +15,9 @@ class CreateNewWorkoutPage extends StatefulWidget {
 }
 
 class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
-  int selectedDuration = 10;
+  int activity1Duration = 10;
+  int activity2Duration = 10;
+  int activity3Duration = 10;
   TextEditingController workoutTitleController = TextEditingController();
   List<String> workoutActivities = [];
 
@@ -68,11 +70,11 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
               ),
               SizedBox(height: 20),
               _buildActivityField('Workout Activity 1'),
-              _buildDurationField('Duration'),
+              _buildDurationField('Duration', activity1Duration),
               _buildActivityField('Workout Activity 2'),
-              _buildDurationField('Duration'),
+              _buildDurationField('Duration', activity2Duration),
               _buildActivityField('Workout Activity 3'),
-              _buildDurationField('Duration'),
+              _buildDurationField('Duration', activity3Duration),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
@@ -114,10 +116,15 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
     // Summarize workout details
     String workoutTitle = workoutTitleController.text;
     List<String> activities = [];
+    List<int> durations = [];
     
     for (String activity in workoutActivities) {
       activities.add(activity);
     }
+
+    durations.add(activity1Duration);
+    durations.add(activity2Duration);
+    durations.add(activity2Duration);
 
     // Navigate to summary page
     Navigator.push(
@@ -125,7 +132,7 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
       MaterialPageRoute(
         builder: (context) => WorkoutSummaryPage(
           workoutTitle: workoutTitle,
-          duration: selectedDuration,
+          duration: durations,
           activities: activities,
         ),
       ),
@@ -157,53 +164,109 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
     );
   }
 
-  Widget _buildDurationField(String labelText) {
-    return Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20, right: 10),
-            child: Text(
-              labelText,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+  // Widget _buildDurationField(String labelText) {
+  //   return Row(
+  //     children: [
+  //       Expanded(
+  //         child: Padding(
+  //           padding: EdgeInsets.only(top: 20, right: 10),
+  //           child: Text(
+  //             labelText,
+  //             style: TextStyle(
+  //               fontWeight: FontWeight.bold,
+  //               fontSize: 16,
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //       Expanded(
+  //         child: Padding(
+  //           padding: EdgeInsets.only(top: 20),
+  //           child: DropdownButtonFormField<int>(
+  //             value: ,
+  //             items: List.generate(
+  //               6,
+  //               (index) => DropdownMenuItem(
+  //                 value: (index + 1) * 10,
+  //                 child: Text('${(index + 1) * 10} min'),
+  //               ),
+  //             ),
+  //             onChanged: (int? newValue) {
+  //               setState(() {
+  //                 selectedDuration = newValue!;
+  //               });
+  //             },
+  //             decoration: InputDecoration(
+  //               enabledBorder: OutlineInputBorder(
+  //                 borderRadius: BorderRadius.circular(10.0),
+  //                 borderSide: BorderSide(color: Colors.grey, width: 1.0),
+  //               ),
+  //               focusedBorder: OutlineInputBorder(
+  //                 borderRadius: BorderRadius.circular(10.0),
+  //                 borderSide: BorderSide(color: Colors.blue, width: 2.0),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  Widget _buildDurationField(String labelText, int initialDuration) {
+  return Row(
+    children: [
+      Expanded(
+        child: Padding(
+          padding: EdgeInsets.only(top: 20, right: 10),
+          child: Text(
+            labelText,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+      Expanded(
+        child: Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: DropdownButtonFormField<int>(
+            value: initialDuration,
+            items: List.generate(
+              6,
+              (index) => DropdownMenuItem(
+                value: (index + 1) * 10,
+                child: Text('${(index + 1) * 10} min'),
+              ),
+            ),
+            onChanged: (int? newValue) {
+              setState(() {
+                if (labelText.contains('Activity 1')) {
+                  activity1Duration = newValue!;
+                } else if (labelText.contains('Activity 2')) {
+                  activity2Duration = newValue!;
+                } else if (labelText.contains('Activity 3')) {
+                  activity3Duration = newValue!;
+                }
+              });
+            },
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: Colors.blue, width: 2.0),
               ),
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: DropdownButtonFormField<int>(
-              value: selectedDuration,
-              items: List.generate(
-                6,
-                (index) => DropdownMenuItem(
-                  value: (index + 1) * 10,
-                  child: Text('${(index + 1) * 10} min'),
-                ),
-              ),
-              onChanged: (int? newValue) {
-                setState(() {
-                  selectedDuration = newValue!;
-                });
-              },
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
+
 }
 

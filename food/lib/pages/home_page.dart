@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'workout/workout_page.dart';
 import 'mealPlan_page.dart';
 
 
@@ -297,7 +295,7 @@ class HomePage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   )
-                               ),
+                 ),
                ),
             ],
           ),
