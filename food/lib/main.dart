@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
+
+import 'pages/intro_page.dart';
+
 // import 'package:random_color/random_color.dart';
 
-
-void main (){
-    runApp( MyApp() );
+void main() {
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: IntroPage(),
     );
   }
 }
