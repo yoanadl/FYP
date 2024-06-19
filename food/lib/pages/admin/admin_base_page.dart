@@ -2,23 +2,25 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/admin/admin_home_page.dart';
+import 'package:food/pages/community_page.dart';
+import 'package:food/pages/profile_page.dart';
+import 'package:food/pages/workout/workout_page.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'workout/workout_page.dart';
-import 'community_page.dart';
-import 'profile_page.dart';
-import 'home_page.dart';
 
-class BasePage extends StatefulWidget {
+import 'admin_home_page.dart';
+
+
+
+class AdminBasePage extends StatefulWidget {
   final int initialIndex;
-  const BasePage({Key? key, this.initialIndex = 0}):  super(key: key) ;
+  const AdminBasePage({Key? key, this.initialIndex = 0}):  super(key: key) ;
 
   @override
-  State<BasePage> createState() => _HomePageState();
+  State<AdminBasePage> createState() => _AdminBasePageState();
 }
 
-class _HomePageState extends State<BasePage> {
+class _AdminBasePageState extends State<AdminBasePage> {
 
   // track the currently selected item
   int _selectedIndex = 0;

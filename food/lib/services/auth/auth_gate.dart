@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food/pages/admin/admin_base_page.dart';
 import 'package:food/pages/base_page.dart';
+import 'package:food/pages/home_page.dart';
+import 'package:food/services/auth/auth_service.dart';
 import 'package:food/services/auth/login_or_register.dart';
 
 class AuthGate extends StatelessWidget { 
@@ -14,7 +17,40 @@ class AuthGate extends StatelessWidget {
         builder: (context, snapshot) {
           // user is logged in
           if (snapshot.hasData) {
-            return const BasePage();
+
+            String uid = FirebaseAuth.instance.currentUser!.uid;
+            return FutureBuilder<String>(
+              future: AuthService().getUserRole(uid), 
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator()
+                  );
+                
+                }
+
+                else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}')
+                  );
+                }
+
+                else if (snapshot.hasData) {
+                  if (snapshot.data == 'admin') {
+                    return AdminBasePage();
+                  }
+
+                  else {
+                    return BasePage();
+                  }
+                }
+
+                  else {
+                    return LoginOrRegister();
+                  }
+                },
+              );
+
           }
 
           // user is not logged in
@@ -23,7 +59,6 @@ class AuthGate extends StatelessWidget {
           } 
         },
       ),
-
     );
   }
 }
