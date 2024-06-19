@@ -73,7 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
               
                // full name textfield
               MyTextField(
-                controller: emailController, 
+                controller: fullNameController, 
                 hintText: "Full Name", 
                 obscureText: false,  
               ),
