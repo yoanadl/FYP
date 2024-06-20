@@ -1,48 +1,144 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../community_page.dart';
-import '../profile_page.dart';
-import '../home_page.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-void main() {
-  runApp(ViewUserProfilePage());
-}
-
-class ViewUserProfilePage extends StatefulWidget {
-  ViewUserProfilePage({Key? key}) : super(key: key);
-
-  @override
-  _ViewUserProfilePageState createState() => _ViewUserProfilePageState();
-}
-
-class _ViewUserProfilePageState extends State<ViewUserProfilePage> {
+class ViewUserProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    MediaQueryData mediaQueryData = MediaQuery.of(context);
-    double screenWidth = mediaQueryData.size.width;
-    double screenHeight = mediaQueryData.size.height;
-
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            title: const Text(
-              'User Profile',
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                fontSize: 25,
-                color: Colors.black,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+        title: Row(
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                // back
+                Navigator.of(context).pop();
+              },
+              child: SvgPicture.asset(
+                'lib/images/back-button.svg',
+                height: 20.0,
+                width: 20.0,
               ),
             ),
-            centerTitle: true,
-            floating: true,
-           
+            Expanded(
+              child: Text(
+                'User Profile',
+                textAlign: TextAlign.center, // Center align the text
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 25.0,
+                  fontFamily: 'Poppins',
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+        
+      ),
+
+      body: _UserProfileListView(),
+      
+      )
+    );
+  }
+}
+
+class _UserProfileListView extends StatefulWidget{
+  @override
+  UserProfileListView createState() => UserProfileListView();
+}
+
+class UserProfileListView extends State<_UserProfileListView> {
+  final List<String> profiles = [
+    'System Admin',
+    'Free User',
+    'Premium User',
+    'Trainer',
+    'Community Admin',
+    'Community Member',
+  ];
+
+  final TextEditingController controller = TextEditingController();
+  bool isFieldEmpty = true;
+  List<String> filteredProfiles = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredProfiles = profiles;
+    controller.addListener(() {
+      setState(() {
+        isFieldEmpty = controller.text.isEmpty;
+        _onSearchIconPressed();
+      });
+    });
+  }
+  
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  void _onSearchIconPressed() {
+    setState(() {
+      filteredProfiles = profiles
+      .where((profile) => profile.toLowerCase().contains(controller.text.toLowerCase()))
+      .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 20,
           ),
-          
+
+          TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              labelText: isFieldEmpty ? 'Search' : null,
+              prefixIcon: InkWell(
+                onTap: _onSearchIconPressed,
+                child: Icon(Icons.search),
+              ),
+            ),
+          ),
+
+          const SizedBox(
+            height: 20,
+          ),
+      
+          //search result
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredProfiles.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                 title: Text(filteredProfiles[index])
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
+
   }
+
+  
+}
+
+       
+
+void main() {
+  runApp(MaterialApp(
+    title: 'User Profile Page Example',
+    home: ViewUserProfilePage(),
+  ));
 }
