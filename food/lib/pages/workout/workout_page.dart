@@ -1,10 +1,41 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
-import 'package:food/pages/workout/create_new_workout.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food/services/workout_service.dart';
+import 'create_new_workout.dart';
+import 'workout_summary.dart';
 
-class WorkoutPage extends StatelessWidget {
+class WorkoutPage extends StatefulWidget {
   const WorkoutPage({Key? key}) : super(key: key);
+
+  @override
+  State<WorkoutPage> createState() => _WorkoutPageState();
+}
+
+class _WorkoutPageState extends State<WorkoutPage> {
+  final WorkoutService _workoutService = WorkoutService();
+  User? _user;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _user = FirebaseAuth.instance.currentUser;
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  void _onSearchChanged() {
+    setState(() {
+      _searchQuery = _searchController.text;
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +85,7 @@ class WorkoutPage extends StatelessWidget {
                   ],
                 ),
               ),
-              // search bar and filter icon row
+              // Search bar and filter icon row
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -64,6 +95,7 @@ class WorkoutPage extends StatelessWidget {
                       width: 300,
                       height: 50,
                       child: TextField(
+                        controller: _searchController,
                         decoration: InputDecoration(
                           hintText: 'Search Workouts',
                           contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -84,94 +116,8 @@ class WorkoutPage extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                   children: [
-                    // Ongoing tab content
-                    ListView(
-                      padding: EdgeInsets.all(16.0),
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(9),
-                              color: Colors.grey[200],
-                            ),
-                            child: Center(child: Text('Ongoing Workout 1')),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(9),
-                              color: Colors.grey[200],
-                            ),
-                            child: Center(child: Text('Ongoing Workout 2')),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(9),
-                              color: Colors.grey[200],
-                            ),
-                            child: Center(child: Text('Ongoing Workout 3')),
-                          ),
-                        ),
-                      ],
-                    ),
-                    // Completed tab content
-                    ListView(
-                      padding: EdgeInsets.all(16.0),
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(9),
-                              color: Colors.grey[200],
-                            ),
-                            child: Center(child: Text('Completed Workout 1')),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(9),
-                              color: Colors.grey[200],
-                            ),
-                            child: Center(child: Text('Completed Workout 2')),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 180,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(9),
-                              color: Colors.grey[200],
-                            ),
-                            child: Center(child: Text('Completed Workout 3')),
-                          ),
-                        ),
-                      ],
-                    ),
+                    _buildWorkoutList('ongoing'),
+                    _buildWorkoutList('completed'),
                   ],
                 ),
               ),
@@ -179,7 +125,6 @@ class WorkoutPage extends StatelessWidget {
           ),
         ),
       ),
-      
       floatingActionButton: Stack(
         children: [
           Positioned(
@@ -231,9 +176,78 @@ class WorkoutPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
 
+  Widget _buildWorkoutList(String type) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: _user != null ? _workoutService.getUserWorkouts(_user!.uid) : Future.value([]),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('No workouts found.'));
+        }
 
+        List<Map<String, dynamic>> workouts = snapshot.data!;
+        if (_searchQuery.isNotEmpty) {
+          workouts = workouts.where((workout) {
+            String title = workout['title'] ?? 'Untitled Workout';
+            return title.toLowerCase().contains(_searchQuery.toLowerCase());
+          }).toList();
+        }
 
+        // Show all workouts in the ongoing tab
+        if (type == 'ongoing') {
+          return ListView.builder(
+            padding: EdgeInsets.all(16.0),
+            itemCount: workouts.length,
+            itemBuilder: (context, index) {
+              Map<String, dynamic> workout = workouts[index];
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WorkoutSummaryPage(
+                          workoutTitle: workout['title'],
+                          activities: List<String>.from(workout['activities']),
+                          duration: List<int>.from(workout['durations']),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(9),
+                      color: Colors.grey[200],
+                    ),
+                    child: Center(
+                      child: Text(
+                        workout['title'] ?? 'Untitled Workout',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        } else {
+          return Center(child: Text('No completed workouts.'));
+        }
+      },
     );
   }
 }
