@@ -8,6 +8,7 @@ class AuthService{
   // get instance of firebase auth
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // get current user
   User ? getCurrentUser() {
@@ -16,8 +17,26 @@ class AuthService{
 
   // get user role
   Future<String> getUserRole(String uid) async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    return snapshot.get('role');
+    try {
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
+      
+      if (userDoc.exists) {
+        print('User document data: ${userDoc.data()}');
+        return userDoc['role'];
+      }
+      else {
+        print('User document does not exist');
+        return 'user';
+
+      }
+      
+    }
+   
+    catch (e) {
+      print('Error retrieving user role: $e');
+      return 'user';
+
+    }
   }
 
 
