@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/services/workout_service.dart';
 import 'create_new_workout.dart';
 import 'workout_summary.dart';
+import 'explore_workouts.dart'; 
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({Key? key}) : super(key: key);
@@ -138,7 +139,10 @@ class _WorkoutPageState extends State<WorkoutPage> {
                     MaterialPageRoute(builder: (context) => CreateNewWorkoutPage()),
                   );
                 } else if (result == 'explore_workouts') {
-                  // Handle explore pre-made workouts
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ExploreWorkoutsPage()),
+                  );
                 }
               },
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
