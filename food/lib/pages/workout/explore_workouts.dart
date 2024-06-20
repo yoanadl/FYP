@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food/pages/workout/premade_workout_summary.dart';
 
 import 'workout_summary.dart';
 
@@ -11,7 +12,13 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   List<Map<String, dynamic>> preMadeWorkouts = [
-  
+    
+     {
+      'title': 'Upper Body Blast',
+      'activities': ['Push-ups', 'Pull-ups', 'Bicep Curls'],
+      'durations': [10, 15, 20],
+    },
+    
     {
       'title': 'Lower Body Strength',
       'activities': ['Squats', 'Lunges', 'Leg Press'],
@@ -55,6 +62,7 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
     }).toList();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Explore Pre-made Workouts'),
         backgroundColor: Colors.white,
@@ -101,7 +109,7 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => WorkoutSummaryPage(
+                          builder: (context) => PreMadeWorkoutSummaryPage(
                             workoutTitle: workout['title'],
                             activities: List<String>.from(workout['activities']),
                             duration: List<int>.from(workout['durations']),
