@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/admin_base_page.dart';
 import 'package:food/pages/base_page.dart';
-import 'package:food/pages/home_page.dart';
 import 'package:food/services/auth/auth_service.dart';
 import 'package:food/services/auth/login_or_register.dart';
 
@@ -36,19 +35,24 @@ class AuthGate extends StatelessWidget {
                 }
 
                 else if (snapshot.hasData) {
-                  if (snapshot.data == 'admin') {
+
+                  String role = snapshot.data!;
+                  print('User role: $role');
+
+                  if (role == 'admin') {
                     return AdminBasePage();
                   }
 
                   else {
                     return BasePage();
                   }
+
                 }
 
                   else {
                     return LoginOrRegister();
                   }
-                },
+                }
               );
 
           }

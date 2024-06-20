@@ -25,7 +25,7 @@ class _HomePageState extends State<BasePage> {
 
   // define a list of widgets for each page
   final List<Widget> _pages = [
-    AdminHomePage(),
+    HomePage(),
     WorkoutPage(),
     CommunityPage(),
     ProfilePage(),
