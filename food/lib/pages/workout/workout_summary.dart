@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:food/services/workout_service.dart';
 import '../../components/navbar.dart';
 import '../base_page.dart';
 import '../community_page.dart';
@@ -20,18 +20,16 @@ class WorkoutSummaryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Center(
-          child: 
-            Text(
-              'Workout Summary',
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ))),
+          child: Text(
+            'Workout Summary',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -44,7 +42,7 @@ class WorkoutSummaryPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              'Duration: $duration min',
+              'Total Duration: ${duration.reduce((a, b) => a + b)} min',
               style: TextStyle(fontSize: 16),
             ),
             SizedBox(height: 10),
@@ -54,24 +52,27 @@ class WorkoutSummaryPage extends StatelessWidget {
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: activities
-                  .map((activity) => Text(
-                        '- $activity',
-                        style: TextStyle(fontSize: 14),
-                      ))
-                  .toList(),
+              children: activities.asMap().entries.map((entry) {
+                int index = entry.key;
+                String activity = entry.value;
+                return Text(
+                  '- $activity (${duration[index]} min)',
+                  style: TextStyle(fontSize: 14),
+                );
+              }).toList(),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Start workout action
-              },
-              child: Text('Start Workout'),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  // Start workout action
+                },
+                child: Text('Start Workout'),
+              ),
             ),
           ],
         ),
       ),
-
       bottomNavigationBar: Navbar(
         currentIndex: 1,
         onTap: (int index) {
