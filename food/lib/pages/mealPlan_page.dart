@@ -103,8 +103,4 @@ class MealPlanPage extends StatelessWidget {
     );
 
   }
-
-
-
-
 }
