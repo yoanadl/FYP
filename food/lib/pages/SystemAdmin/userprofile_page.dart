@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'admin_navbar.dart';
 
-class ViewUserProfilePage extends StatelessWidget {
+
+class UserProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -134,11 +136,6 @@ class UserProfileListView extends State<_UserProfileListView> {
   
 }
 
+
        
 
-void main() {
-  runApp(MaterialApp(
-    title: 'User Profile Page Example',
-    home: ViewUserProfilePage(),
-  ));
-}
