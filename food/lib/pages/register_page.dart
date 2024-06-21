@@ -2,10 +2,12 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food/pages/SettingupProfile/name_page.dart';
 import 'package:food/services/auth/auth_service.dart';
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 import '../services/auth/firestore_service.dart';
+
 
 class RegisterPage extends StatefulWidget {
 
@@ -42,6 +44,10 @@ class _RegisterPageState extends State<RegisterPage> {
         UserCredential userCredential =  await _authService.signUpWithEmailPassword(
           emailController.text, 
           passwordController.text,
+        );
+        Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => NamePage()),  // Replace with your destination page
         );
 
         showDialog(
