@@ -64,7 +64,13 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Explore Pre-made Workouts'),
+        title: Text(
+          'Explore Pre-made Workouts',
+          style: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold,
+          )
+        ),
         backgroundColor: Colors.white,
       ),
       body: Column(

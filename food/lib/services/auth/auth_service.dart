@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food/pages/admin/admin_base_page.dart';
+import 'package:food/pages/base_page.dart';
 import 'package:food/services/auth/firestore_service.dart';
+
+import '../../pages/admin/admin_home_page.dart';
 
 class AuthService{
 
@@ -42,26 +47,36 @@ class AuthService{
 
 
   // sign in
-  Future<UserCredential> signInWithEmailPassword(String email, String password) async {
-
-    // try sign user in
+  Future<User?> signInWithEmailPassword(BuildContext context, String email, String password) async {
     try {
-
-      UserCredential userCredential = 
-          await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, 
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
         password: password,
       );
 
-      return userCredential;
+      User? user = userCredential.user;
 
-    }  
+      if (user != null) {
+        String role = await getUserRole(user.uid);
 
-    // catch any errors
-    on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
+        // Navigate based on user role
+        if (role == "admin") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AdminBasePage()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => BasePage()),
+          );
+        }
+      }
+
+      return user;
+    } catch (e) {
+      throw Exception(e.toString());
     }
-
   }
 
 
