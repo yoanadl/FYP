@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:food/components/admin_navbar.dart';
 import 'package:food/pages/admin/admin_create_new_account.dart';
 import 'package:food/pages/admin/admin_view_all_user_accounts.dart';
-import 'package:food/pages/community_page.dart';
+import 'package:food/pages/admin/admin_view_all_user_profile.dart';
+import 'package:food/pages/admin/admin_view_all_user_profile.dart';
 import 'package:food/pages/profile_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,7 @@ class _AdminBasePageState extends State<AdminBasePage> {
   final List<Widget> _pages = [
     AdminHomePage(),
     AdminViewAllUserAccounts(),
-    CommunityPage(),
+    UserProfilePage(),
     ProfilePage(),
   ];
 
