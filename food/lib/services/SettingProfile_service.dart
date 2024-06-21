@@ -64,6 +64,4 @@ class SettingprofileService {
     throw Exception('Failed to update profile.');
   }
 }
-
-
 }
