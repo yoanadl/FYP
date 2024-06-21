@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/admin_create_new_account.dart';
+import 'package:food/pages/admin/admin_update_account.dart';
 
 class AdminViewAllUserAccounts extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts>
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Text(
           'User Accounts',
@@ -46,7 +48,12 @@ class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts>
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      // Edit account action
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context) => AdminUpdateAccount(),
+                        ),
+                      );
                     },
                   ),
                 );
