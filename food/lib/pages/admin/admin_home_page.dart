@@ -62,7 +62,7 @@ class AdminHomePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 17.0),
                 child: Text(
-                  'Hello, Username!',
+                  'Hello, Admin!',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
