@@ -8,9 +8,13 @@ import 'package:food/pages/workout/workout_page.dart';
 
 import 'bmi_reports_page.dart';
 
-
+//BMI calculation
+double userheight = 0;
+double userweight = 0;
+double userBMI = userheight/(userweight*userweight);
 
 class BmiPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
 
@@ -60,8 +64,8 @@ class BmiPage extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 5),
-                          Text(
-                            '170',
+                          TextField(
+                            decoration: InputDecoration(hintText: "your height"),
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -104,8 +108,8 @@ class BmiPage extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 5),
-                          Text(
-                            '60',
+                          TextField(
+                            decoration: InputDecoration(hintText: "your weight"),
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,

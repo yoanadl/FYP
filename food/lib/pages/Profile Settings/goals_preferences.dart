@@ -135,3 +135,4 @@ class GoalsPreferences extends StatelessWidget {
     );
   }
 }
+
