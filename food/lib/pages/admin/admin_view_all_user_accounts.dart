@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food/pages/admin/admin_create_new_account.dart';
 
 class AdminViewAllUserAccounts extends StatefulWidget {
   @override
@@ -56,7 +57,12 @@ class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts>
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add new account action
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminCreateNewAccount(),
+            ),
+          );
         },
         child: Icon(Icons.add),
       ),
