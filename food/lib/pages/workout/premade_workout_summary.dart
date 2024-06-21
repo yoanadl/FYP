@@ -41,10 +41,14 @@ class PreMadeWorkoutSummaryPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Workout Summary'),
+        title: Text(
+          'Workout Summary',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          )),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(35.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -72,9 +76,16 @@ class PreMadeWorkoutSummaryPage extends StatelessWidget {
               );
             }).toList(),
             SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () => _addToOngoingWorkouts(context),
-              child: Text('Add to Ongoing Workouts'),
+            Center(
+              child: ElevatedButton(
+                onPressed: () => _addToOngoingWorkouts(context),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xff031927), 
+                    foregroundColor: Colors.white, 
+                    padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                ),
+                child: Text('Add to My Workouts'),
+              ),
             ),
           ],
         ),

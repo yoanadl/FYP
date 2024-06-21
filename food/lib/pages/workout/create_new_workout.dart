@@ -94,6 +94,11 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
                 onPressed: () {
                   _createWorkout();
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xff031927), 
+                  foregroundColor: Colors.white, 
+                ),
+                
                 child: Text('Create Workout'),
               ),
             ],

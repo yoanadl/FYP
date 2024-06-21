@@ -67,6 +67,10 @@ class WorkoutSummaryPage extends StatelessWidget {
                 onPressed: () {
                   // Start workout action
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xff031927), 
+                  foregroundColor: Colors.white, 
+                ),
                 child: Text('Start Workout'),
               ),
             ),

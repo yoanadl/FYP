@@ -131,50 +131,65 @@ class _WorkoutPageState extends State<WorkoutPage> {
           Positioned(
             bottom: 20,
             right: 20,
-            child: PopupMenuButton<String>(
-              onSelected: (String result) {
-                if (result == 'new_workout') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CreateNewWorkoutPage()),
-                  );
-                } else if (result == 'explore_workouts') {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ExploreWorkoutsPage()),
-                  );
-                }
-              },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  value: 'new_workout',
-                  child: Row(
-                    children: [
-                      Icon(Icons.add, color: Colors.black),
-                      SizedBox(width: 10),
-                      Text('Create New Workout'),
-                    ],
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                popupMenuTheme: PopupMenuThemeData(
+                  color: Color(0xff031927),
+                ),
+              ),
+              child: PopupMenuButton<String>(
+                onSelected: (String result) {
+                  if (result == 'new_workout') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreateNewWorkoutPage()),
+                    );
+                  } else if (result == 'explore_workouts') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ExploreWorkoutsPage()),
+                    );
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'new_workout',
+                    child: Row(
+                      children: [
+                        Icon(Icons.add, color: Colors.white),
+                        SizedBox(width: 10),
+                        Text(
+                          'Create New Workout',
+                          style: TextStyle(
+                            color: Colors.white
+                          )
+                          ,),
+                      ],
+                    ),
                   ),
-                ),
-                PopupMenuItem<String>(
-                  value: 'explore_workouts',
-                  child: Row(
-                    children: [
-                      Icon(Icons.explore, color: Colors.black),
-                      SizedBox(width: 10),
-                      Text('Explore Pre-made Workouts'),
-                    ],
+                  PopupMenuItem<String>(
+                    value: 'explore_workouts',
+                    child: Row(
+                      children: [
+                        Icon(Icons.explore, color: Colors.white),
+                        SizedBox(width: 10),
+                        Text(
+                          'Explore Pre-made Workouts',
+                          style: TextStyle(
+                            color: Colors.white)),
+                      ],
+                    ),
                   ),
+                ],
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.add, color: Colors.white),
                 ),
-              ],
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(Icons.add, color: Colors.white),
               ),
             ),
           ),
