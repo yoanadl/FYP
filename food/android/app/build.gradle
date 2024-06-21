@@ -1,5 +1,5 @@
 plugins {
-    id "com.android.application"
+    id 'com.android.application'
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
@@ -43,6 +43,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        minSdkVersion 23
     }
 
     buildTypes {
@@ -59,5 +60,6 @@ flutter {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation platform('com.google.firebase:firebase-bom:33.1.0')
+    implementation 'com.google.firebase:firebase-firestore'
 }
