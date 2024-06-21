@@ -3,21 +3,23 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 class BuildMuscleLowCarb {
-    String name = "";
-    String breakfast = "";
+    String name = '';
+    String details = '';    
+    String breakfast = '';
     String morningSnack = '';
     String lunch = '';
     String afternoonSnack = '';
     String dinner = '';
 
     List<BuildMuscleLowCarb> MealPlans = [
-            new BuildMuscleLowCarb("", "", "", "", "", ""),
-            new BuildMuscleLowCarb("", "", "", "", "", ""),
-            new BuildMuscleLowCarb("", "", "", "", "", "")
+            new BuildMuscleLowCarb("Meal Plan 1", "", "", "", "", "", ""),
+            new BuildMuscleLowCarb("Meal Plan 2", "", "", "", "", "", ""),
+            new BuildMuscleLowCarb("Meal Plan 3", "", "", "", "", "", "")
     ];
 
-    BuildMuscleLowCarb (String name, String breakfast, String morningSnack, String lunch, String afternoonSnack, String dinner){
+    BuildMuscleLowCarb (String name, String details, String breakfast, String morningSnack, String lunch, String afternoonSnack, String dinner){
         this.name = name;
+        this.details = details;
         this.breakfast = breakfast;
         this.morningSnack = morningSnack;
         this.lunch = lunch;
@@ -29,6 +31,9 @@ class BuildMuscleLowCarb {
         return name;
     }
 
+    String getdetails(){
+      return details;
+    }
     String getbreakfast(){
         return breakfast;
     }

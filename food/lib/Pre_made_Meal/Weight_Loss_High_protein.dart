@@ -2,22 +2,24 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
-class BuildMuscleHighProtein {
+class WeightLossHighProtein {
     String name = "";
+    String details = '';
     String breakfast = "";
     String morningSnack = '';
     String lunch = '';
     String afternoonSnack = '';
     String dinner = '';
 
-    List<BuildMuscleHighProtein> MealPlans = [
-            new BuildMuscleHighProtein("", "", "", "", "", ""),
-            new BuildMuscleHighProtein("", "", "", "", "", ""),
-            new BuildMuscleHighProtein("", "", "", "", "", "")
+    List<WeightLossHighProtein> MealPlans = [
+            new WeightLossHighProtein("Meal Plan 1", "", "", "", "", "", ""),
+            new WeightLossHighProtein("Meal Plan 2", "", "", "", "", "", ""),
+            new WeightLossHighProtein("Meal Plan 3", "", "", "", "", "", ""),
     ];
 
-    BuildMuscleHighProtein (String name, String breakfast, String morningSnack, String lunch, String afternoonSnack, String dinner){
+    WeightLossHighProtein (String name, String details, String breakfast, String morningSnack, String lunch, String afternoonSnack, String dinner){
         this.name = name;
+        this.details = details;
         this.breakfast = breakfast;
         this.morningSnack = morningSnack;
         this.lunch = lunch;
@@ -27,6 +29,10 @@ class BuildMuscleHighProtein {
 
     String getName(){
         return name;
+    }
+
+    String getdetails(){
+      return details;
     }
 
     String getbreakfast(){
