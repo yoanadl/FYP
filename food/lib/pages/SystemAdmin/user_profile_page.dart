@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'admin_navbar.dart';
+import 'create_new_profile_page.dart'; 
 
 
 class UserProfilePage extends StatelessWidget {
@@ -9,6 +10,8 @@ class UserProfilePage extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: null,
+
+        //add this to the other, customized them
       //   appBar: AppBar(
 
       //   // title: Row(
@@ -135,8 +138,13 @@ class UserProfileListView extends State<_UserProfileListView> {
           right: 16.0, // Adjust as needed
           child: FloatingActionButton(
             onPressed: () {
-              // Add your action here
-              print('Floating action button pressed');
+              // Navigate to CreateNewProfilePage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CreateNewProfilePage(),
+                ),
+              );
             },
             child: Icon(Icons.add),
           ),

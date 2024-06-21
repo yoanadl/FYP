@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'admin_homepage.dart';
-import 'useraccount_page.dart';
-import 'userprofile_page.dart';
+import 'user_account_page.dart';
+import 'user_profile_page.dart';
 import 'admin_profilepage.dart';
 import 'admin_navbar.dart'; // Import the custom navigation bar
 
@@ -76,6 +76,7 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   String _getAppBarTitle() {
+    //later need to be fixed
     switch (_selectedIndex) {
       case 0:
         return 'Admin Home'; // Return appropriate titles for each page
