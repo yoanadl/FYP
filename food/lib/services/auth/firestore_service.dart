@@ -17,4 +17,5 @@ class FirestoreService {
     // Create or update the user document
     await _firestore.collection('users').doc(user.uid).set(userData);
   }
+  
 }

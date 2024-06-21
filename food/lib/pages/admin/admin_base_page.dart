@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:food/components/navbar.dart';
+import 'package:food/components/admin_navbar.dart';
+import 'package:food/pages/admin/admin_create_new_account.dart';
+import 'package:food/pages/admin/admin_view_all_user_accounts.dart';
 import 'package:food/pages/community_page.dart';
 import 'package:food/pages/profile_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 import 'package:intl/intl.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'admin_home_page.dart';
 
@@ -28,7 +29,7 @@ class _AdminBasePageState extends State<AdminBasePage> {
   // define a list of widgets for each page
   final List<Widget> _pages = [
     AdminHomePage(),
-    WorkoutPage(),
+    AdminViewAllUserAccounts(),
     CommunityPage(),
     ProfilePage(),
   ];
@@ -51,7 +52,7 @@ class _AdminBasePageState extends State<AdminBasePage> {
         ),
       ),
 
-      bottomNavigationBar: Navbar(
+      bottomNavigationBar: AdminNavbar(
         currentIndex: _selectedIndex,
         onTap: (int index) {
           setState(() {

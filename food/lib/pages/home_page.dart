@@ -258,15 +258,36 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 
-                  child: Text(
-                    'Workout Plan', 
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'lib/images/workout.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      Positioned(
+                        top: 15,
+                        left: 15,
+                        child: Text(
+                          'Workout Plan', 
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            backgroundColor: Color(0xFF508AA8),
+                          ),
+                        ),
+                      ),
+                      ],
+
+                  ),
+
+                  
+        
                   
                 ),
               ),
@@ -287,14 +308,33 @@ class HomePage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                  
-                  child: Text(
-                    'Meal Plan', 
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'lib/images/food.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      Positioned(
+                        top: 15,
+                        left: 15,
+                        child: Text(
+                          'Meal Plan', 
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            backgroundColor: Color(0xFF508AA8),
+                          ),
+                        ),
+                      ),
+                      ],
+
+                  ),
                  ),
                ),
             ],
