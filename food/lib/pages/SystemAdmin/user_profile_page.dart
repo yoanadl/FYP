@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food/pages/SystemAdmin/edit_profile_page.dart';
 import 'admin_navbar.dart';
 import 'create_new_profile_page.dart'; 
 import 'user_profile.dart';
@@ -125,11 +126,29 @@ class _UserProfileListView extends State<UserProfileListView> {
                     return ListTile(
                       title: Text(filteredProfiles[index].name),
                       subtitle: Text('Role: ${filteredProfiles[index].role}, Permission: ${filteredProfiles[index].permission}'),
+                      trailing: IconButton(
+                        icon: Icon(Icons.edit), 
+                        onPressed: () {
+                          // Navigate to Edit Page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditProfilePage(
+                                profileIndex: index,
+                                profileName: filteredProfiles[index].name,
+                                profilePermission: filteredProfiles[index].permission,
+                                profileDescription: filteredProfiles[index].description,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                       // Add more UI elements as needed to display profile details
                     );
                   },
                 ),
               ),
+
             ],
           ),
         ),

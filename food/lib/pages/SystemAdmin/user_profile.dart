@@ -3,13 +3,13 @@ class UserProfile {
   final String name;
   final String role;
   final String permission;
-  final String? description;
+  final String description;
 
   UserProfile({
     required this.name,
     required this.role,
     required this.permission,
-    this.description,
+    this.description= '',
     // this.is.description,
   });
   
