@@ -41,6 +41,15 @@ Widget buildMeanPlanContainer(WeightLossLowCarb mealPlan) {
               fontSize: 16.0,
             ),
           ),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image(image: AssetImage(
+            mealPlan.image),
+            fit: BoxFit.cover,
+            width: 230,
+            height: 80,
+          ),
+        ),          
       ],
     ),
   );
