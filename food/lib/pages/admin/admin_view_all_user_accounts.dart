@@ -56,13 +56,13 @@ class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts>
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
+            icon: Icon(Icons.supervised_user_circle),
             label: 'User Accounts',
           ),
           BottomNavigationBarItem(
@@ -75,8 +75,10 @@ class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts>
           ),
         ],
         currentIndex: 1,
-        onTap: (index) {
-          // Handle bottom navigation bar tap
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        onTap: (int index) {
+          // Add navigation logic here
         },
       ),
     );
