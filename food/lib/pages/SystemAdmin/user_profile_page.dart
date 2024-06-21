@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'admin_navbar.dart';
 import 'create_new_profile_page.dart'; 
+import 'user_profile.dart';
 
 
 class UserProfilePage extends StatelessWidget {
@@ -44,31 +45,31 @@ class UserProfilePage extends StatelessWidget {
         
       // ),
 
-      body: _UserProfileListView(),
+      body: UserProfileListView(),
       
       )
     );
   }
 }
 
-class _UserProfileListView extends StatefulWidget{
+class UserProfileListView extends StatefulWidget{
   @override
-  UserProfileListView createState() => UserProfileListView();
+  _UserProfileListView createState() => _UserProfileListView();
 }
 
-class UserProfileListView extends State<_UserProfileListView> {
-  final List<String> profiles = [
-    'System Admin',
-    'Free User',
-    'Premium User',
-    'Trainer',
-    'Community Admin',
-    'Community Member',
+class _UserProfileListView extends State<UserProfileListView> {
+  final List<UserProfile> profiles = [
+    UserProfile(name: 'System Admin', role: 'Admin', permission: 'Full Access'),
+    UserProfile(name: 'Free User', role: 'User', permission: 'Limited Access'),
+    UserProfile(name: 'Premium User', role: 'User', permission: 'Limited Access'),
+    UserProfile(name: 'Trainer', role: 'User', permission: 'Limited Access'),
+    UserProfile(name: 'Community Admin', role: 'User', permission: 'Full Access'),
+    UserProfile(name: 'Community Member', role: 'User', permission: 'Limited Access'),
   ];
 
   final TextEditingController controller = TextEditingController();
   bool isFieldEmpty = true;
-  List<String> filteredProfiles = [];
+  List<UserProfile> filteredProfiles = [];
 
   @override
   void initState() {
@@ -81,7 +82,7 @@ class UserProfileListView extends State<_UserProfileListView> {
       });
     });
   }
-  
+
   @override
   void dispose() {
     controller.dispose();
@@ -91,12 +92,12 @@ class UserProfileListView extends State<_UserProfileListView> {
   void _onSearchIconPressed() {
     setState(() {
       filteredProfiles = profiles
-      .where((profile) => profile.toLowerCase().contains(controller.text.toLowerCase()))
-      .toList();
+          .where((profile) => profile.name.toLowerCase().contains(controller.text.toLowerCase()))
+          .toList();
     });
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -104,7 +105,6 @@ class UserProfileListView extends State<_UserProfileListView> {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
-
               TextField(
                 controller: controller,
                 decoration: InputDecoration(
@@ -118,13 +118,14 @@ class UserProfileListView extends State<_UserProfileListView> {
               const SizedBox(
                 height: 20,
               ),
-              // Search results
               Expanded(
                 child: ListView.builder(
                   itemCount: filteredProfiles.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(filteredProfiles[index]),
+                      title: Text(filteredProfiles[index].name),
+                      subtitle: Text('Role: ${filteredProfiles[index].role}, Permission: ${filteredProfiles[index].permission}'),
+                      // Add more UI elements as needed to display profile details
                     );
                   },
                 ),
@@ -132,13 +133,11 @@ class UserProfileListView extends State<_UserProfileListView> {
             ],
           ),
         ),
-        // Floating action button
         Positioned(
-          bottom: 16.0, // Adjust as needed
-          right: 16.0, // Adjust as needed
+          bottom: 16.0,
+          right: 16.0,
           child: FloatingActionButton(
             onPressed: () {
-              // Navigate to CreateNewProfilePage
               Navigator.push(
                 context,
                 MaterialPageRoute(
