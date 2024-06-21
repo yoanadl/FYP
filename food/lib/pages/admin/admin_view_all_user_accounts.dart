@@ -12,9 +12,14 @@ class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('User Accounts'),
+        title: Text(
+          'User Accounts',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          )),
       ),
       body: Column(
         children: [
@@ -55,32 +60,7 @@ class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts>
         },
         child: Icon(Icons.add),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.supervised_user_circle),
-            label: 'User Accounts',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'User Profiles',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: 1,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        onTap: (int index) {
-          // Add navigation logic here
-        },
-      ),
+      
     );
   }
 }
