@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food/pages/admin/edit_profile_page.dart';
-import 'admin_navbar.dart';
 import 'create_new_profile_page.dart'; 
 import 'user_profile.dart';
 
@@ -11,40 +10,37 @@ class UserProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: null,
+        appBar: AppBar(
 
-        //add this to the other, customized them
-      //   appBar: AppBar(
-
-      //   // title: Row(
-      //   //   children: <Widget>[
-      //   //     GestureDetector(
-      //   //       onTap: () {
-      //   //         // back
-      //   //         Navigator.of(context).pop();
-      //   //       },
-      //   //       child: SvgPicture.asset(
-      //   //         'lib/images/back-button.svg',
-      //   //         height: 20.0,
-      //   //         width: 20.0,
-      //   //       ),
-      //   //     ),
-      //   //     Expanded(
-      //   //       child: Text(
-      //   //         'User Profile',
-      //   //         textAlign: TextAlign.center, // Center align the text
-      //   //         style: TextStyle(
-      //   //           fontWeight: FontWeight.w600,
-      //   //           fontSize: 25.0,
-      //   //           fontFamily: 'Poppins',
-      //   //           color: Colors.black,
-      //   //         ),
-      //   //       ),
-      //   //     ),
-      //   //   ],
-      //   // ),
+          title: Row(
+            children: <Widget>[
+              // GestureDetector(
+              //   onTap: () {
+              //     // back
+              //     // Navigator.of(context).pop();
+              //   },
+              //   child: SvgPicture.asset(
+              //     'lib/images/back-button.svg',
+              //     height: 20.0,
+              //     width: 20.0,
+              //   ),
+              // ),
+              Expanded(
+                child: Text(
+                  'User Profile',
+                  textAlign: TextAlign.center, // Center align the text
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 25.0,
+                    fontFamily: 'Poppins',
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
         
-      // ),
+    ),
 
       body: UserProfileListView(),
       
