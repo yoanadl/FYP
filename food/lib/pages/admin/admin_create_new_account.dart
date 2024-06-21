@@ -86,7 +86,12 @@ class AdminCreateNewAccount extends StatelessWidget {
                 onPressed: () {
                   // Handle create account action
                 },
-                child: Text('Create Account'),
+                child: Text(
+                  'Create Account',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),

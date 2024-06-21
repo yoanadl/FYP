@@ -36,7 +36,29 @@ class AdminUpdateAccount extends StatelessWidget {
                     IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        // Add delete logic here
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Are you sure you want to delete this account?'),
+                              actions: [
+                                TextButton(
+                                  child: Text('Cancel', style: TextStyle(color: Colors.black)),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('Delete', style: TextStyle(color: Colors.red)),
+                                  onPressed: () {
+                                    // Add delete logic here
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                     ),
                     IconButton(
@@ -69,8 +91,14 @@ class AdminUpdateAccount extends StatelessWidget {
                 onPressed: () {
                   // Add save logic here
                 },
-                child: Text('Save Account'),
+                child: Text(
+                  'Save Account',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   textStyle: TextStyle(fontSize: 16),
                 ),

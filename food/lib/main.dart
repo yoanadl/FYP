@@ -43,17 +43,7 @@ class HomePage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => AdminViewAllUserAccounts()),
                   );
                 },
-                child: Text('Go to User Accounts Page'),
-              ),
-              SizedBox(height: 20), // Add some space between buttons
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminUpdateAccount()),
-                  );
-                },
-                child: Text('Go to Update Account Page'),
+                child: Text('Go to View All User Accounts Page'),
               ),
               SizedBox(height: 20), // Add some space between buttons
               ElevatedButton(
@@ -64,6 +54,16 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: Text('Go to Create New Account Page'),
+              ),
+              SizedBox(height: 20), // Add some space between buttons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AdminUpdateAccount()),
+                  );
+                },
+                child: Text('Go to Update Account Page'),
               ),
             ],
           ),
