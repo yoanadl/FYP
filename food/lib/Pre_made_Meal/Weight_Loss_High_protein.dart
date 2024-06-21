@@ -23,31 +23,31 @@ class WeightLossHighProtein{
 List<WeightLossHighProtein> MealPlansType2 = [
   const WeightLossHighProtein(
     name: 'Meal Plan 1',
-    details: 'Boil chicken with lettuce',
-    breakfast: '',
-    morningSnack: '12 almond',
-    lunch: '',
-    afternoonSnack: '12 almond',
-    dinner: ''
+    details: 'Zucchini Parmesan',
+    breakfast: 'Raspberries greek yogurt with almonds',
+    morningSnack: '2 kiwis',
+    lunch: 'Chicken Quinoa Bowl with Olives & Cucumber',
+    afternoonSnack: '1 orange',
+    dinner: 'Zucchini Parmesan'
   ),
 
    const WeightLossHighProtein(
     name: 'Meal Plan 2',
-    details:'Veggie stir-fry with brown rice',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '12 almond',
-    dinner: ''
+    details:'Salmon Tacos with Pineapple Salsa',
+    breakfast: 'Egg Salad Avocado Toast',
+    morningSnack: '1 orange',
+    lunch: 'Green Salad with Edamame & Beets',
+    afternoonSnack: '1 cup raspberries',
+    dinner: 'Salmon Tacos with Pineapple Salsa'
   ),
 
    const WeightLossHighProtein(
     name: 'Meal Plan 3',
-    details: 'Tuna salad sandwich on whole-wheat bread',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details: 'Citrus Poached Salmon with Asparagus',
+    breakfast: 'Banana Pancakes',
+    morningSnack: '1 orange',
+    lunch: 'Veggie & Hummus Sandwich',
+    afternoonSnack: '1 Edamame',
+    dinner: 'Citrus Poached Salmon with Asparagus'
   ),
 ];

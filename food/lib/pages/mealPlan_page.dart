@@ -7,9 +7,11 @@ import '../components/navbar.dart';
 import 'community_page.dart';
 import 'workout/workout_page.dart';
 import 'profile_page.dart';
+/*
 import '../Pre_made_Meal/Build_Muscle_High_protein.dart';
 import 'package:food/Pre_made_Meal/Build_Muscle_Low_carb.dart';
 import 'package:food/Pre_made_Meal/Weight_Loss_High_protein.dart';
+*/
 import 'package:food/Pre_made_Meal/Weight_Loss_Low_carb.dart';
 
 Widget buildMeanPlanContainer(WeightLossLowCarb mealPlan) {

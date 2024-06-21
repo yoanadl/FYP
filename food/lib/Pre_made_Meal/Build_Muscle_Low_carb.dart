@@ -23,31 +23,31 @@ class BuildMuscleLowCarb{
 List<BuildMuscleLowCarb> MealPlansType3 = [
   const BuildMuscleLowCarb(
     name: 'Meal Plan 1',
-    details: 'Boil chicken with lettuce',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details: 'New York strip steak with mashed potatoes and asparagus',
+    breakfast: 'Eggs and bacon with spinach',
+    morningSnack: '12 almond',
+    lunch: 'Baked Salmon with salad ',
+    afternoonSnack: '12 almond',
+    dinner: 'New York strip steak with mashed potatoes and asparagus'
   ),
 
    const BuildMuscleLowCarb(
     name: 'Meal Plan 2',
-    details:'Veggie stir-fry with brown rice',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details:'Salmon burger with slaw',
+    breakfast: 'Scrambled eggs',
+    morningSnack: '12 almond',
+    lunch: 'High protein Tofu Poke Bowl',
+    afternoonSnack: '12 almond',
+    dinner: 'Salmon burger with slaw'
   ),
 
    const BuildMuscleLowCarb(
     name: 'Meal Plan 3',
     details: 'Tuna salad sandwich on whole-wheat bread',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    breakfast: 'High Protein Scramble egg with Quinoa',
+    morningSnack: '1 cup edamame',
+    lunch: 'Low Calorie Popcorn Chicken',
+    afternoonSnack: '12 almond',
+    dinner: 'High Protein Burrito Bowl'
   ),
 ];

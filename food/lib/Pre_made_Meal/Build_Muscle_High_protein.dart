@@ -23,31 +23,31 @@ class BuildMuscleHighProtein{
 List<BuildMuscleHighProtein> MealPlansType4 = [
   const BuildMuscleHighProtein(
     name: 'Meal Plan 1',
-    details: 'Boil chicken with lettuce',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details: 'Chopped Power Salad with Chicken',
+    breakfast: 'Baked Omelet Muffins',
+    morningSnack: '1 apple',
+    lunch: 'Tuna Melt',
+    afternoonSnack: '1 cup edamame',
+    dinner: 'Chopped Power Salad with Chicken'
   ),
 
    const BuildMuscleHighProtein(
     name: 'Meal Plan 2',
-    details:'Veggie stir-fry with brown rice',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details:'Creamy Chicken Noodle Casserole',
+    breakfast: 'Chocolate-Peanut Butter Protein Shake',
+    morningSnack: '20 unsalted almonds',
+    lunch: 'Salmon-Stuffed Avocados',
+    afternoonSnack: 'Greek yogurt with blackberries',
+    dinner: 'Creamy Chicken Noodle Casserole'
   ),
 
    const BuildMuscleHighProtein(
     name: 'Meal Plan 3',
-    details: 'Tuna salad sandwich on whole-wheat bread',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details: 'Stuffed Cabbage Soup',
+    breakfast: 'Chocolate-Peanut Butter Protein Shake',
+    morningSnack: 'Greek yogurt with sliced strawberries',
+    lunch: 'Turkey BLT Wrap',
+    afternoonSnack: '1 cup edamame',
+    dinner: 'Stuffed Cabbage Soup'
   ),
 ];

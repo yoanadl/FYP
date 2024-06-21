@@ -23,31 +23,31 @@ class WeightLossLowCarb{
 List<WeightLossLowCarb> MealPlansType1 = [
   const WeightLossLowCarb(
     name: 'Meal Plan 1',
-    details: 'Boil chicken with lettuce',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details: 'Cherry chicken with lettuce wraps',
+    breakfast: 'Raspberries greek yogurt with almonds',
+    morningSnack: '1 hard boiled eggs',
+    lunch: 'White Bean & Veggie Salad',
+    afternoonSnack: '1 Apple',
+    dinner: 'Cherry chicken with lettuce wraps'
   ),
 
    const WeightLossLowCarb(
     name: 'Meal Plan 2',
-    details:'Veggie stir-fry with brown rice',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details:'Cauliflower Mac & Cheese',
+    breakfast: 'Banana Pancakes',
+    morningSnack: '1 orange',
+    lunch: 'Chicken Satay with Spicy Peanut Sauce',
+    afternoonSnack: '1/2 cup raspberries',
+    dinner: 'Cauliflower Mac & Cheese'
   ),
 
    const WeightLossLowCarb(
     name: 'Meal Plan 3',
-    details: 'Tuna salad sandwich on whole-wheat bread',
-    breakfast: '',
-    morningSnack: '',
-    lunch: '',
-    afternoonSnack: '',
-    dinner: ''
+    details: 'Roasted Chickens + Cauliflower Risotto',
+    breakfast: 'Low-Carb Blueberry Muffins',
+    morningSnack: '1 pear',
+    lunch: 'Egg Salad Lettuce Wraps',
+    afternoonSnack: '2 plum',
+    dinner: 'Roasted Chickens + Cauliflower Risotto'
   ),
 ];
