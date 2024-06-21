@@ -8,36 +8,38 @@ class UserProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-        title: Row(
-          children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                // back
-                Navigator.of(context).pop();
-              },
-              child: SvgPicture.asset(
-                'lib/images/back-button.svg',
-                height: 20.0,
-                width: 20.0,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                'User Profile',
-                textAlign: TextAlign.center, // Center align the text
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 25.0,
-                  fontFamily: 'Poppins',
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
+        appBar: null,
+      //   appBar: AppBar(
+
+      //   // title: Row(
+      //   //   children: <Widget>[
+      //   //     GestureDetector(
+      //   //       onTap: () {
+      //   //         // back
+      //   //         Navigator.of(context).pop();
+      //   //       },
+      //   //       child: SvgPicture.asset(
+      //   //         'lib/images/back-button.svg',
+      //   //         height: 20.0,
+      //   //         width: 20.0,
+      //   //       ),
+      //   //     ),
+      //   //     Expanded(
+      //   //       child: Text(
+      //   //         'User Profile',
+      //   //         textAlign: TextAlign.center, // Center align the text
+      //   //         style: TextStyle(
+      //   //           fontWeight: FontWeight.w600,
+      //   //           fontSize: 25.0,
+      //   //           fontFamily: 'Poppins',
+      //   //           color: Colors.black,
+      //   //         ),
+      //   //       ),
+      //   //     ),
+      //   //   ],
+      //   // ),
         
-      ),
+      // ),
 
       body: _UserProfileListView(),
       
@@ -91,51 +93,55 @@ class UserProfileListView extends State<_UserProfileListView> {
     });
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            children: [
 
-          TextField(
-            controller: controller,
-            decoration: InputDecoration(
-              labelText: isFieldEmpty ? 'Search' : null,
-              prefixIcon: InkWell(
-                onTap: _onSearchIconPressed,
-                child: Icon(Icons.search),
+              TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  labelText: isFieldEmpty ? 'Search' : null,
+                  prefixIcon: InkWell(
+                    onTap: _onSearchIconPressed,
+                    child: Icon(Icons.search),
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(
+                height: 20,
+              ),
+              // Search results
+              Expanded(
+                child: ListView.builder(
+                  itemCount: filteredProfiles.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(filteredProfiles[index]),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-
-          const SizedBox(
-            height: 20,
+        ),
+        // Floating action button
+        Positioned(
+          bottom: 16.0, // Adjust as needed
+          right: 16.0, // Adjust as needed
+          child: FloatingActionButton(
+            onPressed: () {
+              // Add your action here
+              print('Floating action button pressed');
+            },
+            child: Icon(Icons.add),
           ),
-      
-          //search result
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredProfiles.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                 title: Text(filteredProfiles[index])
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
-
   }
-
-  
 }
-
-
-       
-
