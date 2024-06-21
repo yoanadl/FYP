@@ -12,48 +12,7 @@ import 'package:food/Pre_made_Meal/Build_Muscle_Low_carb.dart';
 import 'package:food/Pre_made_Meal/Weight_Loss_High_protein.dart';
 import 'package:food/Pre_made_Meal/Weight_Loss_Low_carb.dart';
 
-class MealPlan{
-  final String name;
-  final Image image;
-  final List<String> details;
-
-  const MealPlan(
-    {
-      required this.name, 
-      required this.image,
-      required this.details
-    }
-  );
-}
-
-List<MealPlan> sampleMealPlans = [
-  MealPlan(
-    name: 'Meal Plan 1',
-    image: Image.asset('lib/images/SalmonwithroastedVeg.jpg'),
-    details: [
-      'Salmon with roasted vegetables',
-    ]
-  ),
-
-   MealPlan(
-    name: 'Meal Plan 2',
-    image: Image.asset('lib/images/SalmonwithroastedVeg.jpg'),
-    details: [
-      'Veggie stir-fry with brown rice',
-    ]
-  ),
-
-   MealPlan(
-    name: 'Meal Plan 3',
-    image: Image.asset('lib/images/SalmonwithroastedVeg.jpg'),
-    details: [
-      'Tuna salad sandwich on whole-wheat bread',
-    ]
-  ),
-
-];
-
-Widget buildMeanPlanContainer(MealPlan mealPlan) {
+Widget buildMeanPlanContainer(WeightLossLowCarb mealPlan) {
   return Container(
     width: 250,
     height: 200,
@@ -74,9 +33,8 @@ Widget buildMeanPlanContainer(MealPlan mealPlan) {
           ),
         ),
         SizedBox(height: 8.0,),
-        for (String details in mealPlan.details)
           Text(
-            details,
+            mealPlan.details,
             style: TextStyle(
               fontSize: 16.0,
             ),
@@ -112,7 +70,7 @@ class MealPlanPage extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                for (MealPlan mealPlan in sampleMealPlans)
+                for (WeightLossLowCarb mealPlan in MealPlansType1)
                   buildMeanPlanContainer(mealPlan),
               ],
             ),
