@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/SystemAdmin/user_profile_page.dart';
+import 'user_profile_page.dart';
 
 class CreateNewProfilePage extends StatefulWidget {
   @override

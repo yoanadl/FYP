@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food/pages/admin/admin_view_all_user_accounts.dart';
 import 'admin_homepage.dart';
 import 'user_account_page.dart';
 import 'user_profile_page.dart';
@@ -16,7 +17,7 @@ class _AdminPageState extends State<AdminPage> {
 
   static List<Widget> _widgetOptions = <Widget>[
     AdminHomePage(), // Correctly instantiate your page widgets
-    UserAccountPage(),
+    AdminViewAllUserAccounts(),
     UserProfilePage(),
     AdminProfilePage(),
   ];

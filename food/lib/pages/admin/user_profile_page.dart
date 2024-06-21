@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food/pages/SystemAdmin/edit_profile_page.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food/pages/admin/edit_profile_page.dart';
 import 'admin_navbar.dart';
 import 'create_new_profile_page.dart'; 
 import 'user_profile.dart';

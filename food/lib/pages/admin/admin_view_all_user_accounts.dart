@@ -4,10 +4,10 @@ import 'package:food/pages/admin/admin_update_account.dart';
 
 class AdminViewAllUserAccounts extends StatefulWidget {
   @override
-  _AdminViewAllUserAccountsPageState createState() => _AdminViewAllUserAccountsPageState();
+  _AdminViewAllUserAccountsPage createState() => _AdminViewAllUserAccountsPage();
 }
 
-class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts> {
+class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
   final List<String> accounts = List.generate(10, (index) => 'account #${index + 1}');
   final TextEditingController _searchController = TextEditingController();
 
