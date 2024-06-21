@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food/pages/base_page.dart';
 import 'package:food/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,7 +29,7 @@ class _DietPreferenceScreenState extends State<DietPreferencePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomePage(),
+          builder: (context) => BasePage(),
         ),
       );
     } catch (e) {
