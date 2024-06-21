@@ -19,8 +19,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // RandomColor _randomColor = RandomColor();
-    // Color _color = _randomColor.randomColor();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
