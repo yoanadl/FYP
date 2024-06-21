@@ -12,7 +12,7 @@ class WeightPage extends StatefulWidget {
 }
 
 class WeightPageState extends State<WeightPage> {
-  int? _Weight;
+  String? _Weight;
   final TextEditingController _weightController = TextEditingController();
 
   @override
@@ -30,7 +30,7 @@ class WeightPageState extends State<WeightPage> {
 
   void _updateWeight() {
     setState(() {
-      _Weight = int.tryParse(_weightController.text);
+      _Weight = _weightController.text;
     });
   }
 
@@ -41,12 +41,12 @@ class WeightPageState extends State<WeightPage> {
       return;
     }
 
-    if (_Weight == null || _Weight! <= 0 || _Weight! > 300) {
+    if (_Weight == null) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Error'),
-          content: Text('Please input a valid weight between 1 and 300 kg.'),
+          content: Text('Please input a valid weight.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),

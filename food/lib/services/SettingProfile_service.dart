@@ -17,39 +17,19 @@ class SettingprofileService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUserWorkouts(
+  Future<List<Map<String, dynamic>>> getUserProfile(
       String uid) async {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
-          .collection('workouts')
+          .collection('UserProfile')
           .get();
       return querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
     } catch (e) {
-      print('Error retrieving user workouts: $e');
-      throw Exception('Failed to retrieve user workouts.');
-    }
-  }
-
-  Future<void> saveUserWorkout(
-      String uid,
-      String workoutTitle,
-      List<String> activities,
-      List<int> duration) async {
-    try {
-      await usersCollection
-          .doc(uid)
-          .collection('workouts')
-          .add({
-        'title': workoutTitle,
-        'activities': activities,
-        'durations': duration,
-      });
-    } catch (e) {
-      print('Error saving workout: $e');
-      throw Exception('Failed to save workout.');
+      print('Error retrieving user profile: $e');
+      throw Exception('Failed to retrieve user profile.');
     }
   }
 
@@ -84,4 +64,6 @@ class SettingprofileService {
     throw Exception('Failed to update profile.');
   }
 }
+
+
 }

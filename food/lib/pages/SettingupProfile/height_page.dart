@@ -12,7 +12,7 @@ class HeightPage extends StatefulWidget {
 }
 
 class HeightPageState extends State<HeightPage> {
-  int? _Height;
+  String? _Height;
   final TextEditingController _heightController = TextEditingController();
 
    @override
@@ -30,7 +30,7 @@ class HeightPageState extends State<HeightPage> {
 
   void _updateHeight() {
     setState(() {
-      _Height = int.tryParse(_heightController.text);
+      _Height = _heightController.text;
     });
   }
 

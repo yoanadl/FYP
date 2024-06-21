@@ -12,7 +12,7 @@ class AgePage extends StatefulWidget {
 }
 
 class AgePageState extends State<AgePage> {
-  int? _Age;
+  String? _Age;
   final TextEditingController _ageController = TextEditingController();
 
   @override
@@ -30,7 +30,7 @@ class AgePageState extends State<AgePage> {
 
   void _updateAge() {
     setState(() {
-      _Age = int.tryParse(_ageController.text);
+      _Age = _ageController.text;
     });
   }
 
