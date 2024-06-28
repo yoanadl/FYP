@@ -74,7 +74,6 @@ class _WorkoutActivityPageState extends State<WorkoutActivityPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(widget.activityTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -88,7 +87,7 @@ class _WorkoutActivityPageState extends State<WorkoutActivityPage> {
                   fontSize: 30, 
                   fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -108,7 +107,7 @@ class _WorkoutActivityPageState extends State<WorkoutActivityPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               Text(
                 '12 kcal burnt',
                 style: TextStyle(fontSize: 18),
@@ -118,20 +117,38 @@ class _WorkoutActivityPageState extends State<WorkoutActivityPage> {
                 style: TextStyle(fontSize: 18),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
+              IconButton(
                 onPressed: () {
                   setState(() {
                     _isPaused = !_isPaused;
                   });
                 },
-                child: Text(_isPaused ? 'Resume Workout' : 'Pause Workout'),
+                icon: Icon(
+                  _isPaused ? Icons.play_arrow : Icons.pause,
+                  size: 50,
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  _timer?.cancel();
-                  Navigator.pop(context);
-                },
-                child: Text('Stop Workout'),
+              SizedBox(height: 20),
+              Container(
+                height: 50,
+                width: 220,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), // Customize the border radius as needed
+                  color: Color(0xFFBA1200), // Red background color
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    _timer?.cancel();
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Stop Workout',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    )
+                  ),
+                )
               ),
             ],
           ),
