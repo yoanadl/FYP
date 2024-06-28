@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food/pages/workout/workout_activity.dart';
 import 'package:food/services/workout_service.dart';
 import '../../components/navbar.dart';
 import '../base_page.dart';
@@ -65,7 +66,18 @@ class WorkoutSummaryPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Start workout action
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(
+                      builder: (context) => WorkoutActivityPage(
+                        activityTitle: activities[0],
+                        duration: duration[0], 
+                        activityIndex: 0, 
+                        activities: activities, 
+                        durations: duration,
+                      ),
+                    ),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff031927), 
