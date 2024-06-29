@@ -99,7 +99,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Colors.white,
+
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
@@ -115,36 +117,38 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 20.0),
-            // profile image avatar
-            CircleAvatar(
-              backgroundColor: Colors.grey[100],
-              radius: 50.0,
-            ),
-            // name
-            SizedBox(height: 15.0),
-            Text(
-              'John Doe',
-              style: TextStyle(
-                fontSize: 20,
+
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 20.0),
+              // profile image avatar
+              CircleAvatar(
+                backgroundColor: Colors.grey[100],
+                radius: 50.0,
               ),
-            ),
-            SizedBox(height: 25.0),
-            // settings
-            Expanded(
-              child: ListView.separated(
+              // name
+              SizedBox(height: 15.0),
+              Text(
+                'John Doe',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              SizedBox(height: 25.0),
+              // settings
+              ListView.separated(
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: rowData.length,
                 itemBuilder: (context, index) =>
                     buildRowItem(context, rowData[index]),
                 separatorBuilder: (context, index) => SizedBox(height: 5.0),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -163,26 +167,31 @@ class ProfilePage extends StatelessWidget {
           );
         }
       },
-      child: Container(
-        color: Colors.grey[100],
-        margin: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              Icon(data.icon),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Text(
-                  data.text,
-                  style: TextStyle(
-                    fontSize: 20.0,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minWidth: 200), // Set your desired minimum width here
+        child: Container(
+          color: Colors.grey[100],
+          margin: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Icon(data.icon),
+                SizedBox(width: 10.0,),
+                Expanded(
+                  child: Text(
+                    data.text,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                  
                   ),
                 ),
-              ),
-              Spacer(),
-              Icon(Icons.arrow_right),
-            ],
+                Spacer(),
+                Icon(Icons.arrow_right),
+              ],
+            ),
           ),
         ),
       ),

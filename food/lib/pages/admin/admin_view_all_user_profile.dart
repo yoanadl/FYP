@@ -9,9 +9,12 @@ class UserProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      color: Colors.white,
       home: Scaffold(
         appBar: AppBar(
-
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: true, 
           title: Row(
             children: <Widget>[
               // GestureDetector(
@@ -96,74 +99,79 @@ class _UserProfileListView extends State<UserProfileListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  labelText: isFieldEmpty ? 'Search' : null,
-                  prefixIcon: InkWell(
-                    onTap: _onSearchIconPressed,
-                    child: Icon(Icons.search),
+    return 
+    
+    Container(
+      color: Colors.white,
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    labelText: isFieldEmpty ? 'Search' : null,
+                    prefixIcon: InkWell(
+                      onTap: _onSearchIconPressed,
+                      child: Icon(Icons.search),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: filteredProfiles.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(filteredProfiles[index].name),
-                      subtitle: Text('Role: ${filteredProfiles[index].role}, Permission: ${filteredProfiles[index].permission}'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit), 
-                        onPressed: () {
-                          // Navigate to Edit Page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditProfilePage(
-                                profileIndex: index,
-                                profileName: filteredProfiles[index].name,
-                                profilePermission: filteredProfiles[index].permission,
-                                profileDescription: filteredProfiles[index].description,
+                const SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: filteredProfiles.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(filteredProfiles[index].name),
+                        subtitle: Text('Role: ${filteredProfiles[index].role}, Permission: ${filteredProfiles[index].permission}'),
+                        trailing: IconButton(
+                          icon: Icon(Icons.edit), 
+                          onPressed: () {
+                            // Navigate to Edit Page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditProfilePage(
+                                  profileIndex: index,
+                                  profileName: filteredProfiles[index].name,
+                                  profilePermission: filteredProfiles[index].permission,
+                                  profileDescription: filteredProfiles[index].description,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                      // Add more UI elements as needed to display profile details
-                    );
-                  },
+                            );
+                          },
+                        ),
+                        // Add more UI elements as needed to display profile details
+                      );
+                    },
+                  ),
                 ),
-              ),
-
-            ],
+      
+              ],
+            ),
           ),
-        ),
-        Positioned(
-          bottom: 16.0,
-          right: 16.0,
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CreateNewProfilePage(),
-                ),
-              );
-            },
-            child: Icon(Icons.add),
+          Positioned(
+            bottom: 16.0,
+            right: 16.0,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateNewProfilePage(),
+                  ),
+                );
+              },
+              child: Icon(Icons.add),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
