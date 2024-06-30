@@ -176,7 +176,7 @@ class ProfilePage extends StatelessWidget {
                 child: Text(
                   data.text,
                   style: TextStyle(
-                    fontSize: 20.0,
+                    fontSize: 16.0,
                   ),
                 ),
               ),
