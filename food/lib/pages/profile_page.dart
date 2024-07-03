@@ -57,7 +57,7 @@ class ProfilePage extends StatelessWidget {
     ),
     RowData(
       icon: Icons.flag,
-      text: 'My Goals & Dietary Preferences',
+      text: 'My Goals & Dietary',
       destination: GoalsPreferences(),
     ),
     RowData(

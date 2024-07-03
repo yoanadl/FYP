@@ -65,7 +65,7 @@ class MyProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

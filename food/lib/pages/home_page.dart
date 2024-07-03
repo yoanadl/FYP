@@ -115,8 +115,8 @@ class HomePage extends StatelessWidget {
         ),
       ),
 
-      body: Container(
-        color: Colors.white,
+      body: SingleChildScrollView(
+        //color: Colors.white,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
