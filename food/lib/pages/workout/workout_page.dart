@@ -311,6 +311,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
     super.dispose();
   }
 
+  void _refreshWorkouts() {
+
+    // trigger a rebuild to refresh the workout list
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -511,6 +519,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         workoutTitle: workout['title'],
                         activities: List<String>.from(workout['activities']),
                         duration: List<int>.from(workout['durations']),
+                        onDelete: _refreshWorkouts, 
                       ),
                     ),
                   );
