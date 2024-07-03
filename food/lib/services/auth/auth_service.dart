@@ -26,11 +26,11 @@ class AuthService{
       DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
       
       if (userDoc.exists) {
-        print('User document data: ${userDoc.data()}');
+        // print('User document data: ${userDoc.data()}');
         return userDoc['role'];
       }
       else {
-        print('User document does not exist');
+        // print('User document does not exist');
         return 'user';
 
       }

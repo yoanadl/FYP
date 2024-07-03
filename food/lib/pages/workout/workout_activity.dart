@@ -161,6 +161,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'workout_done.dart';
+
 class WorkoutActivityPage extends StatefulWidget {
   final String activityTitle;
   final int duration; // duration in minutes
@@ -223,14 +225,37 @@ class _WorkoutActivityPageState extends State<WorkoutActivityPage> {
                 ),
               ),
             );
-          } else {
-            // Finish workout if all activities are completed
-            Navigator.pop(context);
+          } 
+          
+          else {
+            // Navigate to WorkoutDonePage when all activities are completed
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WorkoutDone(),
+              ),
+            );
           }
-        } else {
-          // Start break timer
-          _isBreak = true;
+
+        } 
+        
+        else {
+          // Start break timer only if it's not the last activity
+          if (widget.activityIndex < widget.activities.length - 1) {
+            _isBreak = true;
           _startTimer();
+          }
+
+          else {
+
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WorkoutDone(),
+              ),
+            );
+          }
+          
         }
       }
     });
