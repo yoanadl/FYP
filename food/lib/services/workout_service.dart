@@ -7,31 +7,53 @@ class WorkoutService {
   Future<void> createWorkoutData(
       String uid, Map<String, dynamic> workoutData) async {
     try {
+
+      // Access the Firestore collection 'workouts' under the user's document identified by 'uid'
       await usersCollection
-          .doc(uid)
-          .collection('workouts')
-          .add(workoutData);
+          .doc(uid) // Get the document reference for the user using 'uid'
+          .collection('workouts') // Access the subcollection 'workouts' under the user document
+          .add(workoutData); // Add a new document with workoutData to the 'workouts' collection
     } catch (e) {
       print('Error creating workout: $e');
       throw Exception('Failed to create workout.');
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUserWorkouts(
-      String uid) async {
-    try {
-      QuerySnapshot querySnapshot = await usersCollection
-          .doc(uid)
-          .collection('workouts')
-          .get();
-      return querySnapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
-    } catch (e) {
-      print('Error retrieving user workouts: $e');
-      throw Exception('Failed to retrieve user workouts.');
-    }
+  // Future<List<Map<String, dynamic>>> getUserWorkouts(String uid) async {
+
+  //   try {
+  //     QuerySnapshot querySnapshot = await usersCollection
+  //         .doc(uid)
+  //         .collection('workouts')
+  //         .get();
+
+  //     return querySnapshot.docs
+  //         .map((doc) => doc.data() as Map<String, dynamic>)
+  //         .toList();
+  //   } catch (e) {
+  //     print('Error retrieving user workouts: $e');
+  //     throw Exception('Failed to retrieve user workouts.');
+  //   }
+  // }
+
+  Future<List<Map<String, dynamic>>> getUserWorkouts(String uid) async {
+  try {
+    QuerySnapshot querySnapshot = await usersCollection
+        .doc(uid)
+        .collection('workouts')
+        .get();
+    
+    return querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      data['id'] = doc.id; // Include the document ID in the map
+      return data;
+    }).toList();
+  } catch (e) {
+    print('Error retrieving user workouts: $e');
+    throw Exception('Failed to retrieve user workouts.');
   }
+}
+
 
   Future<void> saveUserWorkout(
       String uid,
@@ -64,6 +86,21 @@ class WorkoutService {
     } catch (e) {
       print('Error updating workout: $e');
       throw Exception('Failed to update workout.');
+    }
+  }
+
+  Future<void> deleteWorkout(String userId, String workoutId) async {
+    try {
+      await usersCollection
+        .doc(userId)
+        .collection('workouts')
+        .doc(workoutId)
+        .delete();
+    }
+
+    catch(e) {
+      print('Error deleting workout: $e');
+      throw Exception('Failed to delete workout.');
     }
   }
 }

@@ -172,6 +172,8 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
             workoutTitle: workoutTitle,
             duration: durations,
             activities: activities,
+            userId: user.uid,
+            workoutId: '',
           ),
         ),
       );

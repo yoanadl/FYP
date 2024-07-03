@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food/pages/workout/edit_workout_page.dart';
 import 'package:food/pages/workout/workout_activity.dart';
 import 'package:food/services/workout_service.dart';
 import '../../components/navbar.dart';
@@ -11,12 +12,16 @@ class WorkoutSummaryPage extends StatelessWidget {
   final String workoutTitle;
   final List<int> duration;
   final List<String> activities;
+  final String userId;
+  final String? workoutId; 
 
   const WorkoutSummaryPage({
     Key? key,
     required this.workoutTitle,
     required this.duration,
     required this.activities,
+    required this.userId,
+    this.workoutId,
   }) : super(key: key);
 
   @override
@@ -31,6 +36,31 @@ class WorkoutSummaryPage extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+
+            }, 
+            icon: const Icon(Icons.delete)
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => EditWorkoutPage(
+                  userId: userId,
+                  workoutId: workoutId ?? '',
+                  workoutTitle: workoutTitle,
+                  duration: duration,
+                  activities: activities,
+                  ),
+                ),
+              );
+            }, 
+            icon: const Icon(Icons.edit)
+          ),
+
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

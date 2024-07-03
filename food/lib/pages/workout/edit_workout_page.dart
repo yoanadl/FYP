@@ -1,18 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class EditWorkoutPage extends StatelessWidget {
+
+class EditWorkoutPage extends StatefulWidget {
+  
+  final String userId;
+  final String workoutId;
   final String workoutTitle;
-  final List<int> durations;
+  final List<int> duration;
   final List<String> activities;
-  final String uid;
 
-  const EditWorkoutPage({
-    Key? key,
+  EditWorkoutPage({
+    required this.userId,
+    required this.workoutId,
     required this.workoutTitle,
-    required this.durations,
+    required this.duration,
     required this.activities,
-    required this.uid,
-  }) : super(key: key);
+  });
+
+  @override
+  _EditWorkoutPageState createState() => _EditWorkoutPageState();
+}
+
+class _EditWorkoutPageState extends State<EditWorkoutPage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _durationController = TextEditingController();
+  final TextEditingController _activitiesController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWorkoutDetails();
+  }
+
+  void _loadWorkoutDetails() {
+    // Load workout details from Firestore using workoutId
+    // and set the text controllers with the loaded data.
+    Example:
+    _titleController.text = widget.workoutTitle;
+    _durationController.text =  widget.duration.join(', ');
+    _activitiesController.text = widget.activities.join(', ');
+  }
+
+  void _saveWorkout() {
+    if (_formKey.currentState!.validate()) {
+      // Save edited workout details to Firestore
+      try {
+        List<int> durations = _durationController.text.split(',').map((e) => int.parse(e.trim())).toList();
+        List<String> activities = _activitiesController.text.split(',').map((e) => e.trim()).toList();
+
+        FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .collection('workouts')
+          .doc(widget.workoutId)
+          .update({
+            'title': _titleController.text,
+            'duration': durations,
+            'activities': activities,
+          });
+
+        // After saving, you can navigate back or show a success message.
+        Navigator.pop(context);
+      } catch (e) {
+        print('Error saving workout: $e');
+        // Handle error saving workout
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,102 +78,57 @@ class EditWorkoutPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 20),
-            Text(
-              'Workout Title',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Enter workout title',
-                labelText: workoutTitle,
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: _titleController,
+                decoration: InputDecoration(labelText: 'Title'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a title';
+                  }
+                  return null;
+                },
               ),
-            ),
-            SizedBox(height: 20),
-            for (int i = 0; i < activities.length; i++)
-              _buildActivityField('Workout Activity ${i + 1}', activities[i]),
-            SizedBox(height: 20),
-            for (int i = 0; i < durations.length; i++)
-              _buildDurationField('Duration', durations[i]),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Handle save button logic
-              },
-              child: Text('Save Changes'),
-            ),
-          ],
+              TextFormField(
+                controller: _durationController,
+                decoration: InputDecoration(labelText: 'Duration'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a duration';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _activitiesController,
+                decoration: InputDecoration(labelText: 'Activities'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter activities';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _saveWorkout,
+                child: Text('Save'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildActivityField(String labelText, String initialValue) {
-    TextEditingController controller = TextEditingController(text: initialValue);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SizedBox(height: 20),
-        Text(
-          labelText,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: 'Enter workout activity',
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDurationField(String labelText, int initialValue) {
-    return Row(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20, right: 10),
-            child: Text(
-              labelText,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: DropdownButtonFormField<int>(
-              value: initialValue,
-              items: List.generate(
-                6,
-                (index) => DropdownMenuItem(
-                  value: (index + 1) * 10,
-                  child: Text('${(index + 1) * 10} min'),
-                ),
-              ),
-              onChanged: (int? newValue) {
-                if (newValue != null) {
-                  // Handle duration change
-                }
-              },
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _durationController.dispose();
+    _activitiesController.dispose();
+    super.dispose();
   }
 }
