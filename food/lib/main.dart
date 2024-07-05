@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'pages/admin/admin_view_all_user_accounts.dart';
 import 'pages/admin/admin_create_new_account.dart';
 import 'pages/admin/admin_update_account.dart';
+import 'friend_list.dart';
 
 void main() {
   runApp(MyApp());
@@ -64,6 +65,16 @@ class HomePage extends StatelessWidget {
                   );
                 },
                 child: Text('Go to Update Account Page'),
+              ),
+              SizedBox(height: 20), // Add some space between buttons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FriendListPage()), // Navigate to FriendListPage
+                  );
+                },
+                child: Text('Go to Friend List Page'),
               ),
             ],
           ),
