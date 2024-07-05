@@ -5,10 +5,44 @@ import 'package:food/pages/base_page.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'mealPlan_page.dart';
+import 'package:food/services/health_service.dart';
 
 
-class HomePage extends StatelessWidget {
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  int? steps;
+  double? heartRate;
+  double? calories;
+  final HealthService healthService = HealthService();
+
+  @override 
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    int? fetchedSteps = await healthService.getSteps();
+    double? fetchedHeartRate = await healthService.getHeartRate();
+    double? fetchedCalories = await healthService.getCalories();
+
+    setState(() {
+      
+      steps = fetchedSteps;
+      heartRate = fetchedHeartRate;
+      calories = fetchedCalories;
+
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +195,7 @@ class HomePage extends StatelessWidget {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    'Heart Rate \n 72 bpm',
+                                    'Heart Rate \n ${heartRate?.toStringAsFixed(1) ?? '...'} bpm',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18,
@@ -194,7 +228,7 @@ class HomePage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Calories \n 350 kcal',
+                                      'Calories \n ${calories?.toStringAsFixed(1) ?? '...'} kcal',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18,
@@ -221,7 +255,7 @@ class HomePage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Steps \n 10,000',
+                                      'Steps \n ${steps ?? '...'}',
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 18,
