@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'Community_List_page.dart';
+import 'Create_Community_page.dart';
 
 class CommunityPage extends StatelessWidget {
   const CommunityPage({super.key});
@@ -16,7 +18,7 @@ class CommunityPage extends StatelessWidget {
           children: [
             Spacer(),
             Text(
-              'Welcome to Community!',
+              'Community',
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
@@ -45,11 +47,11 @@ class CommunityPage extends StatelessWidget {
                 children: [
                   //left container
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.6,
+                    width: MediaQuery.of(context).size.width * 1,
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Text(
                             'Create a Community',
@@ -68,13 +70,27 @@ class CommunityPage extends StatelessWidget {
                           ),
         
                           SizedBox(height: 10.0,),
-        
+
                           ElevatedButton(
-                            onPressed: () {
-        
-                            },
-        
+                            onPressed: () => Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (context) => CreateCommunityPage()),
+                              ),
+
                             child: Text('Create a Community'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFC8E0F4),
+                              foregroundColor: Colors.black,
+                            ),
+                          ),
+
+                          ElevatedButton(
+                            onPressed: () => Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (context) => CommunityListPage()),
+                              ),
+        
+                            child: Text('View Community'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFC8E0F4),
                               foregroundColor: Colors.black,
@@ -83,77 +99,6 @@ class CommunityPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-        
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'My List',
-                            style: TextStyle(
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 10.0,),
-                          ElevatedButton(
-                            onPressed: () {
-        
-                            }, 
-                            child: Container(
-                              child: Center(
-                                child: Text('Friends')
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff031927),
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
-        
-                          SizedBox(height: 10.0,),
-                          ElevatedButton(
-                            onPressed: () {
-        
-                            }, 
-                            child: Container(
-                              child: Center(
-                                child: Text('Community')
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff031927),
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
-        
-                          SizedBox(height: 10.0,),
-                          ElevatedButton(
-                            onPressed: () {
-        
-                            }, 
-                            child: Container(
-                              child: Center(
-                                child: Text('Challenges')
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff031927),
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
-        
-                          
-        
-                        ],
-                      )
-                    ),
-                   
                   ),
                 ],
               ),
@@ -283,6 +228,18 @@ class CommunityPage extends StatelessWidget {
                         ],
                       ),
                     ],
+                  ),
+
+                  SizedBox(height: 20.0,),
+
+                  InkWell(
+                    child: Text('See more', 
+                    style: TextStyle(fontSize: 17, color: Colors.black, 
+                    fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                    onTap: () => Navigator.push(
+                      context, 
+                      MaterialPageRoute(builder: (context) => CommunityListPage()),
+                      ),
                   ),
                 ],
               )

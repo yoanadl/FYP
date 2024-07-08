@@ -14,8 +14,8 @@ class PrivacyPolicyPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),
-      body: Container(
-        margin: EdgeInsets.only(left: 40, right: 40),
+      body: SingleChildScrollView(
+        //margin: EdgeInsets.only(left: 40, right: 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
