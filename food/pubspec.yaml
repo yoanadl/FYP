@@ -46,6 +46,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_svg: ^2.0.10+1
   health: ^8.1.0
+  flutter_stripe: ^10.2.0
 
 dev_dependencies:
   flutter_test:

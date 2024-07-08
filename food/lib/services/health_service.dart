@@ -1,5 +1,4 @@
 
-
 import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
 import 'package:food/applewatch/injector.dart' show healthFactory;
 import 'package:health/health.dart';
