@@ -121,7 +121,6 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-      
             
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -242,7 +241,7 @@ class HomePage extends StatelessWidget {
                 
               ),
       
-              SizedBox(height: 30),
+              SizedBox(height: 20),
       
               InkWell(
                 onTap: () => Navigator.push(
@@ -251,7 +250,7 @@ class HomePage extends StatelessWidget {
                 ),
                 child: Container(
                   width: 350,
-                  height: 190,
+                  height: 120,
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Color(0x99C8E0F4),
@@ -292,7 +291,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
       
-              SizedBox(height: 30),
+              SizedBox(height: 20),
       
                InkWell(
                 onTap: () => Navigator.push(
@@ -301,7 +300,7 @@ class HomePage extends StatelessWidget {
                 ),
                  child: Container(
                   width: 350,
-                  height: 190,
+                  height: 120,
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Color(0x99C8E0F4),
@@ -324,6 +323,52 @@ class HomePage extends StatelessWidget {
                         left: 15,
                         child: Text(
                           'Meal Plan', 
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            backgroundColor: Color(0xFF508AA8),
+                          ),
+                        ),
+                      ),
+                      ],
+
+                  ),
+                 ),
+               ),
+
+               SizedBox(height: 20),
+      
+               InkWell(
+                onTap: () => Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => MealPlanPage()),
+                ),
+                 child: Container(
+                  width: 350,
+                  height: 120,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Color(0x99C8E0F4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                 
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'lib/images/food.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      Positioned(
+                        top: 15,
+                        left: 15,
+                        child: Text(
+                          'Challenges', 
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

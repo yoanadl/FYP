@@ -7,53 +7,8 @@ import '../components/navbar.dart';
 import 'community_page.dart';
 import 'workout/workout_page.dart';
 import 'profile_page.dart';
-/*
-import '../Pre_made_Meal/Build_Muscle_High_protein.dart';
-import 'package:food/Pre_made_Meal/Build_Muscle_Low_carb.dart';
-import 'package:food/Pre_made_Meal/Weight_Loss_High_protein.dart';
-*/
-import 'package:food/Pre_made_Meal/Weight_Loss_Low_carb.dart';
 
-Widget buildMeanPlanContainer(WeightLossLowCarb mealPlan) {
-  return Container(
-    width: 250,
-    height: 200,
-    margin: EdgeInsets.all(16.0),
-    padding: EdgeInsets.all(8.0),
-    decoration: BoxDecoration(
-      color: Color(0x99C8E0F4),
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          mealPlan.name, 
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold
-          ),
-        ),
-        SizedBox(height: 8.0,),
-          Text(
-            mealPlan.details,
-            style: TextStyle(
-              fontSize: 16.0,
-            ),
-          ),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Image(image: AssetImage(
-            mealPlan.image),
-            fit: BoxFit.cover,
-            width: 230,
-            height: 80,
-          ),
-        ),          
-      ],
-    ),
-  );
-}
+import 'explore_premade_meal.dart';
 
 class MealPlanPage extends StatelessWidget {
   const MealPlanPage({super.key});
@@ -67,7 +22,7 @@ class MealPlanPage extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Center(
           child: Text(
-            'Meal Plans',
+            'Your Meal Plans',
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),
@@ -75,18 +30,74 @@ class MealPlanPage extends StatelessWidget {
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Center(
-            child: Column(
-              children: [
-                for (WeightLossLowCarb mealPlan in MealPlansType1)
-                  buildMeanPlanContainer(mealPlan),
-              ],
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: Theme(
+              data: Theme.of(context).copyWith(
+                popupMenuTheme: PopupMenuThemeData(
+                  color: Color(0xff031927),
+                ),
+              ),
+              child: PopupMenuButton<String>(
+                onSelected: (String result) {
+                  if (result == 'new_mealplan') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MealPlanPage()),
+                    );
+                  } else if (result == 'explore_mealplan') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ExplorePremadeMeal()),
+                    );
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'new_mealplan',
+                    child: Row(
+                      children: [
+                        Icon(Icons.add, color: Colors.white),
+                        SizedBox(width: 10),
+                        Text(
+                          'Create New Mealplan',
+                          style: TextStyle(
+                            color: Colors.white
+                          )
+                          ,),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'explore_mealplan',
+                    child: Row(
+                      children: [
+                        Icon(Icons.explore, color: Colors.white),
+                        SizedBox(width: 10),
+                        Text(
+                          'Explore Pre-made Mealplan',
+                          style: TextStyle(
+                            color: Colors.white)),
+                      ],
+                    ),
+                  ),
+                ],
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.add, color: Colors.white),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
 
 
