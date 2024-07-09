@@ -8,6 +8,7 @@ import 'package:food/pages/base_page.dart';
 import 'package:food/pages/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 import 'package:food/services/SettingProfile_service.dart';
+import 'dart:math' as math;
 
 
 
@@ -205,7 +206,9 @@ class _BmiPageState extends State<BmiPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
                   color: Colors.white,
-                  border: Border.all(style: BorderStyle.solid, color: Colors.grey),
+                  border: Border.all(
+                    style: BorderStyle.solid, 
+                    color: Colors.grey),
                 ),
                 child: Center(
                   child: Column(
@@ -213,17 +216,33 @@ class _BmiPageState extends State<BmiPage> {
                     children: [
                       Text(
                         'My Current BMI',
-                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 18.0, 
+                          fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 5.0),
                       Text(
-                        calculateBMI().toStringAsFixed(2),
-                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                        calculateBMI(
+                          double.tryParse(heightController.text) ?? 0.0, 
+                          double.tryParse(weightController.text) ?? 0.0)
+                          .toStringAsFixed(2),
+                        style: TextStyle(
+                          fontSize: 18.0, 
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       SizedBox(height: 5.0),
                       Text(
-                        getBMIStatus(),
-                        style: TextStyle(fontSize: 16.0),
+                        getBMIStatus(calculateBMI(
+                          double.tryParse(heightController.text) ?? 0.0, 
+                          double.tryParse(weightController.text) ?? 0.0)),
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color:getColorByBMIStatus(getBMIStatus(calculateBMI(
+                            double.tryParse(heightController.text) ?? 0.0,
+                            double.tryParse(weightController.text) ?? 0.0))),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -405,15 +424,18 @@ class _BmiPageState extends State<BmiPage> {
     );
   }
 
-  double calculateBMI() {
-    if (userHeight <= 0 || userWeight <= 0) return 0.0;
+  double calculateBMI(double height, double weight) {
 
-    double heightInMeters = userHeight / 100; 
-    return userWeight / (heightInMeters * heightInMeters);
+    if (height > 0 && weight > 0) {
+      return weight /math.pow(height / 100, 2); // Formula for BMI (kg/m^2)
+    } 
+    else {
+      return 0.0; // Handle cases with invalid height or weight
+    }
   }
 
-  String getBMIStatus() {
-    double bmi = calculateBMI();
+  String getBMIStatus(double bmi) {
+
     if (bmi < 18.5) {
       return 'Underweight';
     } else if (bmi >= 18.5 && bmi < 24.9) {
@@ -422,6 +444,23 @@ class _BmiPageState extends State<BmiPage> {
       return 'Overweight';
     } else {
       return 'Obese';
+    }
+  }
+
+  Color getColorByBMIStatus(String bmiStatus) {
+
+    switch (bmiStatus) {
+      case 'Underweight':
+        return Colors.orange;
+      case 'Normal':
+        return Colors.green;
+      case 'Overweight':
+        return Colors.red;
+      case 'Obese':
+        return Colors.redAccent;
+      default:
+        return Colors.black;
+
     }
   }
 
