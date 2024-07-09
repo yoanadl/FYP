@@ -7,25 +7,26 @@ import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/pages/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
+import 'package:food/services/SettingProfile_service.dart';
 
-import 'bmi_reports_page.dart';
 
 
 class BmiPage extends StatefulWidget {
-
   @override
-  State<BmiPage> createState() => _BmiPageState();
+  _BmiPageState createState() => _BmiPageState();
 }
 
 class _BmiPageState extends State<BmiPage> {
-
   late TextEditingController heightController;
   late TextEditingController weightController;
 
   double userHeight = 0.0;
   double userWeight = 0.0;
+  bool editMode = false;
 
-  @override 
+  final SettingprofileService settingprofileService = SettingprofileService();
+
+  @override
   void initState() {
     super.initState();
     heightController = TextEditingController();
@@ -33,7 +34,7 @@ class _BmiPageState extends State<BmiPage> {
     fetchUserHeightAndWeight();
   }
 
-  @override  
+  @override
   void dispose() {
     heightController.dispose();
     weightController.dispose();
@@ -41,7 +42,6 @@ class _BmiPageState extends State<BmiPage> {
   }
 
   void fetchUserHeightAndWeight() async {
-
     try {
       User? user = FirebaseAuth.instance.currentUser;
 
@@ -51,11 +51,11 @@ class _BmiPageState extends State<BmiPage> {
       }
 
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('UserProfile')
-        .limit(1) // limit to 1 document as there's only one profile document per user
-        .get();
+          .collection('users')
+          .doc(user.uid)
+          .collection('UserProfile')
+          .limit(1) // limit to 1 document as there's only one profile document per user
+          .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot docSnapshot = querySnapshot.docs.first;
@@ -64,167 +64,148 @@ class _BmiPageState extends State<BmiPage> {
         setState(() {
           heightController.text = data['Height(cm)'] ?? '';
           weightController.text = data['Weight(kg)'] ?? '';
-          
+
+          userHeight = double.tryParse(data['Height(cm)'] ?? '0') ?? 0.0;
+          userWeight = double.tryParse(data['Weight(kg)'] ?? '0') ?? 0.0;
         });
-      }
-
-      else {
+      } else {
         print('No profile document found');
-
       }
- 
-    }
-
-    catch (e) {
+    } catch (e) {
       print('Error fetching height and weight: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
-      
       appBar: AppBar(
         backgroundColor: Colors.white,
-        
+      
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(left: 40, right: 40),
+          margin: EdgeInsets.symmetric(horizontal: 40.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(height: 30.0),
               Text(
                 'My BMI',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600
-                ),
+                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600),
               ),
-        
-              SizedBox(height: 30),
+              SizedBox(height: 20.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(  
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.white, 
-                        border: Border.all(
-                          style: BorderStyle.solid,
-                          color: Colors.grey),
+                        color: Colors.white,
+                        border: Border.all(style: BorderStyle.solid, color: Colors.grey),
                       ),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Height',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Height',
+                            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5.0),
+                          TextField(
+                            controller: heightController,
+                            keyboardType: TextInputType.number,
+                            enabled: editMode,
+                            decoration: editMode ?  // Apply border if editMode is true
+                              InputDecoration(
+                                hintText: 'Enter Height (cm)',
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                ),
+                                isDense: true, // Reduce padding
+                              ) :
+                              InputDecoration(
+                                hintText: 'Enter Height (cm)',
+                                // No border when not editable
+                                border: InputBorder.none,
+                                isDense: true, // Reduce padding
                               ),
+                            style: TextStyle(
+                              color: Colors.black,
                             ),
-                            SizedBox(height: 5),
-                            TextFormField(
-                              controller: heightController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                hintText: 'Enter height',
-                                border: OutlineInputBorder(),
-                              ),
-                              onChanged: (value) {
-                                setState(() {
-                                  userHeight = double.tryParse(value) ?? 0.0;
-                                });
-                              },
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              'cm',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    )
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 5.0),
+                          Text(
+                            'cm',
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-        
-                  SizedBox(width: 20),
-        
+                  SizedBox(width: 20.0),
                   Expanded(
                     child: Container(
                       padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(  
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        color: Colors.white, 
-                        border: Border.all(
-                          style: BorderStyle.solid,
-                          color: Colors.grey),
+                        color: Colors.white,
+                        border: Border.all(style: BorderStyle.solid, color: Colors.grey),
                       ),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Weight',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Weight',
+                            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 5.0),
+                          TextField(
+                            controller: weightController,
+                            keyboardType: TextInputType.number,
+                            enabled: editMode,
+                            decoration: editMode ?  // Apply border if editMode is true
+                              InputDecoration(
+                                hintText: 'Enter Height (cm)',
+                                border: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue),
+                                ),
+                                isDense: true, // Reduce padding
+                              ) :
+                              InputDecoration(
+                                hintText: 'Enter Height (cm)',
+                                // No border when not editable
+                                border: InputBorder.none,
+                                isDense: true, // Reduce padding
                               ),
+                            style: TextStyle(
+                              color: Colors.black,
                             ),
-                            SizedBox(height: 5),
-                            TextFormField(
-                              controller: weightController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                hintText: 'Enter your weight',
-                                border: OutlineInputBorder(),
-                              ),
-                              onChanged: (value){
-                                setState(() {
-                                  userWeight = double.tryParse(value) ?? 0.0;
-                                });
-                              },
-                            ),
-                            // TextField(
-                            //   decoration: InputDecoration(hintText: "your weight"),
-                            //   style: TextStyle(
-                            //     fontSize: 24,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
-                            SizedBox(height: 5),
-                            Text(
-                              'kg',
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    )
-                  )
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 5.0),
+                          Text(
+                            'kg',
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-        
-              SizedBox(height: 20),
+              SizedBox(height: 20.0),
               Container(
                 padding: EdgeInsets.all(8.0),
                 width: double.infinity,
-                decoration: BoxDecoration(  
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.white, 
-                  border: Border.all(
-                    style: BorderStyle.solid,
-                    color: Colors.grey),
+                  color: Colors.white,
+                  border: Border.all(style: BorderStyle.solid, color: Colors.grey),
                 ),
                 child: Center(
                   child: Column(
@@ -232,65 +213,88 @@ class _BmiPageState extends State<BmiPage> {
                     children: [
                       Text(
                         'My Current BMI',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                       ),
-                  
+                      SizedBox(height: 5.0),
                       Text(
-                        '20.76',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        calculateBMI().toStringAsFixed(2),
+                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                       ),
-                  
+                      SizedBox(height: 5.0),
                       Text(
-                        'Normal',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
+                        getBMIStatus(),
+                        style: TextStyle(fontSize: 16.0),
                       ),
                     ],
                   ),
                 ),
               ),
-        
-              SizedBox(height: 20),
+              SizedBox(height: 20.0),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-        
+                    setState(() {
+                      editMode = !editMode;
+                      if (!editMode) {
+
+                        final FirebaseAuth _auth = FirebaseAuth.instance;
+                        // get current user
+                        final User? user = _auth.currentUser;
+
+                        if (user != null) {
+                          final String uid = user.uid;
+
+                          // show a snackbar while updating
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Updating height/weight...'),
+                            ),
+                          );
+
+                          // update firestore with height and weight
+                          Map<String, dynamic> newData = {
+                          'Height(cm)': heightController.text,
+                          'Weight(kg)' : weightController.text,
+                        };
+                        settingprofileService.updateSettingProfile(uid, newData)
+                          .then((_) {
+                            // show success message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Height/Weight updated successfully'),
+                              ),
+                            );
+                          }).catchError((error) {
+                          // Handle errors (optional)
+                          print('Error updating profile: $error');
+                          
+                        });;
+                          
+                        }
+                        
+                      }
+                    });
                   },
+                  
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xff031927),
                     foregroundColor: Colors.white,
                   ),
-                  child: Text('Edit Height and Weight'),
-                  
+                  child: Text(editMode ? 'Save Height and Weight' : 'Edit Height and Weight'),
+                  )
                 ),
-              ),
-        
-              SizedBox(height: 30),
+              
+              SizedBox(height: 30.0),
               Text(
                 'BMI Reports',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
               ),
-        
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BmiReportsPage()),
-                  );
+                  // Navigate to BMI Reports page
                 },
-        
                 child: Container(
-                  margin: EdgeInsets.only(top: 10),
+                  margin: EdgeInsets.only(top: 10.0),
                   padding: EdgeInsets.all(8.0),
                   color: Color(0x59C8E0F4),
                   child: Table(
@@ -300,90 +304,83 @@ class _BmiPageState extends State<BmiPage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Date', 
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold
-                              ),
+                              'Date',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
-                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'BMI', 
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold
-                              ),
+                              'BMI',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                               textAlign: TextAlign.center,
-                              ),
+                            ),
                           ),
                         ],
                       ),
-        
                       TableRow(
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              '01-01-2024', 
-                              textAlign: TextAlign.center,),
+                              '01-01-2024',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               '20',
-                              textAlign: TextAlign.center,),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),
-        
                       TableRow(
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               '01-02-2024',
-                              textAlign: TextAlign.center,),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               '21',
-                              textAlign: TextAlign.center,),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ],
                       ),
-        
                       TableRow(
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               '01-03-2024',
-                              textAlign: TextAlign.center,),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               '19',
-                               textAlign: TextAlign.center,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         ],
                       ),
-        
-        
                     ],
-                  )
-                )
-              )
-        
+                  ),
+                ),
+              ),
             ],
           ),
-        
         ),
       ),
-      
 
       bottomNavigationBar: Navbar(
         currentIndex: 3,
@@ -407,4 +404,26 @@ class _BmiPageState extends State<BmiPage> {
       ),
     );
   }
+
+  double calculateBMI() {
+    if (userHeight <= 0 || userWeight <= 0) return 0.0;
+
+    double heightInMeters = userHeight / 100; 
+    return userWeight / (heightInMeters * heightInMeters);
+  }
+
+  String getBMIStatus() {
+    double bmi = calculateBMI();
+    if (bmi < 18.5) {
+      return 'Underweight';
+    } else if (bmi >= 18.5 && bmi < 24.9) {
+      return 'Normal';
+    } else if (bmi >= 24.9 && bmi < 29.9) {
+      return 'Overweight';
+    } else {
+      return 'Obese';
+    }
+  }
+
+  
 }
