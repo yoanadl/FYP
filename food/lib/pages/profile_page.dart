@@ -45,8 +45,37 @@ class ProfilePage extends StatelessWidget {
     }
   }
 
-  void handleLogout(BuildContext context) {
-    logout(context);
+  void showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context, 
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Text(
+            'Are you sure you want to log out?',
+            style: TextStyle(
+              fontSize: 15
+            ),
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget> [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              }, 
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                logout(context);
+              }, 
+              child: Text('Logout'),
+            ),
+          ],
+        );
+      },
+    );
+
   }
 
   final List<RowData> rowData = [
@@ -155,7 +184,7 @@ class ProfilePage extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (data.text == 'Log Out') {
-          handleLogout(context);
+          showLogoutConfirmationDialog(context);
         } else if (data.destination != null) {
           Navigator.push(
             context,
