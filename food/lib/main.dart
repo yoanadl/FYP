@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food/trainer_main_page.dart';
 import 'pages/admin/admin_view_all_user_accounts.dart';
 import 'pages/admin/admin_create_new_account.dart';
 import 'pages/admin/admin_update_account.dart';
@@ -71,10 +72,10 @@ class HomePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FriendListPage()), // Navigate to FriendListPage
+                    MaterialPageRoute(builder: (context) => TrainerMainPage()), // Navigate to FriendListPage
                   );
                 },
-                child: Text('Go to Friend List Page'),
+                child: Text('Go to Trainer Main Page'),
               ),
             ],
           ),
