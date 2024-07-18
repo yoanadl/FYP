@@ -5,8 +5,6 @@ import 'package:food/pages/admin/admin_base_page.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/services/auth/firestore_service.dart';
 
-import '../../pages/admin/admin_home_page.dart';
-
 class AuthService{
 
 
