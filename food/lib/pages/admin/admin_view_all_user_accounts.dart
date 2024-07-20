@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/admin_create_new_account.dart';
 import 'package:food/pages/admin/admin_update_account.dart';
@@ -8,8 +9,49 @@ class AdminViewAllUserAccounts extends StatefulWidget {
 }
 
 class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
-  final List<String> accounts = List.generate(10, (index) => 'account #${index + 1}');
+
+  List<Map<String, dynamic>> accounts = []; // list of maps to store user data
+  List<Map<String, dynamic>> displayedAccounts = [];
   final TextEditingController _searchController = TextEditingController();
+
+  @override 
+  void initState() {
+    super.initState();
+    fetchAccounts();
+    _searchController.addListener(() {
+      filterAccounts();
+    });
+  }
+
+  Future<void> fetchAccounts() async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .get();
+
+      List<Map<String, dynamic>> fetchAccounts = querySnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+
+      setState(() {
+        accounts = fetchAccounts;
+        displayedAccounts = fetchAccounts;
+      });
+    }
+
+    catch (e) {
+      print('Error fetching user accounts: $e');
+    }
+  }
+
+   void filterAccounts() {
+    String query = _searchController.text.toLowerCase();
+    setState(() {
+      displayedAccounts = accounts
+          .where((account) => (account['email'] ?? '').toLowerCase().contains(query))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +83,11 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: accounts.length,
+              itemCount: displayedAccounts.length,
               itemBuilder: (context, index) {
+                var account = displayedAccounts[index];
                 return ListTile(
-                  title: Text(accounts[index]),
+                  title: Text(account['email'] ?? 'No email'),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {

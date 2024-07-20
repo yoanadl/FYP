@@ -71,7 +71,7 @@ Future<void> fetchActiveUsersCount() async {
 
       QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('users')
-        .where('status', isEqualTo: 'active')
+        .where('isActive', isEqualTo: true)
         .get();
       setState(() {
         activeUsersCount = snapshot.size;
