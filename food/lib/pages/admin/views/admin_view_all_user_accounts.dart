@@ -1,54 +1,46 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// lib/views/user_view.dart
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/admin_create_new_account.dart';
 import 'package:food/pages/admin/admin_update_account.dart';
+import 'package:food/pages/admin/models/user_account_model.dart';
+import 'package:food/pages/admin/presenters/user_account_presenter.dart';
+import 'package:food/pages/admin/views/user_view.dart';
 
 class AdminViewAllUserAccounts extends StatefulWidget {
   @override
   _AdminViewAllUserAccountsPage createState() => _AdminViewAllUserAccountsPage();
 }
 
-class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
-
-  List<Map<String, dynamic>> accounts = []; // list of maps to store user data
-  List<Map<String, dynamic>> displayedAccounts = [];
+class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> implements UserView {
+  final UserModel _userModel = UserModel();
+  late final UserPresenter _presenter;
+  List<Map<String, dynamic>> _users = [];
+  List<Map<String, dynamic>> _displayedUsers = [];
   final TextEditingController _searchController = TextEditingController();
 
-  @override 
+  @override
   void initState() {
     super.initState();
-    fetchAccounts();
+    _presenter = UserPresenter(_userModel, this);
+    _presenter.loadUsers();
     _searchController.addListener(() {
-      filterAccounts();
+      _presenter.filterUsers(_searchController.text);
     });
   }
 
-  Future<void> fetchAccounts() async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .get();
-
-      List<Map<String, dynamic>> fetchAccounts = querySnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
-
-      setState(() {
-        accounts = fetchAccounts;
-        displayedAccounts = fetchAccounts;
-      });
-    }
-
-    catch (e) {
-      print('Error fetching user accounts: $e');
-    }
+  @override
+  void showUsers(List<Map<String, dynamic>> users) {
+    setState(() {
+      _users = users;
+      _displayedUsers = users;
+    });
   }
 
-   void filterAccounts() {
-    String query = _searchController.text.toLowerCase();
+  @override
+  void filterUsers(String query) {
     setState(() {
-      displayedAccounts = accounts
-          .where((account) => (account['email'] ?? '').toLowerCase().contains(query))
+      _displayedUsers = _users
+          .where((user) => (user['email'] ?? '').toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -64,7 +56,8 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
           'User Accounts',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-          )),
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -83,16 +76,16 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: displayedAccounts.length,
+              itemCount: _displayedUsers.length,
               itemBuilder: (context, index) {
-                var account = displayedAccounts[index];
+                var user = _displayedUsers[index];
                 return ListTile(
-                  title: Text(account['email'] ?? 'No email'),
+                  title: Text(user['email'] ?? 'No email'),
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
                       Navigator.push(
-                        context, 
+                        context,
                         MaterialPageRoute(
                           builder: (context) => AdminUpdateAccount(),
                         ),
@@ -116,7 +109,6 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
         },
         child: Icon(Icons.add),
       ),
-      
     );
   }
 }
