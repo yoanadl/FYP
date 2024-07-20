@@ -94,7 +94,7 @@ class AuthService{
       User? user = userCredential.user;
 
       if (user!= null) {
-        String role = email == "sorarat.uow@gmail.com" ? "admin" : "user";
+        String role = email == "goodgrit.staff@gmail.com" ? "admin" : "user";
         await FirestoreService().createUserDocument(user, role);
       }
 
