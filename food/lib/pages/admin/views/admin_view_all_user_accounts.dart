@@ -1,7 +1,7 @@
 // lib/views/user_view.dart
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/admin_create_new_account.dart';
-import 'package:food/pages/admin/admin_update_account.dart';
+import 'package:food/pages/admin/views/admin_update_account.dart';
 import 'package:food/pages/admin/models/user_account_model.dart';
 import 'package:food/pages/admin/presenters/user_account_presenter.dart';
 import 'package:food/pages/admin/views/user_view.dart';
@@ -84,12 +84,22 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> impl
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AdminUpdateAccount(),
-                        ),
-                      );
+                      print("User ID: ${user['userId']}"); // Debug print
+                      if (user['userId'] != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AdminUpdateAccount(
+                              userId: user['userId'] as String,
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Handle the case where userId is null
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('User ID is missing for this user.')),
+                        );
+                      }
                     },
                   ),
                 );

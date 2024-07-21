@@ -1,6 +1,48 @@
+// lib/views/user_update_view.dart
 import 'package:flutter/material.dart';
+import 'package:food/pages/admin/models/user_account_model.dart';
+import 'package:food/pages/admin/presenters/user_update_presenter.dart';
 
-class AdminUpdateAccount extends StatelessWidget {
+abstract class UserUpdateView {
+  void showUser(Map<String, dynamic> user);
+  void onSaveSuccess();
+}
+
+class AdminUpdateAccount extends StatefulWidget {
+  final String userId;
+
+  AdminUpdateAccount({required this.userId});
+
+  @override
+  _AdminUpdateAccountState createState() => _AdminUpdateAccountState();
+}
+
+class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements UserUpdateView {
+  late UserUpdatePresenter _presenter;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _presenter = UserUpdatePresenter(UserModel(), this);
+    _presenter.loadUser(widget.userId);
+  }
+
+  @override
+  void showUser(Map<String, dynamic> user) {
+    setState(() {
+      _nameController.text = user['name'] ?? '';
+      _emailController.text = user['email'] ?? '';
+    });
+  }
+
+  @override
+  void onSaveSuccess() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User updated successfully')));
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +68,7 @@ class AdminUpdateAccount extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Account #1',
+                  'Update Account',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -74,6 +116,7 @@ class AdminUpdateAccount extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextField(
+              controller: _nameController,
               decoration: InputDecoration(
                 labelText: 'Name',
                 border: OutlineInputBorder(),
@@ -81,6 +124,7 @@ class AdminUpdateAccount extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextField(
+              controller: _emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
                 border: OutlineInputBorder(),
@@ -90,7 +134,10 @@ class AdminUpdateAccount extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Add save logic here
+                  _presenter.saveUser(widget.userId, {
+                    'name': _nameController.text,
+                    'email': _emailController.text,
+                  });
                 },
                 child: Text(
                   'Save Account',
@@ -108,7 +155,6 @@ class AdminUpdateAccount extends StatelessWidget {
           ],
         ),
       ),
-      
     );
   }
 }
