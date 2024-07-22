@@ -22,4 +22,9 @@ class UserUpdatePresenter {
     await _userModel.updateUser(userId, userData);
     _view.onSaveSuccess();
   }
+
+   void deleteUser(String userId) async {
+    await _userModel.deleteUser(userId);
+    _view.onDeleteSuccess();
+  }
 }

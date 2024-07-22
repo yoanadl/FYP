@@ -16,4 +16,9 @@ class UserPresenter {
   void filterUsers(String query) {
     _view.filterUsers(query);
   }
+
+  void deleteUser(String userId) async {
+    await _userModel.deleteUser(userId);
+    loadUsers();
+  }
 }

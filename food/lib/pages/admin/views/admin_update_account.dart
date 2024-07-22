@@ -1,54 +1,81 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:food/pages/admin/models/user_account_model.dart';
 import 'package:food/pages/admin/presenters/user_update_presenter.dart';
 import 'package:food/pages/admin/views/user_update_view.dart';
 
-
 class AdminUpdateAccount extends StatefulWidget {
-
   final String userId;
 
   AdminUpdateAccount({required this.userId});
 
   @override
   State<AdminUpdateAccount> createState() => _AdminUpdateAccountState();
-
 }
 
-class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements UserUpdateView{
-
+class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements UserUpdateView {
   late UserUpdatePresenter _presenter;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
-  @override 
+  @override
   void initState() {
     super.initState();
     _presenter = UserUpdatePresenter(UserModel(), this);
     _presenter.loadUser(widget.userId);
   }
-  
-  @override  
+
+  @override
   void showUser(Map<String, dynamic> user) {
-    print("User data received: $user");
     setState(() {
       _nameController.text = user['name'] ?? '';
       _emailController.text = user['email'] ?? '';
     });
   }
 
-  @override 
+  @override
   void onSaveSuccess() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(
-        'User updated successfully'
-        )
-      )
+      SnackBar(content: Text('User updated successfully'))
     );
-
     Navigator.pop(context);
-
   }
+
+  @override
+  void onDeleteSuccess() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('User deleted successfully'))
+    );
+    Navigator.pop(context);
+  }
+
+  @override
+  void showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $message'))
+    );
+  }
+
+  Future<void> _deleteUser() async {
+    final url = 'http://192.168.10.113:3000/deleteUser/${widget.userId}';
+
+    try {
+      final response = await http.delete(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        onDeleteSuccess();
+      }
+
+      else {
+        showError('Failed to delete user');
+      }
+    }
+
+    catch(e) {
+      showError('Error: $e');
+    }
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +129,7 @@ class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements User
                                   TextButton(
                                     child: Text('Delete', style: TextStyle(color: Colors.red)),
                                     onPressed: () {
-                                      // Add delete logic here
+                                      _deleteUser();
                                       Navigator.of(context).pop();
                                     },
                                   ),
@@ -115,7 +142,7 @@ class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements User
                       IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () {
-                          // Add edit logic here
+                          // Add edit logic here if necessary
                         },
                       ),
                     ],
@@ -164,7 +191,6 @@ class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements User
           ),
         ),
       ),
-      
     );
   }
 }

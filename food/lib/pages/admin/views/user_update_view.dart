@@ -1,4 +1,3 @@
-// lib/views/user_update_view.dart
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/models/user_account_model.dart';
 import 'package:food/pages/admin/presenters/user_update_presenter.dart';
@@ -6,6 +5,8 @@ import 'package:food/pages/admin/presenters/user_update_presenter.dart';
 abstract class UserUpdateView {
   void showUser(Map<String, dynamic> user);
   void onSaveSuccess();
+  void onDeleteSuccess();
+  void showError(String message);
 }
 
 class AdminUpdateAccount extends StatefulWidget {
@@ -42,6 +43,22 @@ class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements User
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('User updated successfully')));
     Navigator.pop(context);
   }
+
+  @override
+  void onDeleteSuccess() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('User deleted successfully'))
+    );
+    Navigator.pop(context);
+  }
+
+  @override
+  void showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $message'))
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +111,7 @@ class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements User
                                 TextButton(
                                   child: Text('Delete', style: TextStyle(color: Colors.red)),
                                   onPressed: () {
-                                    // Add delete logic here
+                                    _presenter.deleteUser(widget.userId);
                                     Navigator.of(context).pop();
                                   },
                                 ),
