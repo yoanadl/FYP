@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'trainer_meal_plan_detail_page.dart'; // Import the detail page
+import 'trainer_workout_plan_detail_page.dart';
 
-class TrainerMealPlanPage extends StatelessWidget {
+class TrainerWorkoutPlanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meal Plans'),
+        title: Text('Workout Plans'),
       ),
       body: Column(
         children: [
@@ -14,7 +14,7 @@ class TrainerMealPlanPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search Meal Plan...',
+                hintText: 'Search Workout Plan...',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -42,7 +42,7 @@ class TrainerMealPlanPage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle create new meal plan action
+                    // Handle create new workout plan action
                   },
                   child: Text('+ Create'),
                 ),
@@ -51,23 +51,23 @@ class TrainerMealPlanPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 7, // Example meal plan count
+              itemCount: 7, // Example workout plan count
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text('Meal Plan ${index + 1}'),
+                  title: Text('Workout Plan ${index + 1}'),
                   trailing: PopupMenuButton<String>(
                     onSelected: (String result) {
                       if (result == 'View Details') {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => TrainerMealPlanDetailPage(),
+                            builder: (context) => TrainerWorkoutPlanDetailPage(),
                           ),
                         );
-                      } else if (result == 'Edit Meal Plan') {
-                        // Handle edit meal plan action
-                      } else if (result == 'Delete Meal Plan') {
-                        // Handle delete meal plan action
+                      } else if (result == 'Edit Workout Plan') {
+                        // Handle edit workout plan action
+                      } else if (result == 'Delete Workout Plan') {
+                        // Handle delete workout plan action
                       }
                     },
                     itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -76,12 +76,12 @@ class TrainerMealPlanPage extends StatelessWidget {
                         child: Text('View Details'),
                       ),
                       const PopupMenuItem<String>(
-                        value: 'Edit Meal Plan',
-                        child: Text('Edit Meal Plan'),
+                        value: 'Edit Workout Plan',
+                        child: Text('Edit Workout Plan'),
                       ),
                       const PopupMenuItem<String>(
-                        value: 'Delete Meal Plan',
-                        child: Text('Delete Meal Plan'),
+                        value: 'Delete Workout Plan',
+                        child: Text('Delete Workout Plan'),
                       ),
                     ],
                   ),

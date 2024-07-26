@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'trainer_pending_clients.dart';
 import 'trainer_my_client_page.dart';
 import 'trainer_meal_plan_page.dart';
+import 'trainer_workout_plan_page.dart';
 
 class TrainerMainPage extends StatelessWidget {
   @override
@@ -30,7 +31,12 @@ class TrainerMainPage extends StatelessWidget {
             shrinkWrap: true,
             crossAxisCount: 2,
             children: [
-              _buildGridTile(context, 'Workout Plan', Color(0xFF508AA8), () {}),
+              _buildGridTile(context, 'Workout Plan', Color(0xFF508AA8), () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TrainerWorkoutPlanPage()),
+                );
+              }),
               _buildGridTile(context, 'Meal Plan', Color(0xFF9DD1F1), () {
                 Navigator.push(
                   context,
