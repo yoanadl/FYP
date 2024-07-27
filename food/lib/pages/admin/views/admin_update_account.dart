@@ -57,10 +57,12 @@ class _AdminUpdateAccountState extends State<AdminUpdateAccount> implements User
   }
 
   Future<void> _deleteUser() async {
-    final url = 'http://192.168.10.113:3000/deleteUser/${widget.userId}';
 
+    final url = 'https://us-central1-fyp-goodgrit-a8601.cloudfunctions.net/deleteUser?uid=${widget.userId}';
+    
+  
     try {
-      final response = await http.delete(Uri.parse(url));
+      final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         onDeleteSuccess();
