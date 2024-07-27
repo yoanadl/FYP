@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/admin_navbar.dart';
-import 'package:food/pages/admin/views/admin_profile.dart';
+import 'package:food/pages/admin/views/admin_profile_view.dart';
 import 'package:food/pages/admin/views/admin_view_all_user_accounts.dart';
 import 'package:food/pages/admin/admin_view_all_user_profile.dart';
 
@@ -28,7 +28,7 @@ class _AdminBasePageState extends State<AdminBasePage> {
     AdminHomePage(),
     AdminViewAllUserAccounts(),
     UserProfilePage(),
-    AdminProfile(),
+    AdminProfileViewImpl(),
   ];
 
   @override

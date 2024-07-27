@@ -1,103 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/pages/admin/presenters/admin_profile_presenter.dart';
+import 'package:food/pages/admin/models/admin_profile_model.dart';
 import 'package:food/pages/Profile%20Settings/my_profile_page.dart';
 import 'package:food/pages/Profile%20Settings/settings_page.dart';
-import 'package:food/pages/intro_page.dart';
-import 'package:food/services/auth/auth_service.dart';
 
 class RowData {
   final IconData icon;
   final String text;
   final Widget? destination;
 
-  const RowData({
+  RowData({
     required this.icon,
     required this.text,
     this.destination,
   });
 }
 
-class AdminProfile extends StatefulWidget {
-  AdminProfile({super.key});
-
-  @override
-  _AdminProfileState createState() => _AdminProfileState();
+// Define the AdminProfileView interface
+abstract class AdminProfileView {
+  void updateName(String newName);
 }
 
-class _AdminProfileState extends State<AdminProfile> {
+class AdminProfileViewImpl extends StatefulWidget {
+  AdminProfileViewImpl({super.key});
+
+  @override
+  _AdminProfileViewImplState createState() => _AdminProfileViewImplState();
+}
+
+class _AdminProfileViewImplState extends State<AdminProfileViewImpl> implements AdminProfileView {
+  late final AdminProfilePresenter presenter;
 
   String userName = 'Loading...';
-  String documentId = '';
 
   @override
   void initState() {
     super.initState();
-    fetchName();
+    presenter = AdminProfilePresenter(
+      model: AdminProfileModel(),
+      view: this,
+    );
+    presenter.fetchUserName();
   }
 
-  void fetchName() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      print('User is not authenticated');
-      return;
-    }
-    try {
-      // Fetch the profile document ID
-      QuerySnapshot profileSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('UserProfile')
-          .limit(1) // Fetch only one document if you assume there's only one
-          .get();
-
-      if (profileSnapshot.docs.isNotEmpty) {
-        // Get the first document ID (assuming there's only one)
-        documentId = profileSnapshot.docs.first.id;
-
-        // Now fetch the profile data using the document ID
-        DocumentSnapshot doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .collection('UserProfile')
-            .doc(documentId) // Use the fetched document ID
-            .get();
-
-        if (doc.exists) {
-          setState(() {
-            userName = doc['Name'] ?? 'No Name';
-          });
-        } else {
-          setState(() {
-            userName = 'No Name';
-          });
-        }
-      } else {
-        print('No profile document found');
-        setState(() {
-          userName = 'No Name';
-        });
-      }
-    } catch (e) {
-      print('Error fetching user profile: $e');
-      setState(() {
-        userName = 'Error fetching name';
-      });
-    }
-  }
-
-  void logout(BuildContext context) async {
-    final authService = AuthService();
-    try {
-      await authService.signOut();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => IntroPage()),
-      );
-    } catch (error) {
-      // Handle errors from signOut
-      print('Error logging out: $error');
-    }
+  @override
+  void updateName(String newName) {
+    setState(() {
+      userName = newName;
+    });
   }
 
   void showLogoutConfirmationDialog(BuildContext context) {
@@ -120,7 +70,7 @@ class _AdminProfileState extends State<AdminProfile> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                logout(context);
+                presenter.logout(context);
               },
               child: Text('Logout'),
             ),
