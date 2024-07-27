@@ -7,9 +7,7 @@ import 'package:food/services/auth/firestore_service.dart';
 
 class AuthService{
 
-
   // get instance of firebase auth
-
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -117,5 +115,6 @@ class AuthService{
 
   }
 
+  
 
 }

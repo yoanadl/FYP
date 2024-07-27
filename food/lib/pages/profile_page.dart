@@ -11,8 +11,9 @@ import 'package:food/pages/Profile%20Settings/privacy_policy_page.dart';
 import 'package:food/pages/Profile%20Settings/settings_page.dart';
 import 'package:food/pages/Profile%20Settings/terms_conditions_page.dart';
 import 'package:food/pages/intro_page.dart';
-import 'package:food/pages/login_page.dart';
+import 'package:food/services/SettingProfile_service.dart';
 import 'package:food/services/auth/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RowData{
   final IconData icon;
@@ -28,8 +29,47 @@ class RowData{
   );
 }
 
-class ProfilePage extends StatelessWidget {
-  ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+
+  ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  String name = '';
+
+  @override 
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
+  Future<void> fetchUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      try {
+        Map<String, dynamic>? userData =
+            await SettingprofileService().fetchUserData(user.uid);
+        
+        if (userData != null) {
+          setState(() {
+            name = userData['Name'] ?? 'no name';
+          });
+        } else {
+          print('No user data found for uid: ${user.uid}');
+        }
+      } catch (e) {
+        print('Error fetching user data: $e');
+      }
+    } else {
+      print('No user is currently signed in.');
+    }
+  }
+
 
   void logout(BuildContext context) async {
     final authService = AuthService();
@@ -157,7 +197,7 @@ class ProfilePage extends StatelessWidget {
             // name
             SizedBox(height: 15.0),
             Text(
-              'John Doe',
+              name,
               style: TextStyle(
                 fontSize: 20,
               ),

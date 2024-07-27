@@ -64,4 +64,32 @@ class SettingprofileService {
     throw Exception('Failed to update profile.');
   }
 }
+
+// fetch user data
+
+Future<Map<String, dynamic>?> fetchUserData(String uid) async {
+    try {
+      // Query the 'UserProfile' collection under the specified user document
+      QuerySnapshot querySnapshot = await usersCollection
+          .doc(uid)
+          .collection('UserProfile')
+          .get();
+
+      // Check if there's at least one document in the 'UserProfile' collection
+      if (querySnapshot.docs.isNotEmpty) {
+        // Assuming the first document is the one we need
+        DocumentSnapshot docSnapshot = querySnapshot.docs[0];
+        return docSnapshot.data() as Map<String, dynamic>?;
+      }
+      return null;
+    } catch (e) {
+      print('Error fetching user data: $e');
+      throw Exception('Failed to fetch user data.');
+    }
+  }
+
+  
+
+
+
 }
