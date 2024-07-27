@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:food/pages/admin/models/user_account_model.dart';
+import 'package:food/pages/admin/presenters/admin_create_new_account_presenter.dart';
+
 
 class AdminCreateNewAccount extends StatefulWidget {
   @override
@@ -10,46 +11,46 @@ class AdminCreateNewAccount extends StatefulWidget {
 class _AdminCreateNewAccountState extends State<AdminCreateNewAccount> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false; // Add this line
+  bool _isLoading = false; 
 
-  Future<void> _createUser() async {
-    final url = 'https://us-central1-fyp-goodgrit-a8601.cloudfunctions.net/createUser';
+  late AdminCreateNewAccountPresenter _presenter;
 
+  @override 
+  void initState() {
+    super.initState();
+    _presenter = AdminCreateNewAccountPresenter(
+      UserModel(), 
+      _onSuccess,
+      _onError, 
+      _onLoading
+    );
+  }
+
+  void _onSuccess() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('User created successfully')),
+    );
+    Navigator.pop(context);
+  }
+
+  void _onError() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to create user')),
+    );
+  }
+
+  void _onLoading(bool _isLoading) {
     setState(() {
-      _isLoading = true; // Set loading to true
+      _isLoading = _isLoading;
     });
+    
+  }
 
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': _emailController.text,
-          'password': _passwordController.text,
-        }),
-      );
-
-      if (response.statusCode == 201) {
-        // Successfully created user
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('User created successfully')),
-        );
-        Navigator.pop(context);
-      } else {
-        // Failed to create user
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to create user')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    } finally {
-      setState(() {
-        _isLoading = false; // Set loading to false
-      });
-    }
+  void _createUser() {
+    _presenter.createUser(
+      _emailController.text, 
+      _passwordController.text
+    );
   }
 
   @override
