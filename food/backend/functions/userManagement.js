@@ -36,6 +36,37 @@ async function deleteUserDocument(uid) {
     }
 }
 
+// function to create a new user 
+async function createUser(email, password) {
+
+    try {
+        const userRecord = await auth.createUser({
+            email: email, 
+            password: password, 
+        });
+        console.log('Successfully created new user: ', userRecord.uid);
+
+        await db.collection('users').doc(userRecord.uid).set({
+            email: email,
+            role: 'user',
+            isActive: true,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            uid: userRecord.uid,
+        });
+
+        return userRecord;
+
+    }
+
+    catch (error) {
+        console.error('Error creating new user: ', error);
+        throw new Error('Error creating new user');
+
+
+    }
+}
+
 module.exports = {
     deleteUserByUid,
+    createUser,
 };

@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {deleteUserByUid} = require('./userManagement');
+const {deleteUserByUid, createUser} = require('./userManagement');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,6 +25,21 @@ app.delete('/deleteUser/:uid', async (req, res) => {
     }
 });
 
+// Endpoint to create a new user
+app.post('/createUser', async (req, res) => {
+    const { email, password, displayName } = req.body;
+
+    if (!email || !password || !displayName) {
+        return res.status(400).send('Email, password, and displayName are required');
+    }
+
+    try {
+        const userRecord = await createUser(email, password, displayName);
+        res.status(200).send(`User created successfully with UID: ${userRecord.uid}`);
+    } catch (error) {
+        res.status(500).send('Error creating new user');
+    }
+});
 
 
 app.listen(port, () => {
