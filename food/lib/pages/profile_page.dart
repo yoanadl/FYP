@@ -1,6 +1,7 @@
 
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/Profile%20Settings/bmi_page.dart';
 import 'package:food/pages/Profile%20Settings/goals_preferences.dart';
@@ -11,6 +12,7 @@ import 'package:food/pages/Profile%20Settings/privacy_policy_page.dart';
 import 'package:food/pages/Profile%20Settings/settings_page.dart';
 import 'package:food/pages/Profile%20Settings/terms_conditions_page.dart';
 import 'package:food/pages/intro_page.dart';
+import 'package:food/pages/upload_profile_page.dart';
 import 'package:food/services/SettingProfile_service.dart';
 import 'package:food/services/auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -40,24 +42,39 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   String name = '';
+  String? profilePictureUrl;
 
   @override 
   void initState() {
     super.initState();
     fetchUserData();
+    _loadProfilePicture();
+  }
+
+  Future<void> _loadProfilePicture() async {
+
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      setState(() {
+        profilePictureUrl = userDoc['profilePictureUrl'] as String?;
+      });
+    }
   }
 
   Future<void> fetchUserData() async {
+
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
       try {
         Map<String, dynamic>? userData =
             await SettingprofileService().fetchUserData(user.uid);
-        
+
         if (userData != null) {
           setState(() {
-            name = userData['Name'] ?? 'no name';
+            name = userData['Name'] ?? 'No name';
+            profilePictureUrl = userData['profilePictureUrl'];
           });
         } else {
           print('No user data found for uid: ${user.uid}');
@@ -72,6 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
 
   void logout(BuildContext context) async {
+
     final authService = AuthService();
     try {
       await authService.signOut();
@@ -190,9 +208,44 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             SizedBox(height: 20.0),
             // profile image avatar
-            CircleAvatar(
-              backgroundColor: Colors.grey[100],
-              radius: 50.0,
+            Stack(
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.grey[100],
+                  radius: 50.0,
+                  backgroundImage: profilePictureUrl != null
+                    ? NetworkImage(profilePictureUrl!)
+                    : null,
+                  child: profilePictureUrl == null
+                    ? Icon(Icons.person, size : 50)
+                    : null,
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UploadProfilePage()),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF031927),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 20.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             // name
             SizedBox(height: 15.0),

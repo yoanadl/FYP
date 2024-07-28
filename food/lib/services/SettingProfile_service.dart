@@ -65,9 +65,9 @@ class SettingprofileService {
   }
 }
 
-// fetch user data
+  // fetch user data
 
-Future<Map<String, dynamic>?> fetchUserData(String uid) async {
+  Future<Map<String, dynamic>?> fetchUserData(String uid) async {
     try {
       // Query the 'UserProfile' collection under the specified user document
       QuerySnapshot querySnapshot = await usersCollection
@@ -88,7 +88,19 @@ Future<Map<String, dynamic>?> fetchUserData(String uid) async {
     }
   }
 
-  
+  // fetch the profile picture URL from firestore
+
+  Future<String?> fetchProfilePictureUrl(String uid) async {
+    try {
+      DocumentSnapshot userDoc = await usersCollection.doc(uid).get();
+      Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?;
+      return userData?['profilePictureUrl'];
+    } catch (e) {
+      print('Error fetching profile picture URL: $e');
+      return null;
+    }
+  }
+
 
 
 
