@@ -22,11 +22,9 @@ class AuthService{
       DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
       
       if (userDoc.exists) {
-        // print('User document data: ${userDoc.data()}');
         return userDoc['role'];
       }
       else {
-        // print('User document does not exist');
         return 'user';
 
       }
@@ -105,6 +103,18 @@ class AuthService{
       throw Exception(e.code);
     }
 
+  }
+
+  // register trainer
+  Future<UserCredential> registerTrainer(String email, String password) async {
+    UserCredential userCredential = await signUpWithEmailPassword(email, password);
+    User? user = userCredential.user;
+
+    if (user != null) {
+      await FirestoreService().updateUserRole(user.uid, 'trainer');
+    }
+
+    return userCredential;
   }
 
 

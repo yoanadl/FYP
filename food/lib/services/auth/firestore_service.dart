@@ -17,5 +17,11 @@ class FirestoreService {
     // Create or update the user document
     await _firestore.collection('users').doc(user.uid).set(userData);
   }
+
+  Future<void> updateUserRole(String uid, String role) async {
+    await _firestore.collection('users').doc(uid).update({
+      'role': role,
+    });
+  }
   
 }

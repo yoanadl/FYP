@@ -3,11 +3,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/SettingupProfile/name_page.dart';
+import 'package:food/pages/trainer/views/trainer_register_page.dart';
 import 'package:food/services/auth/auth_service.dart';
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
-import '../services/auth/firestore_service.dart';
-
 
 class RegisterPage extends StatefulWidget {
 
@@ -16,7 +15,7 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({ 
     super.key, 
     required this.onTap
-  });
+  }) ;
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -87,7 +86,18 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     
 
+
   }
+  
+  void _navigateToTrainerRegisterPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TrainerRegisterPage(
+        onTap: () {},
+      )),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 onTap: register,
               ),
 
-              const SizedBox(height: 10 ),
+              const SizedBox(height: 30 ),
 
 
               // Already have an account? Sign in
@@ -203,7 +213,36 @@ class _RegisterPageState extends State<RegisterPage> {
                       )),
                   ),
                 ],
+              ),
+
+              SizedBox(height: 15,),
+              // register for a trainer account
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Sign up for a trainer account? ", 
+                    style: TextStyle (
+                      fontSize: 17,
+                      color: Color(0xFF508AA8),
+                    )),
+
+                  const SizedBox(width: 15),
+
+                  GestureDetector(
+                    onTap: () => _navigateToTrainerRegisterPage(context) ,
+                    child: Text(
+                      "Sign up", 
+                      style: TextStyle (
+                        fontSize: 17,
+                        color: Color(0xFF508AA8),
+                        fontWeight: FontWeight.w900
+                      )),
+                  ),
+                ],
               )
+
+              
 
               ],
             )
