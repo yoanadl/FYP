@@ -1,7 +1,6 @@
-
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/Profile%20Settings/bmi_page.dart';
 import 'package:food/pages/Profile%20Settings/goals_preferences.dart';
@@ -39,28 +38,42 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends State<ProfilePage>  {
 
   String name = '';
-  String? profilePictureUrl;
+  String? profilePictureUrl = '';
 
   @override 
   void initState() {
     super.initState();
     fetchUserData();
-    _loadProfilePicture();
   }
 
-  Future<void> _loadProfilePicture() async {
+  Widget _loadProfilePicture() {
+  final settingProfileService = SettingprofileService();
 
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-      setState(() {
-        profilePictureUrl = userDoc['profilePictureUrl'] as String?;
-      });
-    }
-  }
+  return FutureBuilder<String?>(
+    future: settingProfileService.fetchProfilePictureUrl(
+        FirebaseAuth.instance.currentUser!.uid),
+    builder: (context, snapshot) {
+      if (snapshot.hasData) {
+        String? url = snapshot.data;
+        return CircleAvatar(
+          radius: 60,
+          backgroundImage: CachedNetworkImageProvider(url!),
+        );
+      } else if (snapshot.hasError) {
+        print('Error fetching profile picture URL: ${snapshot.error}');
+        return CircularProgressIndicator(); // Show a loading indicator
+      }
+      return CircleAvatar(
+        radius: 60,
+        child: Icon(Icons.person),
+      ); // Placeholder
+    },
+  );
+}
+
 
   Future<void> fetchUserData() async {
 
@@ -210,16 +223,17 @@ class _ProfilePageState extends State<ProfilePage> {
             // profile image avatar
             Stack(
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.grey[100],
-                  radius: 50.0,
-                  backgroundImage: profilePictureUrl != null
-                    ? NetworkImage(profilePictureUrl!)
-                    : null,
-                  child: profilePictureUrl == null
-                    ? Icon(Icons.person, size : 50)
-                    : null,
-                ),
+                _loadProfilePicture(),
+                // CircleAvatar(
+                //   backgroundColor: Colors.grey[100],
+                //   radius: 50.0,
+                //   backgroundImage: profilePictureUrl != null
+                //     ? CachedNetworkImageProvider(profilePictureUrl!)
+                //     : null,
+                //   child: profilePictureUrl == null
+                //     ? Icon(Icons.person, size : 50)
+                //     : null,
+                // ),
                 Positioned(
                   bottom: 0,
                   right: 0,
