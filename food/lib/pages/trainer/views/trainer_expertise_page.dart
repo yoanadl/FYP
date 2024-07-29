@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/trainer/presenters/trainer_base_page.dart';
+import 'package:food/pages/trainer/views/trainer_base_page.dart';
 import 'package:food/pages/trainer/presenters/trainer_expertise_presenter.dart';
 import 'package:google_fonts/google_fonts.dart';
 

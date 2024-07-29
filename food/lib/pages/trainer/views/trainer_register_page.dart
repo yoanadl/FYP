@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food/pages/SettingupProfile/name_page.dart';
 import 'package:food/pages/trainer/presenters/trainer_register_presenter.dart';
 import 'package:food/components/my_button.dart';
 import 'package:food/components/my_textfield.dart';
 import 'package:food/pages/trainer/views/trainer_name_page.dart';
+import 'package:food/services/auth/auth_service.dart';
+
+
 
 class TrainerRegisterPage extends StatefulWidget {
   final void Function()? onTap;
@@ -178,5 +182,6 @@ class _TrainerRegisterPageState extends State<TrainerRegisterPage> implements Tr
         content: Text('Account created successfully!'),
       ),
     );
+
   }
 }

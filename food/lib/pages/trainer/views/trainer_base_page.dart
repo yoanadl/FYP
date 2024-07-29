@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:food/components/navbar.dart';
-import 'package:food/pages/community_page.dart';
-import 'package:food/pages/home_page.dart';
-import 'package:food/pages/profile_page.dart';
-import 'package:food/pages/workout/workout_page.dart';
+import 'package:food/components/trainer_navbar.dart';
+import 'package:food/trainer_home_page.dart';
+import 'package:food/trainer_meal_plan_page.dart';
+import 'package:food/trainer_my_client_page.dart';
+import 'package:food/trainer_profile_page.dart';
+import 'package:food/trainer_workout_plan_page.dart';
 
 class TrainerBasePage extends StatefulWidget {
   final int initialIndex;
@@ -21,10 +22,11 @@ class _HomePageState extends State<TrainerBasePage> {
 
   // define a list of widgets for each page
   final List<Widget> _pages = [
-    HomePage(),
-    WorkoutPage(),
-    CommunityPage(),
-    ProfilePage(),
+    TrainerHomePage(),
+    TrainerWorkoutPlanPage(),
+    TrainerMyClientPage(),
+    TrainerMealPlanPage(),
+    TrainerProfilePage(),
   ];
 
   @override
@@ -43,13 +45,10 @@ class _HomePageState extends State<TrainerBasePage> {
             Center(
               child: _selectedIndex < _pages.length ? _pages[_selectedIndex] : SizedBox(),
             ),
-            Center(
-              child: Text('trainer'),
-            ),
           ],
         ),
       ),
-      bottomNavigationBar: Navbar(
+      bottomNavigationBar: TrainerNavbar(
         currentIndex: _selectedIndex,
         onTap: (int index) {
           setState(() {

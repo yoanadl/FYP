@@ -46,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
         );
         Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => NamePage()),  // Replace with your destination page
+        MaterialPageRoute(builder: (context) => NamePage()),  
         );
 
         showDialog(
