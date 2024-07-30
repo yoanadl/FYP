@@ -63,7 +63,7 @@ class _TrainerRegisterPageState extends State<TrainerRegisterPage> implements Tr
                     child: Text(
                       'Trainer Registration',
                       style: TextStyle(
-                        fontSize: 35.0,
+                        fontSize: 30.0,
                         fontWeight: FontWeight.w900,
                         color: Color(0xFF508AA8),
                       ),

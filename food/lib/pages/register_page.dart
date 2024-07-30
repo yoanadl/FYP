@@ -136,7 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Text(
                     'Get Started',
                     style: TextStyle(
-                      fontSize: 40.0,
+                      fontSize: 35.0,
                       fontWeight: FontWeight.w900,
                       color: Color(0xFF508AA8),
                     )
@@ -196,7 +196,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Text(
                     "Already have an account? ", 
                     style: TextStyle (
-                      fontSize: 17,
+                      fontSize: 16,
                       color: Color(0xFF508AA8),
                     )),
 
@@ -223,7 +223,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Text(
                     "Sign up for a trainer account? ", 
                     style: TextStyle (
-                      fontSize: 17,
+                      fontSize: 16,
                       color: Color(0xFF508AA8),
                     )),
 
