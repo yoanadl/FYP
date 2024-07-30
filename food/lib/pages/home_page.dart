@@ -4,11 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/services/SettingProfile_service.dart';
+import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'mealPlan_page.dart';
-import 'package:food/services/health_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:food/applewatch/injector.dart' show healthFactory;
+import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
+import 'package:health/health.dart';
+
 
 
 
@@ -28,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   String? profilePictureUrl;
   final HealthService healthService = HealthService();
   final SettingprofileService profileService = SettingprofileService();
+
 
   @override 
   void initState() {
@@ -97,6 +102,8 @@ class _HomePageState extends State<HomePage> {
 
     });
   }
+
+  
 
   Widget _buildProfileImage() {
     return CircleAvatar(
