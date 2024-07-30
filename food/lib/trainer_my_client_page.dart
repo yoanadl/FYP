@@ -5,8 +5,10 @@ class TrainerMyClientPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('My Clients'),
+        backgroundColor: Colors.white,
+        title: Text('My Clients', style: TextStyle(fontWeight: FontWeight.w600),),
       ),
       body: ListView.builder(
         itemCount: 7, // Example client count

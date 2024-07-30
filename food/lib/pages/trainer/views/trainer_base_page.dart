@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/trainer_navbar.dart';
-import 'package:food/trainer_home_page.dart';
+import 'package:food/trainer_main_page.dart';
 import 'package:food/trainer_meal_plan_page.dart';
 import 'package:food/trainer_my_client_page.dart';
 import 'package:food/trainer_profile_page.dart';
@@ -22,7 +22,7 @@ class _HomePageState extends State<TrainerBasePage> {
 
   // define a list of widgets for each page
   final List<Widget> _pages = [
-    TrainerHomePage(),
+    TrainerMainPage(),
     TrainerWorkoutPlanPage(),
     TrainerMyClientPage(),
     TrainerMealPlanPage(),

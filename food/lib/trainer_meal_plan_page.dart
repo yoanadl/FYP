@@ -4,9 +4,12 @@ import 'trainer_meal_plan_detail_page.dart'; // Import the detail page
 class TrainerMealPlanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Meal Plans'),
+        backgroundColor: Colors.white,
+        title: Text('Meal Plans', style: TextStyle(fontWeight: FontWeight.w600),),
       ),
       body: Column(
         children: [
