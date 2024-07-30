@@ -11,7 +11,8 @@ class TrainerMainPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text('Hello Trainer!'),
+        title: Text('Hello Trainer!', style: TextStyle(fontWeight: FontWeight.w600),),
+        automaticallyImplyLeading: false, 
         actions: [
           IconButton(
             icon: CircleAvatar(
@@ -27,7 +28,7 @@ class TrainerMainPage extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text('Saturday, 4 May', style: TextStyle(fontSize: 18)),
+            child: Text('Tuesday, 30 Jul', style: TextStyle(fontSize: 18)),
           ),
           GridView.count(
             shrinkWrap: true,
