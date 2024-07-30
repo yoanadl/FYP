@@ -13,27 +13,27 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   initializeDependencies();
 
-  // request healthkit authorization
-  await requestHealthKitAuthorization();
+  // // request healthkit authorization
+  // await requestHealthKitAuthorization();
 
   runApp( const MyApp());
   
 }
 
-Future<void> requestHealthKitAuthorization() async {
-  final bool requested = await healthFactory.requestAuthorization(
-    [HealthDataType.STEPS],
-    permissions: [HealthDataAccess.READ],
-  );
+// Future<void> requestHealthKitAuthorization() async {
+//   final bool requested = await healthFactory.requestAuthorization(
+//     [HealthDataType.STEPS],
+//     permissions: [HealthDataAccess.READ],
+//   );
   
-  if (!requested) {
-    print('HealthKit authorization failed.');
-  } else {
-    print('HealthKit authorization granted.');
-  }
+//   if (!requested) {
+//     print('HealthKit authorization failed.');
+//   } else {
+//     print('HealthKit authorization granted.');
+//   }
 
 
-}
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

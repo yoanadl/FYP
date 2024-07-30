@@ -80,47 +80,47 @@ class _TrainerExpertisePageState extends State<TrainerExpertisePage> implements 
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Spacer(),
-            Text(
-              'Areas of Expertise',
-              style: GoogleFonts.roboto(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SizedBox(height: 24.0),
+              SizedBox(height: 72.0),
+              Text(
+                'Areas of Expertise',
+                style: GoogleFonts.roboto(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20.0),
-            Expanded(
-              child: ListView(
-                children: _expertiseOptions.map((expertise) {
-                  return CheckboxListTile(
-                    title: Text(expertise),
-                    value: _selectedExpertise.contains(expertise),
-                    onChanged: (bool? value) {
-                      if (value != null) {
-                        _toggleExpertise(expertise);
-                      }
-                    },
-                  );
-                }).toList(),
+              SizedBox(height: 20.0),
+              Expanded(
+                child: ListView(
+                  children: _expertiseOptions.map((expertise) {
+                    return CheckboxListTile(
+                      title: Text(expertise),
+                      value: _selectedExpertise.contains(expertise),
+                      onChanged: (bool? value) {
+                        if (value != null) {
+                          _toggleExpertise(expertise);
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: ElevatedButton(
+              ElevatedButton(
                 onPressed: _saveExpertise,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF031927),
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: EdgeInsets.symmetric(vertical: 18.0),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
+                    borderRadius: BorderRadius.circular(15.0),
                   ),
                 ),
                 child: Text(
@@ -131,8 +131,9 @@ class _TrainerExpertisePageState extends State<TrainerExpertisePage> implements 
                   ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 72.0),
+            ],
+          ),
         ),
       ),
     );
