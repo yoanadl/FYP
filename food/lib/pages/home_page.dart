@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchUserProfile() async {
+
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
         if (snapshot.hasData) {
           String? url = snapshot.data;
           return CircleAvatar(
-            radius: 30, // Adjust the radius as needed
+            radius: 30, 
             backgroundImage: CachedNetworkImageProvider(url!),
           );
         } else if (snapshot.hasError) {
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
           return CircularProgressIndicator(); // Show a loading indicator
         }
         return CircleAvatar(
-          radius: 30, // Adjust the radius as needed
+          radius: 30, 
           child: Icon(Icons.person),
         ); // Placeholder
       },
@@ -86,14 +87,13 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchData() async {
     int? fetchedSteps = await healthService.getSteps();
-    double? fetchedHeartRate = await healthService.getHeartRate();
-    double? fetchedCalories = await healthService.getCalories();
+   
 
     setState(() {
       
-      steps = fetchedSteps;
-      heartRate = fetchedHeartRate;
-      calories = fetchedCalories;
+      steps = fetchedSteps ?? 0;
+      heartRate = heartRate;
+      calories = calories;
 
     });
   }
