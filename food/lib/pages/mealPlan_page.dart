@@ -2,16 +2,57 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-
 import '../components/navbar.dart';
 import 'community_page.dart';
 import 'workout/workout_page.dart';
 import 'profile_page.dart';
-
 import 'explore_premade_meal.dart';
 
+class RowData{
+  final String text;
+  final Widget? destination;
+
+  const RowData(
+    { 
+      required this.text,
+      this.destination,
+    }
+  );
+}
+
 class MealPlanPage extends StatelessWidget {
-  const MealPlanPage({super.key});
+    MealPlanPage({super.key});
+
+    final List<RowData> rowData = [
+    RowData(
+      text: 'Monday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Tuesday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Wednesday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Thusday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Friday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Saturday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Sunday',
+      destination: ExplorePremadeMeal(),
+    )
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +63,184 @@ class MealPlanPage extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Center(
           child: Text(
-            'Your Meal Plans',
+            'My Meal ',
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),
+          ),
+        ),
+      ),
+
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Title(
+                color: Colors.black, 
+                child: Text(
+                  'My Current Meal',
+                  style: TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+              ),
+          
+              Container(
+                color: Color(0x59C8E0F4),
+                margin: const EdgeInsets.only(top: 10,left: 10, right: 10),
+                padding: const EdgeInsets.all(15.0),
+                height: 500,
+                width: 350,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 5),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Monday', 
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Tuesday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Wednesday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Thusday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Friday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Saturday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Sunday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Edit'),
+                      ),
+                    ),
+                  ],
+                )
+              )
+            ],
           ),
         ),
       ),
@@ -43,12 +258,7 @@ class MealPlanPage extends StatelessWidget {
               ),
               child: PopupMenuButton<String>(
                 onSelected: (String result) {
-                  if (result == 'new_mealplan') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MealPlanPage()),
-                    );
-                  } else if (result == 'explore_mealplan') {
+                  if (result == 'explore_mealplan') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ExplorePremadeMeal()),
@@ -56,21 +266,6 @@ class MealPlanPage extends StatelessWidget {
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: 'new_mealplan',
-                    child: Row(
-                      children: [
-                        Icon(Icons.add, color: Colors.white),
-                        SizedBox(width: 10),
-                        Text(
-                          'Create New Mealplan',
-                          style: TextStyle(
-                            color: Colors.white
-                          )
-                          ,),
-                      ],
-                    ),
-                  ),
                   PopupMenuItem<String>(
                     value: 'explore_mealplan',
                     child: Row(
@@ -100,7 +295,6 @@ class MealPlanPage extends StatelessWidget {
         ],
       ),
 
-
       bottomNavigationBar: Navbar(
         currentIndex: 0,
         onTap: (int index) {
@@ -121,6 +315,5 @@ class MealPlanPage extends StatelessWidget {
         },
       ),
     );
-
   }
 }
