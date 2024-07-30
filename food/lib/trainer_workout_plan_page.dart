@@ -5,8 +5,12 @@ class TrainerWorkoutPlanPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Workout Plans'),
+        title: Text(
+          'Workout Plans',
+          style: TextStyle(fontWeight: FontWeight.w900),),
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [

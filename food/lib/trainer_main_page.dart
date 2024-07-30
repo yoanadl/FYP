@@ -8,8 +8,11 @@ class TrainerMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Hello Trainer!'),
+        backgroundColor: Colors.white,
+        title: Text('Hello Trainer!', style: TextStyle(fontWeight: FontWeight.w600),),
+        automaticallyImplyLeading: false, 
         actions: [
           IconButton(
             icon: CircleAvatar(
@@ -25,7 +28,7 @@ class TrainerMainPage extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Text('Saturday, 4 May', style: TextStyle(fontSize: 18)),
+            child: Text('Tuesday, 30 Jul', style: TextStyle(fontSize: 18)),
           ),
           GridView.count(
             shrinkWrap: true,
@@ -61,30 +64,7 @@ class TrainerMainPage extends StatelessWidget {
           Text('More features coming soon :)'),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: 'Workout',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Client List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant),
-            label: 'Meal Plan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-      ),
+    
     );
   }
 

@@ -71,7 +71,9 @@ class _TrainerMealPlanDetailPageState extends State<TrainerMealPlanDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('Meal Plan 2'),
         actions: [
           IconButton(

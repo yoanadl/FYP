@@ -5,8 +5,10 @@ class TrainerClientAnalyticsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Exercise Analytics'),
+        backgroundColor: Colors.white,
+        title: Text('Exercise Analytics', style: TextStyle(fontWeight: FontWeight.w500),),
       ),
       body: Column(
         children: [

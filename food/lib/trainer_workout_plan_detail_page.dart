@@ -11,8 +11,10 @@ class _TrainerWorkoutPlanDetailPageState extends State<TrainerWorkoutPlanDetailP
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Workout Plan'),
+        backgroundColor: Colors.white,
+        title: Text('Workout Plan', style: TextStyle(fontWeight: FontWeight.w600),),
         actions: [
           IconButton(
             icon: Icon(Icons.edit),
@@ -56,26 +58,31 @@ class _TrainerWorkoutPlanDetailPageState extends State<TrainerWorkoutPlanDetailP
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(7, (index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Handle day change
-                    },
-                    child: Text('${index + 1}'),
-                  ),
-                );
-              }),
+            // Horizontally scrollable list of days
+            Container(
+              height: 48.0, // Set a fixed height for the horizontal list
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(7, (index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Handle day change
+                        },
+                        child: Text('${index + 1}'),
+                      ),
+                    );
+                  }),
+                ),
+              ),
             ),
             Expanded(
               child: ListView.builder(
                 itemCount: 4, // Example workout activity count
                 itemBuilder: (context, index) {
                   return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: TextField(
@@ -100,11 +107,14 @@ class _TrainerWorkoutPlanDetailPageState extends State<TrainerWorkoutPlanDetailP
               ),
             ),
             if (isEditing)
-              ElevatedButton(
-                onPressed: () {
-                  // Handle save changes action
-                },
-                child: Text('Save Changes'),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Handle save changes action
+                  },
+                  child: Text('Save Changes'),
+                ),
               ),
           ],
         ),
@@ -112,3 +122,4 @@ class _TrainerWorkoutPlanDetailPageState extends State<TrainerWorkoutPlanDetailP
     );
   }
 }
+

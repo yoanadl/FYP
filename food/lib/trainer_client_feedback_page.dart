@@ -5,8 +5,10 @@ class TrainerClientFeedbackPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Feedback'),
+        backgroundColor: Colors.white,
       ),
       body: Column(
         children: [
