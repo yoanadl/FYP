@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'Community_List_page.dart';
 import 'Create_Community_page.dart';
+import 'Community_Joined.dart';
 
 class CommunityPage extends StatelessWidget {
   const CommunityPage({super.key});
@@ -90,7 +91,20 @@ class CommunityPage extends StatelessWidget {
                               MaterialPageRoute(builder: (context) => CommunityListPage()),
                               ),
         
-                            child: Text('View Community'),
+                            child: Text('Explore Community'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xFFC8E0F4),
+                              foregroundColor: Colors.black,
+                            ),
+
+                          ),
+                                                    ElevatedButton(
+                            onPressed: () => Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (context) => CommunityJoined()),
+                              ),
+
+                            child: Text('Joined Community'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFFC8E0F4),
                               foregroundColor: Colors.black,

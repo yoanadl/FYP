@@ -2,12 +2,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-
 import '../components/navbar.dart';
 import 'community_page.dart';
 import 'workout/workout_page.dart';
 import 'profile_page.dart';
-
 import 'explore_premade_meal.dart';
 
 class MealPlanPage extends StatelessWidget {
@@ -22,10 +20,57 @@ class MealPlanPage extends StatelessWidget {
         backgroundColor: Colors.white,
         title: Center(
           child: Text(
-            'Your Meal Plans',
+            'My Meal ',
             style: TextStyle(
               fontWeight: FontWeight.w700,
             ),
+          ),
+        ),
+      ),
+
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Title(
+                color: Colors.black, 
+                child: Text(
+                  'My Current Meal',
+                  style: TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+              ),
+          
+              Container(
+                color: Color(0x59C8E0F4),
+                margin: const EdgeInsets.only(top: 70),
+                padding: const EdgeInsets.all(5.0),
+                height: 400,
+                width: 350,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 50),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                            ),
+                        child: Text('Edit'),
+                      ),
+                    ),
+                  ],
+                )
+              )
+            ],
           ),
         ),
       ),
@@ -43,12 +88,7 @@ class MealPlanPage extends StatelessWidget {
               ),
               child: PopupMenuButton<String>(
                 onSelected: (String result) {
-                  if (result == 'new_mealplan') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MealPlanPage()),
-                    );
-                  } else if (result == 'explore_mealplan') {
+                  if (result == 'explore_mealplan') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ExplorePremadeMeal()),
@@ -56,21 +96,6 @@ class MealPlanPage extends StatelessWidget {
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: 'new_mealplan',
-                    child: Row(
-                      children: [
-                        Icon(Icons.add, color: Colors.white),
-                        SizedBox(width: 10),
-                        Text(
-                          'Create New Mealplan',
-                          style: TextStyle(
-                            color: Colors.white
-                          )
-                          ,),
-                      ],
-                    ),
-                  ),
                   PopupMenuItem<String>(
                     value: 'explore_mealplan',
                     child: Row(
@@ -100,7 +125,6 @@ class MealPlanPage extends StatelessWidget {
         ],
       ),
 
-
       bottomNavigationBar: Navbar(
         currentIndex: 0,
         onTap: (int index) {
@@ -121,6 +145,5 @@ class MealPlanPage extends StatelessWidget {
         },
       ),
     );
-
   }
 }
