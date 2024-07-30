@@ -8,8 +8,51 @@ import 'workout/workout_page.dart';
 import 'profile_page.dart';
 import 'explore_premade_meal.dart';
 
+class RowData{
+  final String text;
+  final Widget? destination;
+
+  const RowData(
+    { 
+      required this.text,
+      this.destination,
+    }
+  );
+}
+
 class MealPlanPage extends StatelessWidget {
-  const MealPlanPage({super.key});
+    MealPlanPage({super.key});
+
+    final List<RowData> rowData = [
+    RowData(
+      text: 'Monday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Tuesday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Wednesday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Thusday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Friday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Saturday',
+      destination: ExplorePremadeMeal(),
+    ),
+    RowData(
+      text: 'Sunday',
+      destination: ExplorePremadeMeal(),
+    )
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +90,14 @@ class MealPlanPage extends StatelessWidget {
           
               Container(
                 color: Color(0x59C8E0F4),
-                margin: const EdgeInsets.only(top: 70),
-                padding: const EdgeInsets.all(5.0),
-                height: 400,
+                margin: const EdgeInsets.only(top: 10,left: 10, right: 10),
+                padding: const EdgeInsets.all(15.0),
+                height: 500,
                 width: 350,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 50),
+                    SizedBox(height: 5),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
@@ -63,6 +106,133 @@ class MealPlanPage extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xff031927),
                               foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Monday', 
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Tuesday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Wednesday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Thusday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Friday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Saturday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
+                            ),
+                        child: Text('Sunday',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          ),),
+                      ),
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+
+                        },
+                        style: ElevatedButton.styleFrom(
+                              backgroundColor: Color(0xff031927),
+                              foregroundColor: Colors.white,
+                              fixedSize: Size(200, 10)
                             ),
                         child: Text('Edit'),
                       ),
