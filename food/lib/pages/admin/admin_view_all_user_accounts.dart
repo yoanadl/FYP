@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/admin/admin_create_new_account.dart';
-import 'package:food/pages/admin/admin_update_account.dart';
 
 class AdminViewAllUserAccounts extends StatefulWidget {
   @override
-  _AdminViewAllUserAccountsPage createState() => _AdminViewAllUserAccountsPage();
+  _AdminViewAllUserAccountsPageState createState() => _AdminViewAllUserAccountsPageState();
 }
 
-class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
+class _AdminViewAllUserAccountsPageState extends State<AdminViewAllUserAccounts> {
   final List<String> accounts = List.generate(10, (index) => 'account #${index + 1}');
   final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        title: Text(
-          'User Accounts',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          )),
+        title: Text('User Accounts'),
       ),
       body: Column(
         children: [
@@ -48,12 +40,7 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
                   trailing: IconButton(
                     icon: Icon(Icons.edit),
                     onPressed: () {
-                      Navigator.push(
-                        context, 
-                        MaterialPageRoute(
-                          builder: (context) => AdminUpdateAccount(),
-                        ),
-                      );
+                      // Edit account action
                     },
                   ),
                 );
@@ -64,16 +51,36 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AdminCreateNewAccount(),
-            ),
-          );
+          // Add new account action
         },
         child: Icon(Icons.add),
       ),
-      
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.supervised_user_circle),
+            label: 'User Accounts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'User Profiles',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: 1,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        onTap: (int index) {
+          // Add navigation logic here
+        },
+      ),
     );
   }
 }

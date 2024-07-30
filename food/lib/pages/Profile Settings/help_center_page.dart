@@ -154,23 +154,74 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
 
 
                     // contact us tab
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 350,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(9),
-                            color: Color(0xFFC8E0F4).withOpacity(0.4),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Contact Information'
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 35,),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 450,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(9),
+                                color: Color(0xFFC8E0F4).withOpacity(0.4),
+                              ),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'If you have any further inquiries, don\'t hesitate \n to contact us through: ',
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.mail),
+                                        SizedBox(width: 8,),
+                                        Text(
+                                          'goodgrit@gmail.com',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            decoration: TextDecoration.underline,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                        
+                                    SizedBox(height: 10),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.public),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'https://goodgritworkout.wordpress.com',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            decoration: TextDecoration.underline,
+                                          ),
+                                        )
+                                      ],
+                                    )
+                        
+                                  ],
+                                ),
+                                
+                              ),
+                        
+                              
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),

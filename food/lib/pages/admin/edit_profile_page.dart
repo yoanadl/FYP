@@ -18,10 +18,13 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('Edit Profile'),
       ),
       body: Card(
+        color: Colors.white,
         margin: EdgeInsets.all(16.0),
         child: Center(
           child: Column(

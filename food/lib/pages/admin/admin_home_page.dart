@@ -2,10 +2,88 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
-class AdminHomePage extends StatelessWidget {
+class AdminHomePage extends StatefulWidget {
   const AdminHomePage({super.key});
+
+  @override
+  State<AdminHomePage> createState() => _AdminHomePageState();
+}
+
+class _AdminHomePageState extends State<AdminHomePage> {
+  int allUsersCount = 0;
+  int activeUsersCount = 0;
+
+
+  @override 
+  void initState() {
+    super.initState();
+    fetchAllUsersCount();
+    fetchActiveUsersCount();
+  }
+
+  Future<void> fetchAllUsersCount() async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && await isAdmin(user.uid)) { // Call isAdmin without parameters
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('users').get();
+      setState(() {
+        allUsersCount = snapshot.size;
+      });
+    } else {
+      print('User is not authorized to access all users count');
+    }
+  } catch (e) {
+    print('Error fetching all users count: $e');
+  }
+}
+
+Future<bool> isAdmin(String uid) async {
+
+  try {
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+    if (userDoc.exists) {
+      // Cast the data to a Map<String, dynamic> before accessing fields
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+      return userData['role'] == 'admin';
+    }
+
+    return false;
+
+  }
+
+  catch (e) {
+    print('Error checking admin status: $e');
+    return false;
+  }
+}
+
+Future<void> fetchActiveUsersCount() async {
+  try {
+
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null && await isAdmin(user.uid)) { 
+
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('isActive', isEqualTo: true)
+        .get();
+      setState(() {
+        activeUsersCount = snapshot.size;
+      });
+    } else {
+      print('User is not authorized to access active users count');
+    }
+  } catch (e) {
+    print('Error fetching active users count: $e');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,24 +138,24 @@ class AdminHomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 17.0),
+                padding: const EdgeInsets.only(left: 35.0),
                 child: Text(
                   'Hello, Admin!',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 23,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 17.0),
+                padding: const EdgeInsets.only(left: 35.0),
                 child: Text(
                   formattedDate,
                   style: TextStyle(
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w400,
                     fontSize: 20,
                   ),
                   overflow: TextOverflow.ellipsis,
@@ -92,29 +170,34 @@ class AdminHomePage extends StatelessWidget {
           color: Colors.white,
           child: Center(
             child: Column (
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 55, bottom: 10, top: 30),
+                    child: Text(
+                      'User Accounts',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
+                // User Accounts Container
                 Container(
                   width: 350,
-                  height: 190, 
+                  height: 110, 
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Text(
-                          'User Accounts',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 10),
                       Row(
                         children: [
@@ -131,16 +214,19 @@ class AdminHomePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Number of Users',
+                                    'All Users',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 16
                                     ),
                                   ),
                                   Text(
-                                    '200',
+                                    '$allUsersCount',
                                     style: TextStyle(
                                       color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ],
@@ -163,12 +249,15 @@ class AdminHomePage extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
                                 ),
                                 Text(
-                                  '150',
+                                  '$activeUsersCount',
                                   style: TextStyle(
                                     color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ],
@@ -182,9 +271,24 @@ class AdminHomePage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 30), 
+                // User Profiles Text
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                          padding: const EdgeInsets.only(left: 55, bottom: 10, top: 30),
+                          child: Text(
+                            'User Profiles',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                            ),
+                          ),
+                        ),
+                ),
                 Container(
                   width: 350,
-                  height: 330, 
+                  height: 210, 
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
                     borderRadius: BorderRadius.circular(10),
@@ -192,17 +296,6 @@ class AdminHomePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Text(
-                          'User Profile',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 10),
                       Row(
                         children: [
@@ -210,7 +303,6 @@ class AdminHomePage extends StatelessWidget {
                             padding: EdgeInsets.only(left: 10),
                             child: Container(
                               width: 160,
-                              height: 115,
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -220,17 +312,19 @@ class AdminHomePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Number of \nFree Users',
+                                    'Free Users',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
-                                    
+                                      fontSize: 16,
                                     ),
                                   ),
                                   Text(
                                     '200',
                                     style: TextStyle(
                                       color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ],
@@ -240,7 +334,6 @@ class AdminHomePage extends StatelessWidget {
                           SizedBox(width: 10), 
                           Container(
                             width: 160,
-                            height: 115,
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -250,16 +343,19 @@ class AdminHomePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Number of \nPremium Users',
+                                  'Premium Users',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
                                 ),
                                 Text(
                                   '200',
                                   style: TextStyle(
                                     color: Colors.black,
+                                    fontSize: 20,
+                                      fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ],
@@ -274,7 +370,6 @@ class AdminHomePage extends StatelessWidget {
                             padding: EdgeInsets.only(left: 10),
                             child: Container(
                               width: 160,
-                              height: 115,
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -284,16 +379,19 @@ class AdminHomePage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Number of \nTrainers',
+                                    'Trainers',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 16,
                                     ),
                                   ),
                                   Text(
                                     '200',
                                     style: TextStyle(
                                       color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ],
@@ -303,7 +401,6 @@ class AdminHomePage extends StatelessWidget {
                           SizedBox(width: 10), 
                           Container(
                             width: 160,
-                            height: 115,
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -313,17 +410,19 @@ class AdminHomePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Number of \nCommmunity \nAdmins',
+                                  'Comm Admins',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 16,
                                   ),
                                 ),
                                 Text(
                                   '200',
                                   style: TextStyle(
                                     color: Colors.black,
-                                  
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ],
@@ -345,5 +444,4 @@ class AdminHomePage extends StatelessWidget {
    
 
   }
-
 }

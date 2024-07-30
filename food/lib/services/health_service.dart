@@ -1,39 +1,26 @@
-
 import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
 import 'package:food/applewatch/injector.dart' show healthFactory;
 import 'package:health/health.dart';
 
-
 class HealthService {
 
   Future<int?> getSteps() async {
-    final bool requested = await healthFactory
-        .requestAuthorization(dataTypesIos, permissions: permissions);
-    if (requested) {
-      return healthFactory.getTotalStepsInInterval(currentDate, midNight);
+    try {
+      final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+      if (requested) {
+        print('Fetching steps from $midNight to $currentDate');
+        int? totalSteps = await healthFactory.getTotalStepsInInterval(midNight, currentDate);
+        print('Total steps fetched: $totalSteps');
+        return totalSteps;
+      } else {
+        print('HealthKit authorization not granted');
+      }
+    } catch (e) {
+      print('Error fetching steps: $e');
     }
     return -1;
   }
 
-  Future<double?> getHeartRate() async {
-    final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-    if (requested) {
-      final healthData = await healthFactory.getHealthDataFromTypes(currentDate.subtract(Duration(days: 1)), currentDate, [HealthDataType.HEART_RATE]);
-      if (healthData.isNotEmpty) {
-        return double.parse(healthData.first.value.toString());
-      }
-    }
-    return -1;
-  }
 
-  Future<double?> getCalories() async {
-    final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-    if (requested) {
-      final healthData = await healthFactory.getHealthDataFromTypes(currentDate.subtract(Duration(days: 1)), currentDate, [HealthDataType.ACTIVE_ENERGY_BURNED]);
-      if (healthData.isNotEmpty) {
-        return double.parse(healthData.first.value.toString());
-      }
-    }
-    return -1;
-  }
+
 }

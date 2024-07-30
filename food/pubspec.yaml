@@ -48,6 +48,10 @@ dependencies:
   health: ^8.1.0
   flutter_stripe: ^10.2.0
   http: ^1.2.2
+  provider: ^6.1.2
+  http: ^1.2.2
+  image_picker: ^1.1.2
+  cached_network_image: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +81,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/images/
+  # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
