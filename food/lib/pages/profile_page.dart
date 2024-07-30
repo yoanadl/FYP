@@ -209,7 +209,7 @@ class _ProfilePageState extends State<ProfilePage>  {
             Spacer(),
             Text(
               'Profile',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
             ),
             Spacer(),
           ],
@@ -312,7 +312,7 @@ class _ProfilePageState extends State<ProfilePage>  {
                 child: Text(
                   data.text,
                   style: TextStyle(
-                    fontSize: 16.0,
+                    fontSize: 15.0,
                   ),
                 ),
               ),
