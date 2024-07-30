@@ -47,6 +47,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   health: ^8.1.0
   flutter_stripe: ^10.2.0
+  http: ^1.2.2
 
 dev_dependencies:
   flutter_test:
