@@ -15,7 +15,6 @@ import 'package:health/health.dart';
 
 
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -122,6 +121,7 @@ class _HomePageState extends State<HomePage> {
     User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
+      backgroundColor: Colors.white,
 
       // Top App
       appBar: PreferredSize(
@@ -213,230 +213,272 @@ class _HomePageState extends State<HomePage> {
       ),
 
       body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Today\'s Information',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+            
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Today\'s Information',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
+              ),
+              
+      
+              Container(
+                width: 350,
+                height: 190,
+                margin: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: Color(0x99C8E0F4),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+      
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(right: 5),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white, 
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Heart Rate \n 72 bpm',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Icon(Icons.favorite, color: Color(0xFF508AA8)),
+                            ],
+                          
+                          ),
+                        ),
+                      ),
+                    ),
+      
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: 10),
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Calories \n 350 kcal',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
+                                  
+                                  ],
+                                ),
+                              ),
+                            ),
+      
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white, 
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+      
+                             child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Steps \n 10,000',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
+                                  
+                                  ],
+                                ),
+                              ),
+                          )
+                        ],
+                      ))
+                  ],
+      
+                )
                 
-        
-                Container(
+              ),
+      
+              SizedBox(height: 20),
+      
+              InkWell(
+                onTap: () => Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => BasePage(initialIndex: 1)),
+                ),
+                child: Container(
                   width: 350,
-                  height: 190,
-                  margin: EdgeInsets.only(top: 10),
+                  height: 120,
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Color(0x99C8E0F4),
                     borderRadius: BorderRadius.circular(10),
                   ),
-        
-                  child: Row(
+                
+                  child: Stack(
                     children: [
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(right: 10),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white, 
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    'Heart Rate \n ${heartRate?.toStringAsFixed(1) ?? '...'} bpm',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 5),
-                                Icon(Icons.favorite, color: Color(0xFF508AA8)),
-                              ],
-                            
-                            ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'lib/images/workout.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      Positioned(
+                        top: 15,
+                        left: 15,
+                        child: Text(
+                          'Workout Plan', 
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            backgroundColor: Color(0xFF508AA8),
                           ),
                         ),
                       ),
+                      ],
+
+                  ),
+
+                  
         
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Calories \n ${calories?.toStringAsFixed(1) ?? '...'} kcal',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
-                                    
-                                    ],
-                                  ),
-                                ),
-                              ),
-        
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.white, 
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-        
-                               child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Steps \n ${steps ?? '...'}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
-                                    
-                                    ],
-                                  ),
-                                ),
-                            )
-                          ],
-                        ))
-                    ],
-        
-                  )
                   
                 ),
-        
-                SizedBox(height: 30),
-        
-                InkWell(
-                  onTap: () => Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => BasePage(initialIndex: 1)),
-                  ),
-                  child: Container(
-                    width: 350,
-                    height: 190,
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Color(0x99C8E0F4),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'lib/images/workout.png',
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
-                        ),
-                        Positioned(
-                          top: 15,
-                          left: 15,
-                          child: Text(
-                            'Workout Plan', 
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              backgroundColor: Color(0xFF508AA8),
-                            ),
-                          ),
-                        ),
-                        ],
-        
-                    ),
-        
-                    
-          
-                    
-                  ),
+              ),
+      
+              SizedBox(height: 20),
+      
+               InkWell(
+                onTap: () => Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => MealPlanPage()),
                 ),
-        
-                SizedBox(height: 30),
-        
-                 InkWell(
-                  onTap: () => Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => MealPlanPage()),
+                 child: Container(
+                  width: 350,
+                  height: 120,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Color(0x99C8E0F4),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                   child: Container(
-                    width: 350,
-                    height: 190,
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Color(0x99C8E0F4),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                   
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'lib/images/food.png',
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
+                 
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'lib/images/food.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      Positioned(
+                        top: 15,
+                        left: 15,
+                        child: Text(
+                          'Meal Plan', 
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            backgroundColor: Color(0xFF508AA8),
                           ),
                         ),
-                        Positioned(
-                          top: 15,
-                          left: 15,
-                          child: Text(
-                            'Meal Plan', 
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              backgroundColor: Color(0xFF508AA8),
-                            ),
-                          ),
-                        ),
-                        ],
-        
-                    ),
-                   ),
+                      ),
+                      ],
+
+                  ),
                  ),
-              ],
-            ),
+               ),
+
+               SizedBox(height: 20),
+      
+               InkWell(
+                onTap: () => Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => MealPlanPage()),
+                ),
+                 child: Container(
+                  width: 350,
+                  height: 120,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Color(0x99C8E0F4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                 
+                  child: Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset(
+                          'lib/images/food.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                      ),
+                      Positioned(
+                        top: 15,
+                        left: 15,
+                        child: Text(
+                          'Challenges', 
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            backgroundColor: Color(0xFF508AA8),
+                          ),
+                        ),
+                      ),
+                      ],
+
+                  ),
+                 ),
+               ),
+            ],
           ),
         ),
       ),

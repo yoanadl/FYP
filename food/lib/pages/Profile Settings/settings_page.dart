@@ -30,12 +30,12 @@ class SettingsPage extends StatelessWidget {
 
     RowData(
       icon: Icons.notifications_active, 
-      text: 'Notification Settings',
+      text: 'Notification',
       destination: NotificationSettings(),
     ),
     RowData(
       icon: Icons.lock, 
-      text: 'Password Manager',
+      text: 'Change Password',
       destination: PasswordManager()
       ),
     RowData(
@@ -54,7 +54,7 @@ class SettingsPage extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       body: Container(
-        margin: EdgeInsets.only(left: 40, right: 40),
+        margin: EdgeInsets.only(left: 30, right: 30),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

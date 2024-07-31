@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food/components/navbar.dart';
+import 'package:food/pages/community_page.dart';
+import 'package:food/pages/workout/workout_page.dart';
+import 'package:food/pages/profile_page.dart';
 import 'package:food/pages/workout/premade_workout_summary.dart';
-
 import 'workout_summary.dart';
 
 class ExploreWorkoutsPage extends StatefulWidget {
@@ -12,7 +15,6 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   List<Map<String, dynamic>> preMadeWorkouts = [
-    
      {
       'title': 'Upper Body Blast',
       'activities': ['Push-ups', 'Pull-ups', 'Bicep Curls'],
@@ -146,6 +148,25 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: Navbar(
+        currentIndex: 0,
+        onTap: (int index) {
+          if (index != 3) {
+            Navigator.pop(context);
+            switch (index) {
+              case 1:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutPage()));
+                break;
+              case 2:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const CommunityPage()));
+                break;
+              case 3:
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  ProfilePage()));
+                break;
+            }
+          }
+        },
       ),
     );
   }
