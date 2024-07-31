@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food/components/navbar.dart';
 import 'package:food/pages/Profile%20Settings/bmi_page.dart';
 import 'package:food/pages/Profile%20Settings/goals_preferences.dart';
 import 'package:food/pages/Profile%20Settings/help_center_page.dart';
@@ -11,8 +12,10 @@ import 'package:food/pages/Profile%20Settings/my_profile_page.dart';
 import 'package:food/pages/Profile%20Settings/privacy_policy_page.dart';
 import 'package:food/pages/Profile%20Settings/settings_page.dart';
 import 'package:food/pages/Profile%20Settings/terms_conditions_page.dart';
+import 'package:food/pages/community_page.dart';
 import 'package:food/pages/intro_page.dart';
 import 'package:food/pages/upload_profile_page.dart';
+import 'package:food/pages/workout/workout_page.dart';
 import 'package:food/services/SettingProfile_service.dart';
 import 'package:food/services/auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -274,6 +277,8 @@ class _ProfilePageState extends State<ProfilePage>  {
           ],
         ),
       ),
+
+
     );
   }
 

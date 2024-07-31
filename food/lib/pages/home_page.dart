@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/base_page.dart';
+import 'package:food/pages/steps_analytics_page.dart';
 import 'package:food/services/SettingProfile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:food/applewatch/injector.dart' show healthFactory;
 import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
 import 'package:health/health.dart';
+import 'profile_page.dart'; 
+
 
 
 
@@ -25,18 +28,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   int? steps;
-  double? heartRate;
-  double? calories;
   String name = '';
   String? profilePictureUrl;
   final HealthService healthService = HealthService();
   final SettingprofileService profileService = SettingprofileService();
+  String period = "today"; 
 
 
   @override 
   void initState() {
     super.initState();
-    fetchData();
+    fetchData(period);
     fetchUserProfile();
   }
 
@@ -89,18 +91,49 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<void> fetchData() async {
-    int? fetchedSteps = await healthService.getSteps();
+  // Future<void> fetchData() async {
+  //   int? fetchedSteps = await healthService.getSteps();
    
 
-    setState(() {
-      
-      steps = fetchedSteps ?? 0;
-      heartRate = heartRate;
-      calories = calories;
+  //   setState(() {
+  //     steps = fetchedSteps ?? 0;
+    
+  //   });
+  // }
 
+  Future<void> fetchData(String period) async {
+  DateTime startDate;
+  DateTime endDate = DateTime.now();
+
+  // Define date ranges based on the selected period
+  switch (period) {
+    case 'Today':
+      startDate = DateTime(endDate.year, endDate.month, endDate.day);
+      break;
+    case 'Week':
+      startDate = endDate.subtract(Duration(days: endDate.weekday - 1));
+      break;
+    case 'Month':
+      startDate = DateTime(endDate.year, endDate.month, 1);
+      break;
+    default:
+      startDate = DateTime(endDate.year, endDate.month, endDate.day);
+  }
+
+  try {
+    int? fetchedSteps = await healthService.getSteps(startDate, endDate);
+
+    setState(() {
+      steps = fetchedSteps ?? 0;
+    });
+  } catch (e) {
+    print('Error fetching steps data: $e');
+    setState(() {
+      steps = 0;
     });
   }
+}
+
 
   
 
@@ -154,8 +187,18 @@ class _HomePageState extends State<HomePage> {
             if (user != null)
               Padding(
                 padding: const EdgeInsets.all(4.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => BasePage(initialIndex: 3),
+                      ),
+                    );
+                  },
                 child: loadProfilePicture(context, user.uid),
-              )
+              ),
+            ),
           ],
 
           title: Column(
@@ -211,110 +254,45 @@ class _HomePageState extends State<HomePage> {
               ),
               
       
-              Container(
-                width: 350,
-                height: 190,
-                margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Color(0x99C8E0F4),
-                  borderRadius: BorderRadius.circular(10),
+              InkWell(
+                onTap: () => Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => StepsAnalyticsPage()),
                 ),
-      
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(right: 5),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white, 
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Heart Rate \n 72 bpm',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Icon(Icons.favorite, color: Color(0xFF508AA8)),
-                            ],
-                          
+                child: Container(
+                  width: 350,
+                  height: 130,
+                  margin: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Color(0x99C8E0F4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                      
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Steps \n ${steps?.toString() ?? '...'}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
                           ),
                         ),
+                        SizedBox(width: 5),
+                        FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
+                        ],
                       ),
                     ),
-      
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Calories \n 350 kcal',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
-                                  
-                                  ],
-                                ),
-                              ),
-                            ),
-      
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white, 
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-      
-                             child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Steps \n 10,000',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
-                                  
-                                  ],
-                                ),
-                              ),
-                          )
-                        ],
-                      ))
-                  ],
-      
-                )
-                
+                  ),
+                ),
               ),
       
               SizedBox(height: 20),
@@ -361,8 +339,7 @@ class _HomePageState extends State<HomePage> {
 
                   ),
 
-                  
-        
+                
                   
                 ),
               ),
