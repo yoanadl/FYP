@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/Profile%20Settings/bmi_page.dart';
 import 'package:food/pages/Profile%20Settings/goals_preferences.dart';
@@ -117,10 +118,10 @@ class _ProfilePageState extends State<ProfilePage>  {
   }
 
   void showLogoutConfirmationDialog(BuildContext context) {
-    showDialog(
+    showCupertinoDialog(
       context: context, 
       builder: (BuildContext context) {
-        return AlertDialog(
+        return CupertinoAlertDialog(
           content: Text(
             'Are you sure you want to log out?',
             style: TextStyle(
@@ -129,13 +130,13 @@ class _ProfilePageState extends State<ProfilePage>  {
             textAlign: TextAlign.center,
           ),
           actions: <Widget> [
-            TextButton(
+            CupertinoDialogAction(
               onPressed: () {
                 Navigator.of(context).pop();
               }, 
               child: Text('Cancel'),
             ),
-            TextButton(
+            CupertinoDialogAction(
               onPressed: () {
                 Navigator.of(context).pop();
                 logout(context);
@@ -224,16 +225,6 @@ class _ProfilePageState extends State<ProfilePage>  {
             Stack(
               children: [
                 _loadProfilePicture(),
-                // CircleAvatar(
-                //   backgroundColor: Colors.grey[100],
-                //   radius: 50.0,
-                //   backgroundImage: profilePictureUrl != null
-                //     ? CachedNetworkImageProvider(profilePictureUrl!)
-                //     : null,
-                //   child: profilePictureUrl == null
-                //     ? Icon(Icons.person, size : 50)
-                //     : null,
-                // ),
                 Positioned(
                   bottom: 0,
                   right: 0,
