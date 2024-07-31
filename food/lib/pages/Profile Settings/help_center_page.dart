@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +12,22 @@ class FaqItem {
   final String answer;
   bool isExpanded = false;
 
-  FaqItem(
-    {
-      required this.question,
-      required this.answer,
-    }
-  );
+  FaqItem({
+    required this.question,
+    required this.answer,
+  });
 }
 
 class FaqItemWidget extends StatefulWidget {
   final FaqItem faqItem;
   final VoidCallback onTap;
-  
-  const FaqItemWidget(
-    {
-      required this.faqItem,
-      required this.onTap,
-    }
-  );
 
-  @override 
+  const FaqItemWidget({
+    required this.faqItem,
+    required this.onTap,
+  });
+
+  @override
   _FaqItemWidgetState createState() => _FaqItemWidgetState();
 }
 
@@ -46,8 +42,7 @@ class _FaqItemWidgetState extends State<FaqItemWidget> {
         borderRadius: BorderRadius.circular(9),
         color: Color(0xFFC8E0F4).withOpacity(0.4),
       ),
-
-        child: Column(
+      child: Column(
         children: [
           ListTile(
             title: Text(widget.faqItem.question),
@@ -69,16 +64,12 @@ class _FaqItemWidgetState extends State<FaqItemWidget> {
   }
 }
 
-
 class HelpCenterPage extends StatefulWidget {
-  @override 
+  @override
   _HelpCenterPageState createState() => _HelpCenterPageState();
-
 }
 
-
 class _HelpCenterPageState extends State<HelpCenterPage> {
-
   final List<FaqItem> _faqItems = [
     FaqItem(question: 'Question #1', answer: 'Answer to question #1'),
     FaqItem(question: 'Question #2', answer: 'Answer to question #2'),
@@ -88,7 +79,6 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -98,10 +88,10 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
             'Help Center',
             style: TextStyle(
               fontWeight: FontWeight.w700,
-            )),
+            ),
+          ),
         ),
       ),
-
       body: Container(
         color: Colors.white,
         child: DefaultTabController(
@@ -134,29 +124,30 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
                   children: [
                     // FAQ tab content
                     ListView.builder(
-                    itemCount: _faqItems.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          FaqItemWidget(
-                            faqItem: _faqItems[index],
-                            onTap: () => setState(() => _faqItems[index].isExpanded = !_faqItems[index].isExpanded),
-                          ),
-                          Divider(
-                            height: 20.0,
-                            color: Colors.white,
-                          )
-                        ],
-                      );
-
-                    },
-                  ),
-
-
+                      itemCount: _faqItems.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            FaqItemWidget(
+                              faqItem: _faqItems[index],
+                              onTap: () => setState(() =>
+                                  _faqItems[index].isExpanded =
+                                      !_faqItems[index].isExpanded),
+                            ),
+                            Divider(
+                              height: 20.0,
+                              color: Colors.white,
+                            )
+                          ],
+                        );
+                      },
+                    ),
                     // contact us tab
                     SingleChildScrollView(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 35,),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 35,
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -171,53 +162,62 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      'If you have any further inquiries, don\'t hesitate \n to contact us through: ',
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        fontSize: 16,
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 25),
+                                      child: Text(
+                                        'If you have any further inquiries, don\'t hesitate to contact us through: ',
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
                                       ),
                                     ),
                                     SizedBox(height: 10),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(Icons.mail),
-                                        SizedBox(width: 8,),
-                                        Text(
-                                          'goodgrit@gmail.com',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            decoration: TextDecoration.underline,
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                          child: Text(
+                                            'goodgrit@gmail.com',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
-                        
                                     SizedBox(height: 10),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(Icons.public),
                                         SizedBox(width: 8),
-                                        Text(
-                                          'https://goodgritworkout.wordpress.com',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                            decoration: TextDecoration.underline,
+                                        Expanded(
+                                          child: Text(
+                                            'https://goodgritworkout.wordpress.com',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
                                           ),
-                                        )
+                                        ),
                                       ],
                                     )
-                        
                                   ],
                                 ),
-                                
                               ),
-                        
-                              
                             ),
                           ],
                         ),
@@ -230,7 +230,6 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
           ),
         ),
       ),
-
       bottomNavigationBar: Navbar(
         currentIndex: 3,
         onTap: (int index) {
@@ -238,13 +237,16 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
             Navigator.pop(context);
             switch (index) {
               case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const BasePage()));
                 break;
               case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const WorkoutPage()));
                 break;
               case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CommunityPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CommunityPage()));
                 break;
             }
           }
@@ -252,8 +254,6 @@ class _HelpCenterPageState extends State<HelpCenterPage> {
       ),
     );
   }
-
-
 }
 
 

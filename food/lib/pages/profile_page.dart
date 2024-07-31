@@ -157,7 +157,7 @@ class _ProfilePageState extends State<ProfilePage>  {
     ),
     RowData(
       icon: Icons.flag,
-      text: 'My Goals & Dietary',
+      text: 'My Goals & Dietary Preferences',
       destination: GoalsPreferences(),
     ),
     RowData(

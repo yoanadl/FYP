@@ -132,26 +132,6 @@ class _HomePageState extends State<HomePage> {
           centerTitle: false,
           actions: [
 
-            // sync to smart watch icon
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-
-                child: IconButton(
-                  onPressed: () {}, 
-                  icon: Icon(Icons.sync),
-                  iconSize: 25,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-
-
             // notification icon
             Padding(
               padding: const EdgeInsets.all(3.0),
