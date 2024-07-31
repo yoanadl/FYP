@@ -5,17 +5,21 @@ class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> createUserDocument(User user, String role) async {
-    // Construct the user document data
-    Map<String, dynamic> userData = {
-      'uid': user.uid,
-      'email': user.email,
-      'role': role,
-      'createdAt': FieldValue.serverTimestamp(),
-      'isActive': true,
-    };
-
-    // Create or update the user document
-    await _firestore.collection('users').doc(user.uid).set(userData);
+    try {
+      await _firestore.collection('users').doc(user.uid).set({
+        'email': user.email,
+        'role': role,
+        'isActive': true,
+        'createdAt': Timestamp.now(),
+      });
+    } catch (e) {
+      print('Error creating user document: $e');
+    }
   }
-  
+
+  Future<void> updateUserRole(String uid, String role) async {
+    await _firestore.collection('users').doc(uid).update({
+      'role': role,
+    });
+  }
 }

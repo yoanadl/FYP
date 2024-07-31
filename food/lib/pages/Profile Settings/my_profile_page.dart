@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/pages/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
+import 'package:food/services/SettingProfile_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileTextField extends StatelessWidget {
-
   final String label;
+  final TextEditingController controller;
+  final Function(String) onChanged;
 
-  const ProfileTextField({Key? key, required this.label}) : super(key: key);
+  const ProfileTextField({
+    Key? key,
+    required this.label,
+    required this.controller,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,33 +34,127 @@ class ProfileTextField extends StatelessWidget {
             ),
           ),
         ),
-
-        SizedBox(height: 5.0,),
+        SizedBox(height: 5.0),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
           child: SizedBox(
             height: 40.0,
             child: TextFormField(
+              controller: controller,
+              onChanged: onChanged,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: 'Enter $label',
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
-
 }
 
-class MyProfilePage extends StatelessWidget {
+class MyProfilePage extends StatefulWidget {
+  @override
+  _MyProfilePageState createState() => _MyProfilePageState();
+}
+
+class _MyProfilePageState extends State<MyProfilePage> {
+  late TextEditingController nameController;
+  late TextEditingController emailController;
+  late TextEditingController genderController;
+  late TextEditingController ageController;
+  late TextEditingController heightController;
+  late TextEditingController weightController;
+
+  Map<String, dynamic> profileData = {
+    'Name': '',
+    'gender': '',
+    'Age': '',
+    'Height(cm)': '',
+    'Weight(kg)': '',
+  };
+
+  Map<String, dynamic> profileData_1 = {
+    'Email': '',
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(text: profileData['Name'] ?? '');
+    emailController = TextEditingController(text: profileData_1['Email'] ?? '');
+    genderController = TextEditingController(text: profileData['gender'] ?? '');
+    ageController = TextEditingController(text: profileData['Age'] ?? '');
+    heightController = TextEditingController(text: profileData['Height(cm)'] ?? '');
+    weightController = TextEditingController(text: profileData['Weight(kg)'] ?? '');
+
+    fetchProfileData();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    genderController.dispose();
+    ageController.dispose();
+    heightController.dispose();
+    weightController.dispose();
+
+    super.dispose();
+  }
+
+  void fetchProfileData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      print('User is not authenticated');
+      return;
+    }
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('UserProfile')
+          .get();
+
+      Map<String, dynamic> data = {};
+      querySnapshot.docs.forEach((doc) {
+        data.addAll(doc.data() as Map<String, dynamic>);
+      });
+
+      setState(() {
+        profileData = data;
+        profileData_1['Email'] = user.email ?? '';
+        nameController.text = profileData['Name'] ?? '';
+        emailController.text = profileData_1['Email'] ?? '';
+        genderController.text = profileData['gender'] ?? '';
+        ageController.text = profileData['Age'] ?? '';
+        heightController.text = profileData['Height(cm)'] ?? '';
+        weightController.text = profileData['Weight(kg)'] ?? '';
+      });
+    } catch (e) {
+      print('Error fetching profile data: $e');
+    }
+  }
+
+  void updateProfileData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      print('User is not authenticated');
+      return;
+    }
+    try {
+      await SettingprofileService().updateSettingProfile(user.uid, profileData);
+      print('Profile updated successfully!');
+    } catch (e) {
+      print('Failed to update profile: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
-      
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Row(
@@ -60,59 +163,98 @@ class MyProfilePage extends StatelessWidget {
             Spacer(),
             Text(
               'Profile',
+              style: TextStyle(color: Colors.black),
             ),
             Spacer()
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // profile image avatar
-            CircleAvatar(
-              backgroundColor: Colors.grey[100],
-              radius: 50.0,
-            ),
-
-            // text fields 
-            SizedBox(height: 10.0),
-
-            ProfileTextField(label: 'Name'),
-            SizedBox(height: 10.0),
-
-            ProfileTextField(label: 'Email'),
-            SizedBox(height: 10.0),
-
-            ProfileTextField(label: 'Gender'),
-            SizedBox(height: 10.0),
-
-            ProfileTextField(label: 'Age'),
-            SizedBox(height: 10.0),
-
-            ProfileTextField(label: 'Height'),
-            SizedBox(height: 10.0),
-
-            ProfileTextField(label: 'Weight'),
-            SizedBox(height: 10.0),
-
-            // update profile button
-            ElevatedButton(
-              onPressed: () {
-               
-              },
-              child: Text('Update Profile'),
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // profile image avatar
+              CircleAvatar(
+                backgroundColor: Colors.grey[100],
+                radius: 50.0,
+              ),
+              // text fields
+              SizedBox(height: 10.0),
+              ProfileTextField(
+                label: 'Name',
+                controller: nameController,
+                onChanged: (value) {
+                  setState(() {
+                    profileData['Name'] = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10.0),
+              ProfileTextField(
+                label: 'Email',
+                controller: emailController,
+                onChanged: (value) {
+                  setState(() {
+                    profileData_1['Email'] = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10.0),
+              ProfileTextField(
+                label: 'Gender',
+                controller: genderController,
+                onChanged: (value) {
+                  setState(() {
+                    profileData['gender'] = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10.0),
+              ProfileTextField(
+                label: 'Age',
+                controller: ageController,
+                onChanged: (value) {
+                  setState(() {
+                    profileData['Age'] = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10.0),
+              ProfileTextField(
+                label: 'Height(cm)',
+                controller: heightController,
+                onChanged: (value) {
+                  setState(() {
+                    profileData['Height(cm)'] = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10.0),
+              ProfileTextField(
+                label: 'Weight(kg)',
+                controller: weightController,
+                onChanged: (value) {
+                  setState(() {
+                    profileData['Weight(kg)'] = value;
+                  });
+                },
+              ),
+              // update profile button
+              ElevatedButton(
+                onPressed: updateProfileData,
+                child: Text('Update Profile'),
+              ),
+            ],
+          ),
         ),
       ),
-
       bottomNavigationBar: Navbar(
         currentIndex: 3,
         onTap: (int index) {
           if (index != 3) {
             Navigator.pop(context);
-            switch(index) {
+            switch (index) {
               case 0:
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage()));
                 break;
@@ -124,8 +266,7 @@ class MyProfilePage extends StatelessWidget {
                 break;
             }
           }
-        }
-
+        },
       ),
     );
   }

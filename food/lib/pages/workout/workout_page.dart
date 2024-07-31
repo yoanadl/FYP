@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/services/workout_service.dart';
 import 'create_new_workout.dart';
 import 'workout_summary.dart';
-import 'explore_workouts.dart'; 
+import 'explore_workouts.dart';
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({Key? key}) : super(key: key);
@@ -36,6 +36,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _refreshWorkouts() {
+
+    // trigger a rebuild to refresh the workout list
+    setState(() {
+
+    });
   }
 
   @override
@@ -160,10 +168,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         SizedBox(width: 10),
                         Text(
                           'Create New Workout',
-                          style: TextStyle(
-                            color: Colors.white
-                          )
-                          ,),
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
@@ -175,8 +181,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         SizedBox(width: 10),
                         Text(
                           'Explore Pre-made Workouts',
-                          style: TextStyle(
-                            color: Colors.white)),
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
                     ),
                   ),
@@ -220,52 +226,52 @@ class _WorkoutPageState extends State<WorkoutPage> {
           }).toList();
         }
 
-        // Show all workouts in the ongoing tab
-        if (type == 'ongoing') {
-          return ListView.builder(
-            padding: EdgeInsets.all(16.0),
-            itemCount: workouts.length,
-            itemBuilder: (context, index) {
-              Map<String, dynamic> workout = workouts[index];
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WorkoutSummaryPage(
-                          workoutTitle: workout['title'],
-                          activities: List<String>.from(workout['activities']),
-                          duration: List<int>.from(workout['durations']),
-                        ),
+        return ListView.builder(
+          padding: EdgeInsets.all(16.0),
+          itemCount: workouts.length,
+          itemBuilder: (context, index) {
+            Map<String, dynamic> workout = workouts[index];
+            String workoutId = workout['id'];
+
+            return Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WorkoutSummaryPage(
+                        userId: _user!.uid,
+                        workoutId: workoutId,
+                        workoutTitle: workout['title'],
+                        activities: List<String>.from(workout['activities']),
+                        duration: List<int>.from(workout['durations']),
+                        onDelete: _refreshWorkouts, 
                       ),
-                    );
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(9),
-                      color: Colors.grey[200],
                     ),
-                    child: Center(
-                      child: Text(
-                        workout['title'] ?? 'Untitled Workout',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 180,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(9),
+                    color: Colors.grey[200],
+                  ),
+                  child: Center(
+                    child: Text(
+                      workout['title'] ?? 'Untitled Workout',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
-              );
-            },
-          );
-        } else {
-          return Center(child: Text('No completed workouts.'));
-        }
+              ),
+            );
+          },
+        );
       },
     );
   }

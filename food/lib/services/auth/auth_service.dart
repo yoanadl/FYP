@@ -3,15 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/pages/admin/admin_base_page.dart';
 import 'package:food/pages/base_page.dart';
+import 'package:food/pages/trainer/views/trainer_base_page.dart';
 import 'package:food/services/auth/firestore_service.dart';
-
-import '../../pages/admin/admin_home_page.dart';
 
 class AuthService{
 
-
   // get instance of firebase auth
-
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -26,11 +23,11 @@ class AuthService{
       DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
       
       if (userDoc.exists) {
-        print('User document data: ${userDoc.data()}');
-        return userDoc['role'];
+        String role = userDoc['role'];
+        print('Retrieved role: $role'); // Debug print
+        return role;
       }
       else {
-        print('User document does not exist');
         return 'user';
 
       }
@@ -65,7 +62,17 @@ class AuthService{
             context,
             MaterialPageRoute(builder: (context) => AdminBasePage()),
           );
-        } else {
+        } 
+
+      else if (role == "trainer") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => TrainerBasePage()),
+        );
+      }
+        
+        
+      else {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => BasePage()),
@@ -82,34 +89,45 @@ class AuthService{
 
   // sign up
 
-  Future<UserCredential> signUpWithEmailPassword(String email, String password) async {
+  Future<UserCredential> signUpWithEmailPassword(String email, String password, {String role = 'user'}) async {
+  
+  try {
+    UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email, 
+      password: password,
+    );
 
-    // try sign user in
-    try {
+    User? user = userCredential.user;
 
-      UserCredential userCredential = 
-      await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, 
-        password: password,
-      );
-      
-      User? user = userCredential.user;
-
-      if (user!= null) {
-        String role = email == "sorarat.uow@gmail.com" ? "admin" : "user";
+    if (user != null) {
+      print('Role assigned during sign-up: $role'); // Debug print
+      // Only set the role if it’s not 'admin'
+      if (email != "goodgrit.staff@gmail.com") {
         await FirestoreService().createUserDocument(user, role);
+      } else {
+        await FirestoreService().createUserDocument(user, 'admin');
       }
-
-      return userCredential;
-
     }
 
-    // catch any errors
-    on FirebaseAuthException catch (e) {
-      throw Exception(e.code);
-    }
-
+    return userCredential;
+  } catch (e) {
+    throw Exception(e.toString());
   }
+}
+
+
+  // register trainer
+  Future<UserCredential> registerTrainer(String email, String password) async {
+    UserCredential userCredential = await signUpWithEmailPassword(email, password, role: 'trainer');
+    User? user = userCredential.user;
+
+    if (user != null) {
+      await FirestoreService().updateUserRole(user.uid, 'trainer');
+    }
+
+    return userCredential;
+  }
+
 
 
   // sign out
@@ -119,5 +137,6 @@ class AuthService{
 
   }
 
+  
 
 }

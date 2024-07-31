@@ -10,11 +10,10 @@ class UserProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      color: Colors.white,
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          automaticallyImplyLeading: true, 
           title: Row(
             children: <Widget>[
               // GestureDetector(

@@ -20,9 +20,9 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
   final TextEditingController activity1Controller = TextEditingController();
   final TextEditingController activity2Controller = TextEditingController();
   final TextEditingController activity3Controller = TextEditingController();
-  int activity1Duration = 10;
-  int activity2Duration = 10;
-  int activity3Duration = 10;
+  final TextEditingController activity1DurationController = TextEditingController(text: '10');
+  final TextEditingController activity2DurationController = TextEditingController(text: '10');
+  final TextEditingController activity3DurationController = TextEditingController(text: '10');
 
   @override
   Widget build(BuildContext context) {
@@ -72,23 +72,11 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
                 ),
               ),
               _buildActivityField('Workout Activity 1', activity1Controller),
-              _buildDurationField('Duration', activity1Duration, (value) {
-                setState(() {
-                  activity1Duration = value;
-                });
-              }),
+              _buildDurationField('Duration', activity1DurationController),
               _buildActivityField('Workout Activity 2', activity2Controller),
-              _buildDurationField('Duration', activity2Duration, (value) {
-                setState(() {
-                  activity2Duration = value;
-                });
-              }),
+              _buildDurationField('Duration', activity2DurationController),
               _buildActivityField('Workout Activity 3', activity3Controller),
-              _buildDurationField('Duration', activity3Duration, (value) {
-                setState(() {
-                  activity3Duration = value;
-                });
-              }),
+              _buildDurationField('Duration', activity3DurationController),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
@@ -138,9 +126,9 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
       activity3Controller.text,
     ];
     List<int> durations = [
-      activity1Duration,
-      activity2Duration,
-      activity3Duration,
+      int.parse(activity1DurationController.text),
+      int.parse(activity2DurationController.text),
+      int.parse(activity3DurationController.text),
     ];
 
     // Get current user
@@ -184,6 +172,8 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
             workoutTitle: workoutTitle,
             duration: durations,
             activities: activities,
+            userId: user.uid,
+            workoutId: '',
           ),
         ),
       );
@@ -227,49 +217,24 @@ class _CreateNewWorkoutPageState extends State<CreateNewWorkoutPage> {
     );
   }
 
-  Widget _buildDurationField(String labelText, int initialDuration, Function(int) onChanged) {
-    return Row(
+  Widget _buildDurationField(String labelText, TextEditingController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20, right: 10),
-            child: Text(
-              labelText,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
+        SizedBox(height: 20),
+        Text(
+          labelText,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: DropdownButtonFormField<int>(
-              value: initialDuration,
-              items: List.generate(
-                6,
-                (index) => DropdownMenuItem(
-                  value: (index + 1) * 10,
-                  child: Text('${(index + 1) * 10} min'),
-                ),
-              ),
-              onChanged: (int? newValue) {
-                if (newValue != null) {
-                  onChanged(newValue);
-                }
-              },
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                ),
-              ),
-            ),
+        TextField(
+          controller: controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            hintText: 'Enter duration in minutes',
+            border: OutlineInputBorder(),
           ),
         ),
       ],
