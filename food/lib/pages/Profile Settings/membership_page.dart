@@ -19,55 +19,57 @@ class MembershipPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Title(
-                color: Colors.black, 
-                child: Text(
-                  'Your Membership',
-                  style: TextStyle(
-                    fontSize: 23,
-                    fontWeight: FontWeight.w600
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Title(
+                  color: Colors.black, 
+                  child: Text(
+                    'Your Membership',
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.w600
+                    ),
                   ),
                 ),
+              MembershipCard(
+                title: 'Basic',
+                price: 'Free',
+                features: [
+                  'limited workout plan',
+                  'limited meal plan',
+                  'analytics & workout history',
+                  'communities',
+                ],
+                isCurrentPlan: true,
+                buttonColor: Colors.white,
+                buttonTextColor: Colors.black,
+                buttonText: 'Current Plan',
+                titleColor: Colors.black,
+                borderColor: Colors.blue,
+                checkIconColor: Colors.blue,
               ),
-            MembershipCard(
-              title: 'Basic',
-              price: 'Free',
-              features: [
-                'limited workout plan',
-                'limited meal plan',
-                'analytics & workout history',
-                'communities',
-              ],
-              isCurrentPlan: true,
-              buttonColor: Colors.white,
-              buttonTextColor: Colors.black,
-              buttonText: 'Current Plan',
-              titleColor: Colors.black,
-              borderColor: Colors.blue,
-              checkIconColor: Colors.blue,
-            ),
-            SizedBox(height: 16.0),
-            MembershipCard(
-              title: 'Premium',
-              price: '9.9 SGD/mth or 109.9 SGD/yr',
-              features: [
-                'access to all workout plan',
-                'access to all meal plan',
-                'contact verified trainers',
-                'personalized feedback and plans',
-              ],
-              isCurrentPlan: false,
-              buttonColor: Colors.blue,
-              buttonTextColor: Colors.white,
-              buttonText: 'Upgrade Now',
-              titleColor: Colors.black,
-              borderColor: Colors.transparent,
-              checkIconColor: Colors.blue,
-            ),
-          ],
+              SizedBox(height: 16.0),
+              MembershipCard(
+                title: 'Premium',
+                price: '9.9 SGD/mth or 109.9 SGD/yr',
+                features: [
+                  'access to all workout plan',
+                  'access to all meal plan',
+                  'contact verified trainers',
+                  'personalized feedback and plans',
+                ],
+                isCurrentPlan: false,
+                buttonColor: Colors.blue,
+                buttonTextColor: Colors.white,
+                buttonText: 'Upgrade Now',
+                titleColor: Colors.black,
+                borderColor: Colors.transparent,
+                checkIconColor: Colors.blue,
+              ),
+            ],
+          ),
         ),
       ),
        bottomNavigationBar: Navbar(
@@ -128,57 +130,59 @@ class MembershipCard extends StatelessWidget {
       elevation: 4.0,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: titleColor,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: titleColor,
+                    ),
                   ),
+                  if (isCurrentPlan)
+                    Icon(Icons.check_circle, color: checkIconColor, size: 24.0),
+                ],
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                price,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.grey[600],
                 ),
-                if (isCurrentPlan)
-                  Icon(Icons.check_circle, color: checkIconColor, size: 24.0),
-              ],
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              price,
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.grey[600],
               ),
-            ),
-            SizedBox(height: 16.0),
-            ...features.map((feature) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text(
-                '• $feature',
-                style: TextStyle(fontSize: 16.0),
-              ),
-            )),
-            SizedBox(height: 16.0),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: buttonColor,
-                  foregroundColor: buttonTextColor, // For the text color
-                  textStyle: TextStyle(
-                    color: buttonTextColor,
+              SizedBox(height: 8.0),
+              ...features.map((feature) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Text(
+                  '• $feature',
+                  style: TextStyle(fontSize: 16.0),
+                ),
+              )),
+              SizedBox(height: 8.0),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: buttonColor,
+                    foregroundColor: buttonTextColor, // For the text color
+                    textStyle: TextStyle(
+                      color: buttonTextColor,
+                    ),
                   ),
+                  onPressed: isCurrentPlan ? null : () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PremiumPlanPage()));
+                  },
+                  child: Text(buttonText, style: TextStyle(color: buttonTextColor)),
                 ),
-                onPressed: isCurrentPlan ? null : () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => PremiumPlanPage()));
-                },
-                child: Text(buttonText, style: TextStyle(color: buttonTextColor)),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

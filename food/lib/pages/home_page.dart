@@ -121,6 +121,7 @@ class _HomePageState extends State<HomePage> {
     User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
+      backgroundColor: Colors.white,
 
       // Top App
       appBar: PreferredSize(
@@ -212,7 +213,6 @@ class _HomePageState extends State<HomePage> {
       ),
 
       body: SingleChildScrollView(
-        //color: Colors.white,
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -245,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(right: 10),
+                        margin: EdgeInsets.only(right: 5),
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: Colors.white, 
