@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/base_page.dart';
+import 'package:food/pages/data_analytics_page.dart';
 import 'package:food/services/SettingProfile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
@@ -134,27 +135,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.white,
           centerTitle: false,
           actions: [
-
-            // sync to smart watch icon
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-
-                child: IconButton(
-                  onPressed: () {}, 
-                  icon: Icon(Icons.sync),
-                  iconSize: 25,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-
-
+            
             // notification icon
             Padding(
               padding: const EdgeInsets.all(3.0),
@@ -234,111 +215,117 @@ class _HomePageState extends State<HomePage> {
               ),
               
       
-              Container(
-                width: 350,
-                height: 190,
-                margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Color(0x99C8E0F4),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-      
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(right: 5),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white, 
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Heart Rate \n ${heartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+              InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DataAnalyticsPage(),
+                )),
+                child: Container(
+                  width: 350,
+                  height: 190,
+                  margin: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Color(0x99C8E0F4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                      
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(right: 5),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white, 
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Heart Rate \n ${heartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 5),
-                              Icon(Icons.favorite, color: Color(0xFF508AA8)),
-                            ],
-                          
+                                SizedBox(width: 5),
+                                Icon(Icons.favorite, color: Color(0xFF508AA8)),
+                              ],
+                            
+                            ),
                           ),
                         ),
                       ),
-                    ),
-      
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Calories \n ${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold
+                      
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Calories \n ${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold
+                                      ),
                                     ),
+                                    SizedBox(width: 5),
+                                    Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
+                                    
+                                    ],
                                   ),
-                                  SizedBox(width: 5),
-                                  Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
-                                  
-                                  ],
                                 ),
                               ),
-                            ),
-      
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white, 
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-      
-                             child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Steps \n ${steps?.toString() ?? 'N/A'}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
-                                  
-                                  ],
-                                ),
+                      
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white, 
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                          )
-                        ],
-                      ))
-                  ],
-      
-                )
-                
-              ),
+                      
+                               child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Steps \n ${steps?.toString() ?? 'N/A'}',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
+                                    
+                                    ],
+                                  ),
+                                ),
+                            )
+                          ],
+                        ))
+                    ],
+                      
+                  )
+                  ),
+                ),
+        
       
               SizedBox(height: 20),
       

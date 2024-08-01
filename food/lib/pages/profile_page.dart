@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/Profile%20Settings/bmi_page.dart';
 import 'package:food/pages/Profile%20Settings/goals_preferences.dart';
@@ -120,7 +121,7 @@ class _ProfilePageState extends State<ProfilePage>  {
     showDialog(
       context: context, 
       builder: (BuildContext context) {
-        return AlertDialog(
+        return CupertinoAlertDialog(
           content: Text(
             'Are you sure you want to log out?',
             style: TextStyle(
