@@ -90,14 +90,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchData() async {
+
     int? fetchedSteps = await healthService.getSteps();
+    double? fetchedHeartRate = await healthService.getHeartRate();
+    double? fetchedCalories = await healthService.getCalories();
    
 
     setState(() {
       
       steps = fetchedSteps ?? 0;
-      heartRate = heartRate;
-      calories = calories;
+      heartRate = fetchedHeartRate ?? 0.0;
+      calories = fetchedCalories ?? 0.0;
 
     });
   }
@@ -256,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'Heart Rate \n 72 bpm',
+                                'Heart Rate \n ${heartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
@@ -288,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Calories \n 350 kcal',
+                                    'Calories \n ${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18,
@@ -315,7 +318,7 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    'Steps \n 10,000',
+                                    'Steps \n ${steps?.toString() ?? 'N/A'}',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18,
