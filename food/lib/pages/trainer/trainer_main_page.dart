@@ -97,7 +97,7 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
              Container(
                 padding: const EdgeInsets.only(left: 16.0),
                 alignment: Alignment.centerLeft,
-                child: Text(
+                child: const Text(
                   'Essentials',
                   style: TextStyle(
                     color: Colors.black,
@@ -115,25 +115,25 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
               shrinkWrap: true,
               crossAxisCount: 2,
               children: [
-                _buildGridTile(context, 'Workout Plan', Color(0xFF508AA8), () {
+                _buildGridTile(context, 'Workout\nPlan', Color(0xFF508AA8), () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TrainerWorkoutPlanPage()),
                   );
                 }),
-                _buildGridTile(context, 'Meal Plan', Color(0xFF9DD1F1), () {
+                _buildGridTile(context, 'Meal\nPlan', Color(0xFF9DD1F1), () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TrainerMealPlanPage()),
                   );
                 }),
-                _buildGridTile(context, 'Pending Request', Color(0xFFD3E2F1), () {
+                _buildGridTile(context, 'Pending\nRequest', Colors.white, () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TrainerPendingClientsPage()),
                   );
                 }),
-                _buildGridTile(context, 'My Client', Color(0xFF000000), () {
+                _buildGridTile(context, 'My\nClient', Color(0xFF000000), () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TrainerMyClientPage()),
@@ -144,15 +144,15 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
 
             const SizedBox(height: 30),
             
-            Text(
-                  'More features are coming soon :)',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                    ),
-                ),
+            const Text(
+              'More features are coming soon :)',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  ),
+              ),
           ],
         ),
       ),
@@ -160,6 +160,9 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
   }
 
   Widget _buildGridTile(BuildContext context, String title, Color color, VoidCallback onTap) {
+    bool isSpecialItem = title == "Pending\nRequest";
+    bool isSpecialItems = title == "Pending\nRequest" || title == "Meal\nPlan";
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -167,16 +170,25 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(45.0),
+          border: isSpecialItem ? Border.all(color: const Color(0XFF9DD1F1), width: 2.0): null, 
         ),
         child: Center(
-          child: Text(
-            title,
-            style: TextStyle(color: Colors.white, fontSize: 18),
-            textAlign: TextAlign.center,
-          ),
+          child: isSpecialItems
+              ? Text(
+                  title,
+                  style: const TextStyle(color: Color(0XFF031927), fontSize: 24, fontFamily: 'Poppins', fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.center,
+                )
+
+              : Text(
+                  title,
+                  style: const TextStyle(color: Colors.white, fontSize: 24, fontFamily: 'Poppins', fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.center,
+                ),
         ),
       ),
     );
+
   }
   
 }
