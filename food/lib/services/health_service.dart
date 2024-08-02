@@ -258,19 +258,6 @@ class HealthService {
 }
 
 
-  
-
-
-
- 
-
-
-
-
-
-  
-
-
   Future<void> getWeeklyStepsIncludingToday() async {
     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
 
@@ -357,33 +344,7 @@ class HealthService {
   }
 
 
-  // month data
-  // Future<int?> getStepsForThatMonth(DateTime month) async {
-
-  //   // Define the start and end dates for the specified month
-  //   final startDate = DateTime(month.year, month.month, 1);
-  //   final endDate = DateTime(month.year, month.month + 1, 1).subtract(Duration(seconds: 1));
-
-  //   final bool requested = await healthFactory.requestAuthorization([HealthDataType.STEPS], permissions: [HealthDataAccess.READ]);
-
-  //   if (requested) {
-  //     try {
-  //       final totalSteps = await healthFactory.getTotalStepsInInterval(startDate, endDate);
-  //       if (totalSteps != null) {
-  //         return totalSteps;
-  //       } else {
-  //         print('No steps data available for the given month');
-  //         return 0;
-  //       }
-  //     } catch (e) {
-  //       print('Error fetching steps for $month: $e');
-  //       return -1;
-  //     }
-  //   } else {
-  //     print('HealthKit authorization not granted');
-  //     return -1;
-  //   }
-  // }
+  // MONTH DATA
 
   Future<int> getStepsForThatMonth(DateTime month) async {
     // Define the start and end dates for the specified month
@@ -406,7 +367,7 @@ class HealthService {
 
           currentDay = nextDay;
         }
-        
+
         print('Total steps for month: $totalSteps'); // Debugging line
         return totalSteps;
       } catch (e) {
@@ -418,6 +379,64 @@ class HealthService {
       return 0; // Return 0 if authorization is not granted
     }
   }
+
+  Future<double> getCaloriesForThatMonth(DateTime month) async {
+    // Define the start and end dates for the specified month (avoiding seconds truncation)
+    final startDate = DateTime(month.year, month.month, 1);
+    final endDate = DateTime(month.year, month.month + 1, 0); // Last day of month, 00:00:00
+
+    final bool requested = await healthFactory.requestAuthorization(
+        [HealthDataType.ACTIVE_ENERGY_BURNED], permissions: [HealthDataAccess.READ]);
+
+    if (requested) {
+      try {
+        double totalCalories = 0.0;
+
+        // Iterate over each day of the month
+        DateTime currentDay = startDate;
+        while (currentDay.isBefore(endDate)) {
+          DateTime nextDay = currentDay.add(Duration(days: 1));
+
+          final calories = await _getCaloriesForDay(currentDay, nextDay);
+          if (calories != null) {
+            totalCalories += calories;
+          } else {
+            print('No calories data found for $currentDay');
+          }
+
+          currentDay = nextDay;
+        }
+
+        return totalCalories;
+      } catch (e) {
+        print('Error fetching calories for $month: $e');
+        return 0.0; // Handle error appropriately (e.g., return null or throw exception)
+      }
+    } else {
+      print('HealthKit authorization not granted');
+      return 0.0; // Handle authorization failure (e.g., return null or throw exception)
+    }
+}
+
+Future<double?> _getCaloriesForDay(DateTime startDate, DateTime endDate) async {
+  final healthData = await healthFactory.getHealthDataFromTypes(startDate, endDate, [HealthDataType.ACTIVE_ENERGY_BURNED]);
+
+  if (healthData.isNotEmpty) {
+    double dailyCalories = 0.0;
+    for (var data in healthData) {
+      if (data.value is NumericHealthValue) {
+        final calorieValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
+        dailyCalories += calorieValue;
+      } else {
+        print('Unexpected value type for calories data: ${data.value.runtimeType}');
+      }
+    }
+    return dailyCalories;
+  } else {
+    return null; // No data found for the day
+  }
+}
+
 
 
 

@@ -30,6 +30,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   bool _isLoading = true;
   List<Map<String, dynamic>> weeklyData = [];
   int totalStepsInMonth = 0;
+  double totalCaloriesInMonth = 0.0;
 
 
   @override
@@ -129,9 +130,11 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   Future<void> _fetchMonthlyData(DateTime month) async {
     
     final totalSteps = await healthService.getStepsForThatMonth(month);
+    final totalCalories = await healthService.getCaloriesForThatMonth(month);
 
     setState(() {
       totalStepsInMonth = totalSteps;
+      totalCaloriesInMonth = totalCalories;
     });
   }
 
@@ -306,17 +309,17 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Steps',
+                'Total Steps',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
               Text(
                 '${totalStepsInMonth}',
                   style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
             ],
@@ -326,17 +329,17 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Calories Burned',
+                'Total Calories Burned',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
               Text(
-                '${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                '${totalCaloriesInMonth?.toStringAsFixed(1) ?? 'N/A'} kcal',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
             ],
@@ -356,7 +359,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 '${averageHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
             ],
@@ -369,14 +372,14 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 'Maximum Heart Rate',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
               Text(
                 '${maxHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
             ],
