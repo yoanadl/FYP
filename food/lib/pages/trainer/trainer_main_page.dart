@@ -72,9 +72,15 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
           ),
           actions: [
             IconButton(
-              icon: const CircleAvatar(
-                backgroundImage: AssetImage('assets/profile_picture.png'), 
+              icon: Container(
+                width: 60, 
+                height: 60, 
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage('assets/profile_picture.png'),
+                ),
               ),
+
               onPressed: () {
                 Navigator.push(
                   context,
@@ -109,7 +115,6 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
             ),
 
             const SizedBox(height: 16),
-
 
             GridView.count(
               shrinkWrap: true,
