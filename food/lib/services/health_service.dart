@@ -356,4 +356,69 @@ class HealthService {
     }
   }
 
+
+  // month data
+  // Future<int?> getStepsForThatMonth(DateTime month) async {
+
+  //   // Define the start and end dates for the specified month
+  //   final startDate = DateTime(month.year, month.month, 1);
+  //   final endDate = DateTime(month.year, month.month + 1, 1).subtract(Duration(seconds: 1));
+
+  //   final bool requested = await healthFactory.requestAuthorization([HealthDataType.STEPS], permissions: [HealthDataAccess.READ]);
+
+  //   if (requested) {
+  //     try {
+  //       final totalSteps = await healthFactory.getTotalStepsInInterval(startDate, endDate);
+  //       if (totalSteps != null) {
+  //         return totalSteps;
+  //       } else {
+  //         print('No steps data available for the given month');
+  //         return 0;
+  //       }
+  //     } catch (e) {
+  //       print('Error fetching steps for $month: $e');
+  //       return -1;
+  //     }
+  //   } else {
+  //     print('HealthKit authorization not granted');
+  //     return -1;
+  //   }
+  // }
+
+  Future<int> getStepsForThatMonth(DateTime month) async {
+    // Define the start and end dates for the specified month
+    final startDate = DateTime(month.year, month.month, 1);
+    final endDate = DateTime(month.year, month.month + 1, 1).subtract(Duration(seconds: 1));
+
+    final bool requested = await healthFactory.requestAuthorization([HealthDataType.STEPS], permissions: [HealthDataAccess.READ]);
+
+    if (requested) {
+      try {
+        int totalSteps = 0;
+
+        // Iterate over each day of the month
+        DateTime currentDay = startDate;
+        while (currentDay.isBefore(endDate)) {
+          DateTime nextDay = currentDay.add(Duration(days: 1));
+
+          final steps = await healthFactory.getTotalStepsInInterval(currentDay, nextDay);
+          totalSteps += steps ?? 0;
+
+          currentDay = nextDay;
+        }
+        
+        print('Total steps for month: $totalSteps'); // Debugging line
+        return totalSteps;
+      } catch (e) {
+        print('Error fetching steps for $month: $e');
+        return 0; // Return 0 in case of an error
+      }
+    } else {
+      print('HealthKit authorization not granted');
+      return 0; // Return 0 if authorization is not granted
+    }
+  }
+
+
+
 }

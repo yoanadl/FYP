@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:food/applewatch/injector.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/services/health_service.dart';
@@ -28,6 +29,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   
   bool _isLoading = true;
   List<Map<String, dynamic>> weeklyData = [];
+  int totalStepsInMonth = 0;
 
 
   @override
@@ -36,6 +38,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
     fetchUserProfile();
     fetchData();
     _fetchWeeklyData();
+    _fetchMonthlyData(DateTime.now());
   }
 
   Future<void> fetchUserProfile() async {
@@ -123,6 +126,116 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
     });
   }
 
+  Future<void> _fetchMonthlyData(DateTime month) async {
+    
+    final totalSteps = await healthService.getStepsForThatMonth(month);
+
+    setState(() {
+      totalStepsInMonth = totalSteps;
+    });
+  }
+
+
+
+  Widget buildTodayDataTable() {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.grey.shade300,
+        ),
+      ),
+      child: Column (
+        crossAxisAlignment: CrossAxisAlignment.start,
+        
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Steps',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${steps?.toString() ?? 'N/A'}',
+                  style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey.shade400),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Calories Burned',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Average Heart Rate',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${averageHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Maximum Heart Rate',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${maxHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
+  }
+
   Widget buildWeeklyDataTable() {
     return Container(
       padding: EdgeInsets.all(10.0),
@@ -140,9 +253,24 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Date'),
-              Text('Steps'),
-              Text('Heart Rate'),
-              Text('Calories'),
+              Row(
+                children: [
+                  Icon(Icons.directions_walk),
+                  SizedBox(width: 4,),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.favorite),
+                  SizedBox(width: 4,),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(Icons.local_fire_department),
+                  SizedBox(width: 4,),
+                ],
+              ),
             ],
           ),
           for (var data in weeklyData)
@@ -158,6 +286,105 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
         ],
       ),
     );
+  }
+
+  Widget buildMonthlyDataTable() {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.grey.shade300,
+        ),
+      ),
+      child: Column (
+        crossAxisAlignment: CrossAxisAlignment.start,
+        
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Steps',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${totalStepsInMonth}',
+                  style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey.shade400),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Calories Burned',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Average Heart Rate',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${averageHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Maximum Heart Rate',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                '${maxHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+
   }
 
   
@@ -416,104 +643,13 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                     ),
                 SizedBox(height: 15,),
                 if (selectedPeriod == 'Today') 
-                  Container(
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: Colors.grey.shade300,
-                    ),
-                  ),
-                  child: Column (
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Steps',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            '${steps?.toString() ?? 'N/A'}',
-                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Divider(color: Colors.grey.shade400),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Calories Burned',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            '${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Divider(color: Colors.grey),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Average Heart Rate',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            '${averageHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Divider(color: Colors.grey),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Maximum Heart Rate',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            '${maxHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-              ),
+                  buildTodayDataTable(),
 
-              if (selectedPeriod == 'Week') 
-               buildWeeklyDataTable(),
+                if (selectedPeriod == 'Week') 
+                  buildWeeklyDataTable(),
+
+                if (selectedPeriod == 'Month')
+                  buildMonthlyDataTable(),
             ],
           ),
         ),
