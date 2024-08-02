@@ -27,12 +27,15 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   String? profilePictureUrl;
   
   bool _isLoading = true;
+  List<Map<String, dynamic>> weeklyData = [];
+
 
   @override
   void initState() {
     super.initState();
     fetchUserProfile();
     fetchData();
+    _fetchWeeklyData();
   }
 
   Future<void> fetchUserProfile() async {
@@ -93,6 +96,65 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
     } catch (e) {
       print('Error fetching data: $e');
     }
+  }
+
+   Future<void> _fetchWeeklyData() async {
+    List<Map<String, dynamic>> data = [];
+    for (int i = 0; i < 7; i++) {
+      DateTime date = DateTime.now().subtract(Duration(days: i));
+      int steps = await healthService.getStepsForThatDay(date);
+
+      print('Date: $date, Steps: $steps'); // Debugging line
+
+     
+      data.add({
+        'date': date,
+        'steps': steps,
+       
+      });
+    }
+
+    // data = data.reversed.toList();
+    setState(() {
+      weeklyData = data;
+    });
+  }
+
+  Widget buildWeeklyDataTable() {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10), 
+
+        border: Border.all(
+          color: Colors.grey.shade300,
+        ),
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Date'),
+              Text('Steps'),
+              Text('Heart Rate'),
+              Text('Calories'),
+            ],
+          ),
+          for (var data in weeklyData)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(DateFormat('EEE').format(data['date'])),
+                Text('${data['steps']}'),
+                Text('100'),
+                Text('100'),
+              ],
+            ),
+        ],
+      ),
+    );
   }
 
   
@@ -445,7 +507,10 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                       ),
                     ],
                   ),
-                                  ),
+              ),
+
+              if (selectedPeriod == 'Week') 
+               buildWeeklyDataTable(),
             ],
           ),
         ),

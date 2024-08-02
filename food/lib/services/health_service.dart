@@ -4,6 +4,8 @@ import 'package:health/health.dart';
 
 class HealthService {
 
+  // today's data
+
   Future<int?> getSteps() async {
 
     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
@@ -170,11 +172,32 @@ class HealthService {
 }
 
 
+// weekly 
+
+  Future<int> getStepsForThatDay(DateTime date) async {
+    final startDate = DateTime(date.year, date.month, date.day);
+    final endDate = startDate.add(Duration(days: 1));
+
+    try {
+      final stepsData = await healthFactory.getTotalStepsInInterval(
+        startDate,
+        endDate,
+      );
+
+      // If stepsData is an int, just return it. No need for fold.
+      return stepsData ?? 0; // Handle null or unexpected type
+    } catch (e) {
+      print('Error fetching steps for $date: $e');
+      return 0; // Handle error appropriately
+    }
+  }
+
 
 
 
   
-  
+
+
   Future<void> getWeeklyStepsIncludingToday() async {
     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
 
