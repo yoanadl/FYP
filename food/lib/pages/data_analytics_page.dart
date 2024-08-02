@@ -31,6 +31,9 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   List<Map<String, dynamic>> weeklyData = [];
   int totalStepsInMonth = 0;
   double totalCaloriesInMonth = 0.0;
+  double? averageMonthlyHeartRate;
+  double? maxHeartRateInMonth = 0.0;
+  
 
 
   @override
@@ -131,11 +134,17 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
     
     final totalSteps = await healthService.getStepsForThatMonth(month);
     final totalCalories = await healthService.getCaloriesForThatMonth(month);
+    final averageHeartRateInMonth = await healthService.getAverageMonthlyHeartRate(month);
+    final maxMonthlyHeartRate = await healthService.getMaximumHeartRateForMonth(month);
 
     setState(() {
       totalStepsInMonth = totalSteps;
       totalCaloriesInMonth = totalCalories;
+      averageMonthlyHeartRate = averageHeartRateInMonth;
+      maxHeartRateInMonth = maxMonthlyHeartRate;
+      
     });
+
   }
 
 
@@ -352,11 +361,11 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 'Average Heart Rate',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 16,
+                  fontSize: 14,
                 ),
               ),
               Text(
-                '${averageHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                '${averageMonthlyHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -376,7 +385,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 ),
               ),
               Text(
-                '${maxHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                '${maxHeartRateInMonth?.toStringAsFixed(1) ?? 'N/A'} bpm',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -533,123 +542,17 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 ],
               ),
               SizedBox(height: 16),
-              
-              Container(
-                width: 350,
-                height: 190,
-                margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.all(15),
                 
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(right: 10),
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white, 
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                          )
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Heart Rate \n ${heartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Icon(Icons.favorite, color: Color(0xFF508AA8)),
-                            ],
-                          
-                          ),
-                        ),
-                      ),
-                    ),
-                   
-          
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                              color: Colors.grey.shade300,
-                          )
-                            ),
-                            
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Calories \n ${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
-                                  
-                                  ],
-                                ),
-                              ),
-                            ),
-                    
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white, 
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                              color: Colors.grey.shade300,
-                          )
-                            ),
-                    
-                              child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Steps \n ${steps?.toString() ?? 'N/A'} steps',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
-                                  
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                        
-                        ),)
-                      ],
-                      )
-                    ),
-                SizedBox(height: 15,),
-                if (selectedPeriod == 'Today') 
-                  buildTodayDataTable(),
 
-                if (selectedPeriod == 'Week') 
+                if (selectedPeriod == 'Today') ...[
+                  _todayData(),
+                  buildTodayDataTable(),
+                ],
+
+                if (selectedPeriod == 'Week') ... [
+                  _weekdata(),
                   buildWeeklyDataTable(),
+                ], 
 
                 if (selectedPeriod == 'Month')
                   buildMonthlyDataTable(),
@@ -670,6 +573,232 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
         },
       ),
     );
+  }
+
+   Widget _todayData() {
+    return Container(
+      width: 350,
+      height: 190,
+      margin: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.all(15),
+      
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white, 
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                )
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Heart Rate \n ${heartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Icon(Icons.favorite, color: Color(0xFF508AA8)),
+                  ],
+                
+                ),
+              ),
+            ),
+          ),
+          
+
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                    color: Colors.grey.shade300,
+                )
+                  ),
+                  
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Calories \n ${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
+                        
+                        ],
+                      ),
+                    ),
+                  ),
+          
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white, 
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                    color: Colors.grey.shade300,
+                )
+                  ),
+          
+                    child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Steps \n ${steps?.toString() ?? 'N/A'} steps',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
+                        
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+              
+              ),)
+            ],
+            )
+          );
+  }
+
+  Widget _weekdata() {
+    return Container(
+      width: 350,
+      height: 190,
+      margin: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.all(15),
+      
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.white, 
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                )
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Heart Rate \n hardcoded \n ${heartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Icon(Icons.favorite, color: Color(0xFF508AA8)),
+                  ],
+                
+                ),
+              ),
+            ),
+          ),
+          
+
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                    color: Colors.grey.shade300,
+                )
+                  ),
+                  
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Calories \n ${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
+                        
+                        ],
+                      ),
+                    ),
+                  ),
+          
+                Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white, 
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                    color: Colors.grey.shade300,
+                )
+                  ),
+          
+                    child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Steps \n ${steps?.toString() ?? 'N/A'} steps',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
+                        
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+              
+              ),)
+            ],
+            )
+          );
   }
 
   Widget _buildPeriodButton(String period) {

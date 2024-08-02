@@ -416,26 +416,94 @@ class HealthService {
       print('HealthKit authorization not granted');
       return 0.0; // Handle authorization failure (e.g., return null or throw exception)
     }
-}
-
-Future<double?> _getCaloriesForDay(DateTime startDate, DateTime endDate) async {
-  final healthData = await healthFactory.getHealthDataFromTypes(startDate, endDate, [HealthDataType.ACTIVE_ENERGY_BURNED]);
-
-  if (healthData.isNotEmpty) {
-    double dailyCalories = 0.0;
-    for (var data in healthData) {
-      if (data.value is NumericHealthValue) {
-        final calorieValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
-        dailyCalories += calorieValue;
-      } else {
-        print('Unexpected value type for calories data: ${data.value.runtimeType}');
-      }
-    }
-    return dailyCalories;
-  } else {
-    return null; // No data found for the day
   }
-}
+
+  Future<double?> _getCaloriesForDay(DateTime startDate, DateTime endDate) async {
+    final healthData = await healthFactory.getHealthDataFromTypes(startDate, endDate, [HealthDataType.ACTIVE_ENERGY_BURNED]);
+
+    if (healthData.isNotEmpty) {
+      double dailyCalories = 0.0;
+      for (var data in healthData) {
+        if (data.value is NumericHealthValue) {
+          final calorieValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
+          dailyCalories += calorieValue;
+        } else {
+          print('Unexpected value type for calories data: ${data.value.runtimeType}');
+        }
+      }
+      return dailyCalories;
+    } else {
+      return null; 
+    }
+  }
+
+
+  Future<double?> getAverageMonthlyHeartRate(DateTime month) async {
+    // Define the time range: from the first day of the month to the last day of the month
+    DateTime startDate = DateTime(month.year, month.month, 1);
+    DateTime endDate = DateTime(month.year, month.month + 1, 1).subtract(Duration(seconds: 1)); // Last second of the month
+
+    // Request authorization to access heart rate data
+    bool requested = await healthFactory.requestAuthorization([HealthDataType.HEART_RATE]);
+
+    if (requested) {
+      // Fetch heart rate data
+      List<HealthDataPoint> heartRateData = await healthFactory.getHealthDataFromTypes(
+        startDate,
+        endDate,
+        [HealthDataType.HEART_RATE],
+      );
+
+      // Calculate the average heart rate
+      double totalHeartRate = heartRateData.fold(0.0, (sum, dataPoint) {
+        double value = (dataPoint.value as NumericHealthValue).numericValue.toDouble();
+        return sum + value;
+      });
+
+      double averageHeartRate = heartRateData.isNotEmpty ? totalHeartRate / heartRateData.length : 0.0;
+      return averageHeartRate;
+    } else {
+      print('Authorization not granted.');
+      return 0.0;
+    }
+  } 
+
+  Future<double?> getMaximumHeartRateForMonth(DateTime month) async {
+
+    DateTime startDate = DateTime(month.year, month.month, 1);
+    DateTime endDate = DateTime(month.year, month.month + 1, 1).subtract(Duration(seconds: 1)); // Last second of the month
+
+    // Request authorization to access heart rate data
+    bool requested = await healthFactory.requestAuthorization([HealthDataType.HEART_RATE]);
+
+    if (requested) {
+      // Fetch heart rate data
+      List<HealthDataPoint> heartRateData = await healthFactory.getHealthDataFromTypes(
+        startDate,
+        endDate,
+        [HealthDataType.HEART_RATE],
+      );
+
+      // Calculate the maximum heart rate
+      double maxHeartRate = 0.0; // Initialize max to 0.0
+
+      for (var dataPoint in heartRateData) {
+        double value = (dataPoint.value as NumericHealthValue).numericValue.toDouble();
+        if (value > maxHeartRate) {
+          maxHeartRate = value;
+        }
+      }
+
+      return heartRateData.isNotEmpty ? maxHeartRate : null;
+    } else {
+      print('Authorization not granted.');
+      return null;
+    }
+  }
+
+
+
+
 
 
 
