@@ -103,18 +103,21 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
     for (int i = 0; i < 7; i++) {
       DateTime date = DateTime.now().subtract(Duration(days: i));
       int steps = await healthService.getStepsForThatDay(date);
+      double heartRate = await healthService.getHeartRateForThatDay(date);
+      double calories = await healthService.getCaloriesForThatDay(date);
 
-      print('Date: $date, Steps: $steps'); // Debugging line
+      print('Date: $date, Steps: $steps, Calories: $calories',); // Debugging line
 
      
       data.add({
         'date': date,
         'steps': steps,
+        'heartRate': heartRate,
+        'calories': calories,
        
       });
     }
 
-    // data = data.reversed.toList();
     setState(() {
       weeklyData = data;
     });
@@ -148,8 +151,8 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
               children: [
                 Text(DateFormat('EEE').format(data['date'])),
                 Text('${data['steps']}'),
-                Text('100'),
-                Text('100'),
+                Text('${data['heartRate']}'),
+                Text('${data['calories']}'),
               ],
             ),
         ],

@@ -192,6 +192,79 @@ class HealthService {
     }
   }
 
+  Future<double> getHeartRateForThatDay(DateTime date) async {
+    final startDate = DateTime(date.year, date.month, date.day);
+    final endDate = startDate.add(Duration(days: 1));
+
+    try {
+      final heartRateData = await healthFactory.getHealthDataFromTypes(
+        startDate,
+        endDate,
+        [HealthDataType.HEART_RATE],
+      );
+
+      if (heartRateData.isNotEmpty) {
+        // Calculate the average heart rate
+        double totalHeartRate = 0.0;
+        for (var dataPoint in heartRateData) {
+          final value = (dataPoint.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
+          totalHeartRate += value;
+        }
+        return (totalHeartRate / heartRateData.length).ceilToDouble();
+      } else {
+        return 0; // No heart rate data found
+      }
+    } catch (e) {
+      print('Error fetching heart rate for $date: $e');
+      return 0; // Handle error appropriately
+    }
+  }
+
+  Future<double> getCaloriesForThatDay(DateTime date) async {
+  final startDate = DateTime(date.year, date.month, date.day);
+  final endDate = startDate.add(Duration(days: 1));
+
+  final bool requested = await healthFactory.requestAuthorization([HealthDataType.ACTIVE_ENERGY_BURNED]);
+
+  if (requested) {
+    try {
+      final healthData = await healthFactory.getHealthDataFromTypes(startDate, endDate, [HealthDataType.ACTIVE_ENERGY_BURNED]);
+
+      if (healthData.isNotEmpty) {
+        double totalCalories = 0.0;
+
+        for (var data in healthData) {
+          if (data.value is NumericHealthValue) {
+            final caloriesValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
+            totalCalories += caloriesValue;
+          } else {
+            print('Unexpected value type for calories data: ${data.value.runtimeType}');
+          }
+        }
+
+        return totalCalories.ceilToDouble();
+      } else {
+        print('No calories data available for the given date range');
+        return 0.0; // Return 0.0 if no data is available
+      }
+    } catch (e) {
+      print('Error fetching calories: $e'); // Detailed error message
+      return 0.0;
+    }
+  } else {
+    print('HealthKit authorization not granted');
+    return 0.0;
+  }
+}
+
+
+  
+
+
+
+ 
+
+
 
 
 
