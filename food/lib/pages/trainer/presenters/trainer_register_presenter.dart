@@ -1,6 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:food/pages/trainer/models/trainer_model.dart';
 import 'package:food/services/auth/auth_service.dart';
 
 class TrainerRegisterPresenter {

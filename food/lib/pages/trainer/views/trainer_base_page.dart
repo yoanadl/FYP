@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/trainer_navbar.dart';
-import 'package:food/trainer_main_page.dart';
-import 'package:food/trainer_meal_plan_page.dart';
-import 'package:food/trainer_my_client_page.dart';
-import 'package:food/trainer_profile_page.dart';
-import 'package:food/trainer_workout_plan_page.dart';
+import 'package:food/pages/trainer/trainer_main_page.dart';
+import 'package:food/pages/trainer/trainer_meal_plan_page.dart';
+import 'package:food/pages/trainer/trainer_my_client_page.dart';
+import 'package:food/pages/trainer/trainer_profile_page.dart';
+import 'package:food/pages/trainer/trainer_workout_plan_page.dart';
 
 class TrainerBasePage extends StatefulWidget {
   final int initialIndex;

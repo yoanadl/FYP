@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/admin_base_page.dart';
 import 'package:food/pages/base_page.dart';
+import 'package:food/pages/trainer/views/trainer_base_page.dart';
 import 'package:food/services/auth/auth_service.dart';
 import 'package:food/services/auth/login_or_register.dart';
 
@@ -41,6 +42,10 @@ class AuthGate extends StatelessWidget {
 
                   if (role == 'admin') {
                     return AdminBasePage();
+                  }
+
+                  else if (role == 'trainer') {
+                    return TrainerBasePage();
                   }
 
                   else {

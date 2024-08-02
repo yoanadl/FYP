@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +26,7 @@ class AuthService{
       
       if (userDoc.exists) {
         String role = userDoc['role'];
-        print('Retrieved role: $role'); // Debug print
+        log('Retrieved role: $role'); // Debug print
         return role;
       }
       else {
@@ -35,7 +37,7 @@ class AuthService{
     }
    
     catch (e) {
-      print('Error retrieving user role: $e');
+      log('Error retrieving user role: $e');
       return 'user';
 
     }
@@ -45,6 +47,7 @@ class AuthService{
 
   // sign in
   Future<User?> signInWithEmailPassword(BuildContext context, String email, String password) async {
+    
     try {
       UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -55,6 +58,7 @@ class AuthService{
 
       if (user != null) {
         String role = await getUserRole(user.uid);
+        log('User ID: ${user.uid}, Retrieved role: $role'); // Debug print
 
         // Navigate based on user role
         if (role == "admin") {
@@ -62,17 +66,12 @@ class AuthService{
             context,
             MaterialPageRoute(builder: (context) => AdminBasePage()),
           );
-        } 
-
-      else if (role == "trainer") {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => TrainerBasePage()),
-        );
-      }
-        
-        
-      else {
+        } else if (role == "trainer") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => TrainerBasePage()),
+          );
+        } else {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => BasePage()),
@@ -82,9 +81,11 @@ class AuthService{
 
       return user;
     } catch (e) {
+      print('Error during sign-in: $e');
       throw Exception(e.toString());
     }
   }
+
 
 
   // sign up

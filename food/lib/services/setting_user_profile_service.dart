@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SettingprofileService {
+class SettingProfileService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
@@ -100,8 +100,5 @@ class SettingprofileService {
       return null;
     }
   }
-
-
-
 
 }

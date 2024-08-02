@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/Profile%20Settings/delete_account.dart';
-import 'package:food/pages/Profile%20Settings/notification_settings.dart';
-import 'package:food/pages/Profile%20Settings/password_manager.dart';
+import 'package:food/pages/profile_setting/delete_account.dart';
+import 'package:food/pages/profile_setting/notification_settings.dart';
+import 'package:food/pages/profile_setting/password_manager.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/pages/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';

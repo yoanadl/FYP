@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/services/trainer_settingProfile_service.dart';
+import 'package:food/services/setting_trainer_profile_service.dart';
 
 abstract class TrainerExperienceView {
   void showExperienceError(String message);

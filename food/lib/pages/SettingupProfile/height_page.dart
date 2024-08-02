@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food/pages/SettingupProfile/weight_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/services/SettingProfile_service.dart';
+import 'package:food/services/setting_user_profile_service.dart';
 
 class HeightPage extends StatefulWidget {
   const HeightPage({Key? key}) : super(key: key);
@@ -58,7 +58,7 @@ class HeightPageState extends State<HeightPage> {
       return;
     }
     try {
-      await SettingprofileService().updateSettingProfile(user.uid,  {
+      await SettingProfileService().updateSettingProfile(user.uid,  {
         'Height(cm)': _Height,
       });
 

@@ -4,7 +4,7 @@ import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/pages/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
-import 'package:food/services/SettingProfile_service.dart';
+import 'package:food/services/setting_user_profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileTextField extends StatelessWidget {
@@ -144,7 +144,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
       return;
     }
     try {
-      await SettingprofileService().updateSettingProfile(user.uid, profileData);
+      await SettingProfileService().updateSettingProfile(user.uid, profileData);
       print('Profile updated successfully!');
     } catch (e) {
       print('Failed to update profile: $e');

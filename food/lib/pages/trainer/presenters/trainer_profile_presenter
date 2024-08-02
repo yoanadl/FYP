@@ -1,0 +1,14 @@
+import 'package:flutter/material.dart';
+import 'trainer_profile.dart';
+
+class TrainerPresenter {
+  final TrainerProfile _trainerProfile;
+  final _view;
+
+  TrainerPresenter(this._trainerProfile, this._view);
+
+  Future<void> loadTrainerData() async {
+    await _trainerProfile.fetchUserData();
+    _view.updateTrainerName(_trainerProfile.name ?? 'Trainer');
+  }
+}

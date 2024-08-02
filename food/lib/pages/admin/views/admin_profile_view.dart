@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/presenters/admin_profile_presenter.dart';
 import 'package:food/pages/admin/models/admin_profile_model.dart';
-import 'package:food/pages/Profile%20Settings/my_profile_page.dart';
-import 'package:food/pages/Profile%20Settings/settings_page.dart';
+import 'package:food/pages/profile_setting/my_profile_page.dart';
+import 'package:food/pages/profile_setting/settings_page.dart';
 
 class RowData {
   final IconData icon;

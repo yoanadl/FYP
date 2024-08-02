@@ -3,7 +3,7 @@ import 'package:food/pages/SettingupProfile/dietplan_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/services/SettingProfile_service.dart';
+import 'package:food/services/setting_user_profile_service.dart';
 
 class FitnessGoalPage extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _FitnessGoalScreenState extends State<FitnessGoalPage> {
       return;
     }
     try {
-      await SettingprofileService().updateSettingProfile(user.uid, {
+      await SettingProfileService().updateSettingProfile(user.uid, {
         'fitness goals': _selectedGoal,
       });
 

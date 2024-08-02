@@ -1,9 +1,16 @@
-import 'package:health/health.dart' show HealthDataAccess, HealthDataType;
+// import 'package:health/health.dart' show HealthDataAccess, HealthDataType;
 
-const dataTypesIos = [
-  HealthDataType.STEPS,
-];
-const permissions = [HealthDataAccess.READ];
+// const dataTypesIos = [
+//   HealthDataType.STEPS,
+// ];
+// const permissions = [HealthDataAccess.READ];
+// bool auth = ().requestAuithorization();
+
+// if(auth){
+  
+// }
+
+//allow device
 
 final currentDate = DateTime.now(); // End of today
 final midNight = DateTime(

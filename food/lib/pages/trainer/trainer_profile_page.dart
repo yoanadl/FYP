@@ -1,105 +1,63 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:food/pages/Profile%20Settings/help_center_page.dart';
-import 'package:food/pages/Profile%20Settings/my_profile_page.dart';
-import 'package:food/pages/Profile%20Settings/privacy_policy_page.dart';
-import 'package:food/pages/Profile%20Settings/settings_page.dart';
-import 'package:food/pages/Profile%20Settings/terms_conditions_page.dart';
+import 'package:food/pages/profile_setting/help_center_page.dart';
+import 'package:food/pages/profile_setting/my_profile_page.dart';
+import 'package:food/pages/profile_setting/privacy_policy_page.dart';
+import 'package:food/pages/profile_setting/settings_page.dart';
+import 'package:food/pages/profile_setting/terms_conditions_page.dart';
 import 'package:food/pages/intro_page.dart';
 import 'package:food/pages/upload_profile_page.dart';
-import 'package:food/services/SettingProfile_service.dart';
+// import 'package:food/services/setting_trainer_profile_service.dart';
 import 'package:food/services/auth/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food/pages/trainer/models/trainer_profile_model.dart';
 
-class RowData{
+class RowData {
   final IconData icon;
   final String text;
   final Widget? destination;
 
-  const RowData(
-    {
-      required this.icon, 
-      required this.text,
-      this.destination,
-    }
-  );
+  const RowData({
+    required this.icon,
+    required this.text,
+    this.destination,
+  });
 }
 
 class TrainerProfilePage extends StatefulWidget {
-
   TrainerProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<TrainerProfilePage> createState() => _ProfilePageState();
+  State<TrainerProfilePage> createState() => _TrainerProfilePageState();
 }
 
-class _ProfilePageState extends State<TrainerProfilePage>  {
+class _TrainerProfilePageState extends State<TrainerProfilePage> {
+  TrainerProfile trainerProfile = TrainerProfile();
 
-  String name = '';
-  String? profilePictureUrl = '';
-
-  @override 
+  @override
   void initState() {
     super.initState();
-    fetchUserData();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    await trainerProfile.fetchUserData();
+    setState(() {}); // Update UI after data is fetched
   }
 
   Widget _loadProfilePicture() {
-  final settingProfileService = SettingprofileService();
-
-  return FutureBuilder<String?>(
-    future: settingProfileService.fetchProfilePictureUrl(
-        FirebaseAuth.instance.currentUser!.uid),
-    builder: (context, snapshot) {
-      if (snapshot.hasData) {
-        String? url = snapshot.data;
-        return CircleAvatar(
-          radius: 60,
-          backgroundImage: CachedNetworkImageProvider(url!),
-        );
-      } else if (snapshot.hasError) {
-        print('Error fetching profile picture URL: ${snapshot.error}');
-        return CircularProgressIndicator(); // Show a loading indicator
-      }
-      return CircleAvatar(
+    return trainerProfile.profilePictureUrl != null
+    ? CircleAvatar(
+        radius: 60,
+        backgroundImage: CachedNetworkImageProvider(trainerProfile.profilePictureUrl!),
+      )
+    : CircleAvatar(
         radius: 60,
         child: Icon(Icons.person),
-      ); // Placeholder
-    },
-  );
-}
-
-
-  Future<void> fetchUserData() async {
-
-    User? user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      try {
-        Map<String, dynamic>? userData =
-            await SettingprofileService().fetchUserData(user.uid);
-
-        if (userData != null) {
-          setState(() {
-            name = userData['Name'] ?? 'No name';
-            profilePictureUrl = userData['profilePictureUrl'];
-          });
-        } else {
-          print('No user data found for uid: ${user.uid}');
-        }
-      } catch (e) {
-        print('Error fetching user data: $e');
-      }
-    } else {
-      print('No user is currently signed in.');
-    }
+      );
   }
 
-
   void logout(BuildContext context) async {
-
     final authService = AuthService();
     try {
       await authService.signOut();
@@ -108,42 +66,38 @@ class _ProfilePageState extends State<TrainerProfilePage>  {
         MaterialPageRoute(builder: (context) => IntroPage()),
       );
     } catch (error) {
-      // Handle errors from signOut
       print('Error logging out: $error');
     }
   }
 
   void showLogoutConfirmationDialog(BuildContext context) {
     showDialog(
-      context: context, 
+      context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           content: Text(
             'Are you sure you want to log out?',
-            style: TextStyle(
-              fontSize: 15
-            ),
+            style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           ),
-          actions: <Widget> [
+          actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-              }, 
+              },
               child: Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 logout(context);
-              }, 
+              },
               child: Text('Logout'),
             ),
           ],
         );
       },
     );
-
   }
 
   final List<RowData> rowData = [
@@ -202,20 +156,10 @@ class _ProfilePageState extends State<TrainerProfilePage>  {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 20.0),
-            // profile image avatar
+            // Profile image avatar
             Stack(
               children: [
                 _loadProfilePicture(),
-                // CircleAvatar(
-                //   backgroundColor: Colors.grey[100],
-                //   radius: 50.0,
-                //   backgroundImage: profilePictureUrl != null
-                //     ? CachedNetworkImageProvider(profilePictureUrl!)
-                //     : null,
-                //   child: profilePictureUrl == null
-                //     ? Icon(Icons.person, size : 50)
-                //     : null,
-                // ),
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -224,7 +168,8 @@ class _ProfilePageState extends State<TrainerProfilePage>  {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => UploadProfilePage()),
+                          builder: (context) => UploadProfilePage(),
+                        ),
                       );
                     },
                     child: Container(
@@ -243,16 +188,16 @@ class _ProfilePageState extends State<TrainerProfilePage>  {
                 ),
               ],
             ),
-            // name
+            // Name
             SizedBox(height: 15.0),
             Text(
-              name,
+              trainerProfile.name ?? 'No name',
               style: TextStyle(
                 fontSize: 20,
               ),
             ),
             SizedBox(height: 25.0),
-            // settings
+            // Settings
             Expanded(
               child: ListView.separated(
                 shrinkWrap: true,
@@ -268,7 +213,7 @@ class _ProfilePageState extends State<TrainerProfilePage>  {
     );
   }
 
-  // function to build each row
+  // Function to build each row
   Widget buildRowItem(BuildContext context, RowData data) {
     return InkWell(
       onTap: () {
@@ -307,5 +252,3 @@ class _ProfilePageState extends State<TrainerProfilePage>  {
     );
   }
 }
-
-

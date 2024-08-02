@@ -7,7 +7,7 @@ import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/pages/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
-import 'package:food/services/SettingProfile_service.dart';
+import 'package:food/services/setting_user_profile_service.dart';
 import 'dart:math' as math;
 
 
@@ -25,7 +25,7 @@ class _BmiPageState extends State<BmiPage> {
   double userWeight = 0.0;
   bool editMode = false;
 
-  final SettingprofileService settingprofileService = SettingprofileService();
+  final SettingProfileService settingprofileService = SettingProfileService();
 
   @override
   void initState() {

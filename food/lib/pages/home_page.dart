@@ -3,15 +3,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/base_page.dart';
-import 'package:food/services/SettingProfile_service.dart';
+import 'package:food/services/setting_user_profile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'mealPlan_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:food/applewatch/injector.dart' show healthFactory;
-import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
-import 'package:health/health.dart';
+// import 'package:food/applewatch/injector.dart' show healthFactory;
+// import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
+// import 'package:health/health.dart';
 
 
 
@@ -29,8 +29,8 @@ class _HomePageState extends State<HomePage> {
   double? calories;
   String name = '';
   String? profilePictureUrl;
-  final HealthService healthService = HealthService();
-  final SettingprofileService profileService = SettingprofileService();
+  // final HealthService healthService = HealthService();
+  final SettingProfileService profileService = SettingProfileService();
 
 
   @override 
@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
     if (user != null) {
       try {
         Map<String, dynamic>? userData =
-            await SettingprofileService().fetchUserData(user.uid);
+            await SettingProfileService().fetchUserData(user.uid);
 
         if (userData != null) {
           setState(() {
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget loadProfilePicture(BuildContext context, String uid) {
-    final settingProfileService = SettingprofileService();
+    final settingProfileService = SettingProfileService();
 
     return FutureBuilder<String?>(
       future: settingProfileService.fetchProfilePictureUrl(uid),
@@ -90,16 +90,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchData() async {
-    int? fetchedSteps = await healthService.getSteps();
+    // int? fetchedSteps = await healthService.getSteps();
    
 
-    setState(() {
+    // setState(() {
       
-      steps = fetchedSteps ?? 0;
-      heartRate = heartRate;
-      calories = calories;
+    //   steps = fetchedSteps ?? 0;
+    //   heartRate = heartRate;
+    //   calories = calories;
 
-    });
+    // });
   }
 
   
