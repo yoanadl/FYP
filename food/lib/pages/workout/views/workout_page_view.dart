@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/services/workout_service.dart';
-import 'create_new_workout.dart';
-import 'workout_summary.dart';
-import 'explore_workouts.dart';
+import 'package:food/pages/workout/create_new_workout.dart';
+import 'package:food/pages/workout/explore_workouts.dart';
+import 'package:food/pages/workout/models/workout_model.dart';
+import 'package:food/pages/workout/presenters/workout_presenter.dart';
+import 'package:food/pages/workout/views/create_new_workout_view.dart';
+import 'package:food/pages/workout/workout_summary.dart';
+
+abstract class WorkoutPageView {
+  void onWorkoutsLoaded(List<Map<String, dynamic>> workouts);
+  void onWorkoutsSearched(List<Map<String, dynamic>> workouts);
+  void onError(String message);
+}
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({Key? key}) : super(key: key);
@@ -12,22 +20,29 @@ class WorkoutPage extends StatefulWidget {
   State<WorkoutPage> createState() => _WorkoutPageState();
 }
 
-class _WorkoutPageState extends State<WorkoutPage> {
-  final WorkoutService _workoutService = WorkoutService();
-  User? _user;
+class _WorkoutPageState extends State<WorkoutPage> implements WorkoutPageView {
+  late WorkoutPresenter _presenter;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
+  List<Map<String, dynamic>> _workouts = [];
+  List<Map<String, dynamic>> _filteredWorkouts = [];
+  User? _user;
 
   @override
   void initState() {
     super.initState();
     _user = FirebaseAuth.instance.currentUser;
+    _presenter = WorkoutPresenter(WorkoutModel(), this);
     _searchController.addListener(_onSearchChanged);
+    if (_user != null) {
+      _presenter.loadWorkouts(_user!.uid);
+    }
   }
 
   void _onSearchChanged() {
     setState(() {
       _searchQuery = _searchController.text;
+      _presenter.searchWorkouts(_searchQuery, _workouts);
     });
   }
 
@@ -38,12 +53,30 @@ class _WorkoutPageState extends State<WorkoutPage> {
     super.dispose();
   }
 
-  void _refreshWorkouts() {
-
-    // trigger a rebuild to refresh the workout list
+  @override
+  void onWorkoutsLoaded(List<Map<String, dynamic>> workouts) {
     setState(() {
-
+      _workouts = workouts;
+      _presenter.searchWorkouts(_searchQuery, _workouts);
     });
+  }
+
+  @override
+  void onWorkoutsSearched(List<Map<String, dynamic>> workouts) {
+    setState(() {
+      _filteredWorkouts = workouts;
+    });
+  }
+
+  @override
+  void onError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  void _refreshWorkouts() {
+    if (_user != null) {
+      _presenter.loadWorkouts(_user!.uid);
+    }
   }
 
   @override
@@ -87,14 +120,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   labelColor: Colors.white,
                   unselectedLabelColor: Colors.white,
                   tabs: [
-                    Tab(
-                      text: 'Ongoing',
-                    ),
+                    Tab(text: 'Ongoing'),
                     Tab(text: 'Completed'),
                   ],
                 ),
               ),
-              // Search bar
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -113,11 +143,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    IconButton(
-                      icon: Icon(Icons.filter_list),
-                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -150,7 +175,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   if (result == 'new_workout') {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CreateNewWorkoutPage()),
+                      MaterialPageRoute(builder: (context) => CreateNewWorkoutView()),
                     );
                   } else if (result == 'explore_workouts') {
                     Navigator.push(
@@ -206,7 +231,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   Widget _buildWorkoutList(String type) {
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _user != null ? _workoutService.getUserWorkouts(_user!.uid) : Future.value([]),
+      future: _user != null ? _presenter.loadWorkouts(_user!.uid) : Future.value([]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
@@ -246,7 +271,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         workoutTitle: workout['title'],
                         activities: List<String>.from(workout['activities']),
                         duration: List<int>.from(workout['durations']),
-                        onDelete: _refreshWorkouts, 
+                        onDelete: _refreshWorkouts,
                       ),
                     ),
                   );

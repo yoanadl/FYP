@@ -152,15 +152,6 @@ class _WorkoutActivityPageState extends State<WorkoutActivityPage> {
                 ],
               ),
               SizedBox(height: 30),
-              Text(
-                '12 kcal burnt',
-                style: TextStyle(fontSize: 18),
-              ),
-              Text(
-                'Your goal: 100 kcal',
-                style: TextStyle(fontSize: 18),
-              ),
-              SizedBox(height: 20),
               IconButton(
                 onPressed: () {
                   setState(() {
