@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/pages/workout/create_new_workout.dart';
-import 'package:food/pages/workout/explore_workouts.dart';
 import 'package:food/pages/workout/models/workout_model.dart';
 import 'package:food/pages/workout/presenters/workout_presenter.dart';
 import 'package:food/pages/workout/views/create_new_workout_view.dart';
+import 'package:food/pages/workout/views/explore_workouts_view.dart';
 import 'package:food/pages/workout/workout_summary.dart';
 
 abstract class WorkoutPageView {

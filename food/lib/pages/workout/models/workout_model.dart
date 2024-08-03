@@ -7,4 +7,31 @@ class WorkoutModel {
   Future<List<Map<String, dynamic>>> getUserWorkouts(String userId) async {
     return await _workoutService.getUserWorkouts(userId);
   }
+
+   Future<List<Map<String, dynamic>>> fetchPreMadeWorkouts() async {
+    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+
+    return [
+      {
+        'title': 'Upper Body Blast',
+        'activities': ['Push-ups', 'Pull-ups', 'Bicep Curls'],
+        'durations': [10, 15, 20],
+      },
+      {
+        'title': 'Lower Body Strength',
+        'activities': ['Squats', 'Lunges', 'Leg Press'],
+        'durations': [10, 15, 20],
+      },
+      {
+        'title': 'Cardio Blast',
+        'activities': ['Running', 'Cycling', 'Jump Rope'],
+        'durations': [20, 15, 10],
+      },
+      {
+        'title': 'Flexibility & Core',
+        'activities': ['Yoga', 'Planks', 'Pilates'],
+        'durations': [20, 15, 20],
+      }
+    ];
+  }
 }
