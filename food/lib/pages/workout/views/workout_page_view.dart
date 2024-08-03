@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/pages/workout/models/workout_model.dart';
 import 'package:food/pages/workout/presenters/workout_presenter.dart';
+import 'package:food/pages/workout/presenters/workout_summary_presenter.dart';
 import 'package:food/pages/workout/views/create_new_workout_view.dart';
 import 'package:food/pages/workout/views/explore_workouts_view.dart';
+import 'package:food/pages/workout/views/workout_summary_view.dart';
 import 'package:food/pages/workout/workout_summary.dart';
 
 abstract class WorkoutPageView {
@@ -13,13 +15,16 @@ abstract class WorkoutPageView {
 }
 
 class WorkoutPage extends StatefulWidget {
+  
   const WorkoutPage({Key? key}) : super(key: key);
+
 
   @override
   State<WorkoutPage> createState() => _WorkoutPageState();
 }
 
 class _WorkoutPageState extends State<WorkoutPage> implements WorkoutPageView {
+
   late WorkoutPresenter _presenter;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -229,74 +234,77 @@ class _WorkoutPageState extends State<WorkoutPage> implements WorkoutPageView {
   }
 
   Widget _buildWorkoutList(String type) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _user != null ? _presenter.loadWorkouts(_user!.uid) : Future.value([]),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No workouts found.'));
-        }
+  return FutureBuilder<List<Map<String, dynamic>>>(
+    future: _user != null ? _presenter.loadWorkouts(_user!.uid) : Future.value([]),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: CircularProgressIndicator());
+      }
+      if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      }
+      if (!snapshot.hasData || snapshot.data!.isEmpty) {
+        return Center(child: Text('No workouts found.'));
+      }
 
-        List<Map<String, dynamic>> workouts = snapshot.data!;
-        if (_searchQuery.isNotEmpty) {
-          workouts = workouts.where((workout) {
-            String title = workout['title'] ?? 'Untitled Workout';
-            return title.toLowerCase().contains(_searchQuery.toLowerCase());
-          }).toList();
-        }
+      List<Map<String, dynamic>> workouts = snapshot.data!;
+      if (_searchQuery.isNotEmpty) {
+        workouts = workouts.where((workout) {
+          String title = workout['title'] ?? 'Untitled Workout';
+          return title.toLowerCase().contains(_searchQuery.toLowerCase());
+        }).toList();
+      }
 
-        return ListView.builder(
-          padding: EdgeInsets.all(16.0),
-          itemCount: workouts.length,
-          itemBuilder: (context, index) {
-            Map<String, dynamic> workout = workouts[index];
-            String workoutId = workout['id'];
+      return ListView.builder(
+        padding: EdgeInsets.all(16.0),
+        itemCount: workouts.length,
+        itemBuilder: (context, index) {
+          Map<String, dynamic> workout = workouts[index];
+          String workoutId = workout['id'];
 
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WorkoutSummaryPage(
-                        userId: _user!.uid,
-                        workoutId: workoutId,
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WorkoutSummaryView(
+                      presenter: WorkoutSummaryPresenter(
                         workoutTitle: workout['title'],
-                        activities: List<String>.from(workout['activities']),
                         duration: List<int>.from(workout['durations']),
+                        activities: List<String>.from(workout['activities']),
+                        userId: _user!.uid, // Pass userId from _user object
+                        workoutId: workoutId,
                         onDelete: _refreshWorkouts,
                       ),
                     ),
-                  );
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 180,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(9),
-                    color: Colors.grey[200],
                   ),
-                  child: Center(
-                    child: Text(
-                      workout['title'] ?? 'Untitled Workout',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                height: 180,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(9),
+                  color: Colors.grey[200],
+                ),
+                child: Center(
+                  child: Text(
+                    workout['title'] ?? 'Untitled Workout',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
-            );
-          },
-        );
-      },
-    );
-  }
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
 }
