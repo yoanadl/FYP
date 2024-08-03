@@ -30,40 +30,56 @@ class HealthService {
 
   }
 
-  Future<double?> getHeartRate() async {
-    final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+//   Future<double?> getHeartRate() async {
+//   final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
 
-    if (requested) {
-      try {
-        final DateTime now = DateTime.now();
-        final DateTime oneHourAgo = now.subtract(Duration(hours:1));
-        final healthData = await healthFactory.getHealthDataFromTypes(oneHourAgo, now, [HealthDataType.HEART_RATE]);
+//   if (requested) {
+//     try {
+//       final healthData = await healthFactory.getHealthDataFromTypes(DateTime.now().subtract(Duration(hours: 1)), DateTime.now(), [HealthDataType.HEART_RATE]);
 
-        if (healthData.isNotEmpty) {
-          // Get the most recent heart rate data point
-          final data = healthData.last;
-          if (data.value is NumericHealthValue) {
-            final heartRateValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
-            // print('Fetching steps from $oneHourAgo to $now');
-            // print('Fetched Current Heart Rate: $heartRateValue');
-            return heartRateValue;
-          } else {
-            print('Unexpected value type for heart rate data: ${data.value.runtimeType}');
-            return null;
-          }
-        } else {
-          print('No heart rate data available');
-          return null;
-        }
-      } catch (e) {
-        print('Error fetching heart rate: $e');
+//       // Get the most recent heart rate data point with null checks
+//       final heartRateValue = (healthData.last.value as NumericHealthValue).numericValue?.toDouble();
+//       return heartRateValue;
+//     } catch (e) {
+//       print('Error fetching heart rate: $e');
+//       return null;
+//     }
+//   } else {
+//     print('Authorization not granted');
+//     return null;
+//   }
+// }
+
+Future<double?> getHeartRate() async {
+  final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+
+  if (requested) {
+    try {
+      final DateTime endTime = DateTime.now();
+      final DateTime startTime = endTime.subtract(Duration(minutes: 10));
+      final List<HealthDataPoint> healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.HEART_RATE]);
+
+      // Check if health data is not empty
+      if (healthData.isNotEmpty) {
+        final heartRateValue = (healthData.last.value as NumericHealthValue).numericValue?.toDouble();
+        print('Fetched heart rate: $heartRateValue bpm');
+        return heartRateValue;
+      } else {
+        print('No heart rate data available');
         return null;
       }
-    } else {
-      print('Authorization not granted');
+    } catch (e) {
+      print('Error fetching heart rate: $e');
       return null;
     }
+  } else {
+    print('Authorization not granted');
+    return null;
   }
+}
+
+
+
 
   Future<double?> getCalories() async {
     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
@@ -138,38 +154,38 @@ class HealthService {
   } 
 
   Future<double?> getMaximumHeartRateForToday() async {
-  // Define the time range: from midnight of today to midnight of tomorrow
-  DateTime now = DateTime.now();
-  DateTime startDate = DateTime(now.year, now.month, now.day);
-  DateTime endDate = startDate.add(Duration(days: 1));
+    // Define the time range: from midnight of today to midnight of tomorrow
+    DateTime now = DateTime.now();
+    DateTime startDate = DateTime(now.year, now.month, now.day);
+    DateTime endDate = startDate.add(Duration(days: 1));
 
-  // Request authorization to access heart rate data
-  bool requested = await healthFactory.requestAuthorization([HealthDataType.HEART_RATE]);
+    // Request authorization to access heart rate data
+    bool requested = await healthFactory.requestAuthorization([HealthDataType.HEART_RATE]);
 
-  if (requested) {
-    // Fetch heart rate data
-    List<HealthDataPoint> heartRateData = await healthFactory.getHealthDataFromTypes(
-      startDate,
-      endDate,
-      [HealthDataType.HEART_RATE],
-    );
+    if (requested) {
+      // Fetch heart rate data
+      List<HealthDataPoint> heartRateData = await healthFactory.getHealthDataFromTypes(
+        startDate,
+        endDate,
+        [HealthDataType.HEART_RATE],
+      );
 
-    // Calculate the maximum heart rate
-    double maxHeartRate = 0.0; // Initialize max to 0.0
+      // Calculate the maximum heart rate
+      double maxHeartRate = 0.0; // Initialize max to 0.0
 
-    for (var dataPoint in heartRateData) {
-      double value = (dataPoint.value as NumericHealthValue).numericValue.toDouble();
-      if (value > maxHeartRate) {
-        maxHeartRate = value;
+      for (var dataPoint in heartRateData) {
+        double value = (dataPoint.value as NumericHealthValue).numericValue.toDouble();
+        if (value > maxHeartRate) {
+          maxHeartRate = value;
+        }
       }
-    }
 
-    return maxHeartRate;
-  } else {
-    print('Authorization not granted.');
-    return null;
+      return maxHeartRate;
+    } else {
+      print('Authorization not granted.');
+      return null;
+    }
   }
-}
 
 
 // weekly 
@@ -342,6 +358,90 @@ class HealthService {
       print('HealthKit authorization not granted');
     }
   }
+
+  Future<double?> getAverageWeeklyHeartRate() async {
+    final now = DateTime.now();
+    final startDate = now.subtract(Duration(days: 6)); // Start 6 days ago (beginning of the week)
+    final endDate = now.add(Duration(days: 1)); // End of today (inclusive)
+
+    // Request authorization to access heart rate data
+    final bool requested = await healthFactory.requestAuthorization([HealthDataType.HEART_RATE]);
+
+    if (requested) {
+      try {
+        // Initialize variables
+        double totalHeartRate = 0.0;
+        int dataPoints = 0;
+
+        // Iterate over each day in the week
+        for (DateTime date = startDate; date.isBefore(endDate); date = date.add(Duration(days: 1))) {
+          final dailyHeartRate = await getHeartRateForThatDay(date);
+          if (dailyHeartRate != null) {
+            totalHeartRate += dailyHeartRate;
+            dataPoints++;
+          } else {
+            print('No heart rate data found for ${date.toLocal()}');
+          }
+        }
+
+        // Calculate and return average heart rate (if data is available)
+        return dataPoints > 0 ? totalHeartRate / dataPoints : null;
+      } catch (e) {
+        print('Error fetching heart rate data: $e');
+        return null;  // Handle error appropriately (e.g., return null or throw exception)
+      }
+    } else {
+      print('HealthKit authorization not granted');
+      return null;  // Handle authorization failure (e.g., return null or throw exception)
+    }
+  }
+
+  Future<int?> getAverageWeeklySteps() async {
+    final now = DateTime.now();
+    final startDate = now.subtract(Duration(days: 6)); // Start of the week
+
+    double totalSteps = 0;
+    int daysWithSteps = 0;
+
+    for (int i = 0; i < 7; i++) {
+      final day = startDate.add(Duration(days: i));
+      final steps = await getStepsForThatDay(day);
+      if (steps != null && steps > 0) {
+        totalSteps += steps;
+        daysWithSteps++;
+      }
+    }
+
+    if (daysWithSteps > 0) {
+      return (totalSteps / daysWithSteps).round();
+    } else {
+      return null;
+    }
+  }
+
+
+  Future<double?> getAverageWeeklyCalories() async {
+    final now = DateTime.now();
+    final startDate = now.subtract(Duration(days: 6)); // Start of the week
+
+    double totalCalories = 0;
+    int daysWithCalories = 0;
+
+    for (int i = 0; i < 7; i++) {
+      final day = startDate.add(Duration(days: i));
+      final calories = await getCaloriesForThatDay(day);
+      if (calories != null && calories > 0) {
+        totalCalories += calories;
+        daysWithCalories++;
+      }
+    }
+
+    return daysWithCalories > 0 ? (totalCalories / daysWithCalories).ceilToDouble() : null;
+  }
+
+
+
+
 
 
   // MONTH DATA

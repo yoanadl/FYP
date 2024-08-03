@@ -29,10 +29,15 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   
   bool _isLoading = true;
   List<Map<String, dynamic>> weeklyData = [];
+
+  double? averageWeeklyHeartRate = 0.0;
+  int? averageWeeklySteps = 0;
+  double? averageWeeklyCalories = 0.0;
   int totalStepsInMonth = 0;
   double totalCaloriesInMonth = 0.0;
   double? averageMonthlyHeartRate;
   double? maxHeartRateInMonth = 0.0;
+
   
 
 
@@ -107,11 +112,17 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
 
    Future<void> _fetchWeeklyData() async {
     List<Map<String, dynamic>> data = [];
+
+    double? averageHeartRatePerWeek = await healthService.getAverageWeeklyHeartRate();
+    double? averageCaloriesPerWeek = await healthService.getAverageWeeklyCalories();
+    int? averageStepsPerWeek = await healthService.getAverageWeeklySteps();
+
     for (int i = 0; i < 7; i++) {
       DateTime date = DateTime.now().subtract(Duration(days: i));
       int steps = await healthService.getStepsForThatDay(date);
       double heartRate = await healthService.getHeartRateForThatDay(date);
       double calories = await healthService.getCaloriesForThatDay(date);
+      
 
       print('Date: $date, Steps: $steps, Calories: $calories',); // Debugging line
 
@@ -127,6 +138,10 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
 
     setState(() {
       weeklyData = data;
+      averageWeeklyHeartRate = averageHeartRatePerWeek;
+      averageWeeklyCalories = averageCaloriesPerWeek;
+      averageWeeklySteps = averageStepsPerWeek;
+
     });
   }
 
@@ -551,6 +566,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
 
                 if (selectedPeriod == 'Week') ... [
                   _weekdata(),
+                  SizedBox(height: 15,),
                   buildWeeklyDataTable(),
                 ], 
 
@@ -691,7 +707,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   Widget _weekdata() {
     return Container(
       width: 350,
-      height: 190,
+      height: 260,
       margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.all(15),
       
@@ -699,6 +715,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
         children: [
           Expanded(
             child: Container(
+              height: 240,
               margin: EdgeInsets.only(right: 10),
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
@@ -713,12 +730,14 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Heart Rate \n hardcoded \n ${heartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                      'Average \n Heart \n Rate \n ${averageWeeklyHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(width: 5),
                     Icon(Icons.favorite, color: Color(0xFF508AA8)),
@@ -730,10 +749,11 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
           ),
           
 
-          Expanded(
+          Flexible(
             child: Column(
               children: [
                 Container(
+                  height: 110,
                   margin: EdgeInsets.only(bottom: 10),
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -749,12 +769,13 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Calories \n ${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                          'Average \n Calories \n ${averageWeeklyCalories?.toStringAsFixed(1) ?? 'N/A'} kcal',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.bold
                           ),
+                          
                         ),
                         SizedBox(width: 5),
                         Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
@@ -765,6 +786,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                   ),
           
                 Container(
+                  height: 110,
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.white, 
@@ -779,7 +801,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Steps \n ${steps?.toString() ?? 'N/A'} steps',
+                          'Average \n Steps \n ${averageWeeklySteps?.toString() ?? 'N/A'} steps',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 16,
