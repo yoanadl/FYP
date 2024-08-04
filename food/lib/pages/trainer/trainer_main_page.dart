@@ -4,7 +4,6 @@ import 'package:food/pages/trainer/trainer_profile_page.dart';
 import 'package:intl/intl.dart';
 import 'trainer_pending_clients.dart';
 import 'trainer_my_client_page.dart';
-import 'trainer_meal_plan_page.dart';
 import 'trainer_workout_plan_page.dart';
 
 class TrainerMainPage extends StatefulWidget {
@@ -73,12 +72,16 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
           actions: [
             IconButton(
               icon: Container(
-                width: 60, 
-                height: 60, 
-                decoration: BoxDecoration(shape: BoxShape.circle),
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/profile_picture.png'),
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('lib/images/profile_picture.webp'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
+                child: SizedBox.expand(), // Ensures the container takes up the full size
               ),
 
               onPressed: () {
@@ -126,10 +129,10 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                     MaterialPageRoute(builder: (context) => TrainerWorkoutPlanPage()),
                   );
                 }),
-                _buildGridTile(context, 'Meal\nPlan', Color(0xFF9DD1F1), () {
+                _buildGridTile(context, 'Profile', Color(0xFF9DD1F1), () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerMealPlanPage()),
+                    MaterialPageRoute(builder: (context) => TrainerProfilePage()),
                   );
                 }),
                 _buildGridTile(context, 'Pending\nRequest', Colors.white, () {

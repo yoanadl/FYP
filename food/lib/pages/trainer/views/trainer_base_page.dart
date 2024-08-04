@@ -25,7 +25,7 @@ class _HomePageState extends State<TrainerBasePage> {
     TrainerMainPage(),
     TrainerWorkoutPlanPage(),
     TrainerMyClientPage(),
-    TrainerMealPlanPage(),
+    // TrainerMealPlanPage(),
     TrainerProfilePage(),
   ];
 

@@ -31,10 +31,10 @@ class TrainerNavbar extends StatelessWidget {
             icon: Icon(Icons.list),
             label: 'Client List',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.food_bank),
-            label: 'Meal Plan',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.food_bank),
+          //   label: 'Meal Plan',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
