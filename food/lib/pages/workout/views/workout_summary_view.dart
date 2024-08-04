@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
-import 'package:food/pages/community_page.dart';
-import 'package:food/pages/profile_page.dart';
-import 'package:food/pages/workout/edit_workout_page.dart';
 import 'package:food/pages/workout/presenters/workout_summary_presenter.dart';
 import 'package:food/pages/workout/views/edit_workout_view.dart';
-import 'package:food/pages/workout/workout_activity.dart';
-import 'package:food/pages/workout/workout_page.dart';
+import 'package:food/pages/workout/views/workout_activity_view.dart';  
+import 'package:food/pages/workout/models/workout_activity_model.dart';  
 
 class WorkoutSummaryView extends StatelessWidget {
   final WorkoutSummaryPresenter presenter;
@@ -29,12 +26,12 @@ class WorkoutSummaryView extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => presenter.confirmDelete(context),
-            icon: const Icon(Icons.delete)
+            icon: const Icon(Icons.delete),
           ),
           IconButton(
             onPressed: () {
               Navigator.push(
-                context, 
+                context,
                 MaterialPageRoute(
                   builder: (context) => EditWorkoutView(
                     userId: presenter.userId,
@@ -45,8 +42,8 @@ class WorkoutSummaryView extends StatelessWidget {
                   ),
                 ),
               );
-            }, 
-            icon: const Icon(Icons.edit)
+            },
+            icon: const Icon(Icons.edit),
           ),
         ],
       ),
@@ -85,21 +82,24 @@ class WorkoutSummaryView extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
-                    context, 
+                    context,
                     MaterialPageRoute(
-                      builder: (context) => WorkoutActivityPage(
-                        activityTitle: presenter.activities[0],
-                        duration: presenter.duration[0], 
-                        activityIndex: 0, 
-                        activities: presenter.activities, 
-                        durations: presenter.duration,
+                      builder: (context) => WorkoutActivityView(
+                        model: WorkoutActivityModel(
+                          activityTitle: presenter.activities[0],
+                          duration: presenter.duration[0],
+                          remainingTimeInSeconds: presenter.duration[0] * 60,  // Example initialization
+                          activityIndex: 0, // Provide the activityIndex
+                          activities: presenter.activities, // Assuming you need this
+                          durations: presenter.duration, // Assuming you need this
+                        ),
                       ),
                     ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff031927), 
-                  foregroundColor: Colors.white, 
+                  backgroundColor: Color(0xff031927),
+                  foregroundColor: Colors.white,
                 ),
                 child: Text('Start Workout'),
               ),
@@ -114,16 +114,16 @@ class WorkoutSummaryView extends StatelessWidget {
             Navigator.pop(context);
             switch (index) {
               case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
                 break;
               case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
                 break;
               case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CommunityPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
                 break;
               case 3:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3,)));
                 break;
             }
           }
