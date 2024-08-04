@@ -16,17 +16,21 @@ class WorkoutActivityView extends StatefulWidget {
 
 class _WorkoutActivityViewState extends State<WorkoutActivityView> implements WorkoutActivityViewInterface {
   late WorkoutActivityPresenter _presenter;
+  late WorkoutActivityModel _model;
 
   @override
   void initState() {
     super.initState();
-    _presenter = WorkoutActivityPresenter(this, widget.model);
+    _model = widget.model;
+    _presenter = WorkoutActivityPresenter(this, _model);
     _presenter.startTimer();
   }
 
   @override
   void updateTimer(int remainingTime) {
-    setState(() {});
+    setState(() {
+      _model = _model.copyWith(remainingTimeInSeconds: remainingTime);
+    });
   }
 
   @override
@@ -42,8 +46,8 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
   @override
   void navigateToWorkoutDone() {
     final workoutDoneModel = WorkoutDoneModel(
-      caloriesBurned: 300, 
-      heartRate: 120,      
+      caloriesBurned: 300,
+      heartRate: 120,
     );
 
     final workoutDoneView = WorkoutDoneViewImplementation();
@@ -61,7 +65,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
 
   @override
   Widget build(BuildContext context) {
-    double progress = 1 - (widget.model.remainingTimeInSeconds / (widget.model.duration * 60));
+    double progress = 1 - (_model.remainingTimeInSeconds / (_model.duration * 60));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -75,7 +79,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _presenter.isBreak ? 'Break' : '${widget.model.activityTitle}',
+                _presenter.isBreak ? 'Break' : '${_model.activityTitle}',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -94,7 +98,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
                     ),
                   ),
                   Text(
-                    '${widget.model.remainingTimeInSeconds ~/ 60}:${(widget.model.remainingTimeInSeconds % 60).toString().padLeft(2, '0')}',
+                    '${_model.remainingTimeInSeconds ~/ 60}:${(_model.remainingTimeInSeconds % 60).toString().padLeft(2, '0')}',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,

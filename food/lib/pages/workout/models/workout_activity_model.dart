@@ -14,7 +14,7 @@ class WorkoutActivityModel {
     required this.activityIndex,
     required this.activities,
     required this.durations,
-    required this.remainingTimeInSeconds, // Initialize this in the constructor
+    required this.remainingTimeInSeconds, 
   });
 
   WorkoutActivityModel copyWith({

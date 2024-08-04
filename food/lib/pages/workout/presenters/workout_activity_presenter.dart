@@ -17,8 +17,8 @@ class WorkoutActivityPresenter {
 
   WorkoutActivityPresenter(this._view, this._model);
 
-  bool get isPaused => _isPaused; // Add this getter
-  bool get isBreak => _isBreak; // Add this getter
+  bool get isPaused => _isPaused;
+  bool get isBreak => _isBreak;
 
   void startTimer() {
     if (_isBreak) {
@@ -56,6 +56,7 @@ class WorkoutActivityPresenter {
         }
       }
     });
+    print('Timer started');
   }
 
   void togglePause() {
@@ -64,5 +65,6 @@ class WorkoutActivityPresenter {
 
   void stopTimer() {
     _timer?.cancel();
+    print('Timer stopped');
   }
 }
