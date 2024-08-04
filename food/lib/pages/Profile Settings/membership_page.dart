@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/pages/community_page.dart';
-import 'package:food/pages/workout/workout_page.dart';
 import 'package:food/pages/PremiumUser/premiumplan_page.dart';
+import 'package:food/pages/workout/views/workout_page_view.dart';
 
 import 'bmi_reports_page.dart';
 

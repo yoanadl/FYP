@@ -2,9 +2,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:food/pages/workout/views/workout_page_view.dart';
 import '../components/navbar.dart';
 import 'community_page.dart';
-import 'workout/workout_page.dart';
 import 'profile_page.dart';
 import 'explore_premade_meal.dart';
 

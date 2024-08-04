@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
-import 'package:food/pages/workout/premade_workout_summary.dart';
 import 'package:food/pages/workout/views/premade_workout_summary_view.dart';
 import '../models/workout_model.dart';
 import '../presenters/explore_workouts_presenter.dart';

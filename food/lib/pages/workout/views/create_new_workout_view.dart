@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
-import 'package:food/pages/workout/workout_summary.dart';
-import 'package:food/services/workout_service.dart'; // Import your workout service
+import 'package:food/pages/workout/presenters/create_new_workout_presenter.dart';
+import 'package:food/pages/workout/views/create_new_workout_view_interface.dart';
+import 'package:food/pages/workout/presenters/workout_summary_presenter.dart';
+import 'package:food/pages/workout/views/workout_summary_view.dart';
 
 class CreateNewWorkoutView extends StatefulWidget {
   const CreateNewWorkoutView({Key? key}) : super(key: key);
@@ -12,12 +14,18 @@ class CreateNewWorkoutView extends StatefulWidget {
   State<CreateNewWorkoutView> createState() => _CreateNewWorkoutViewState();
 }
 
-class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> {
+class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> implements CreateNewWorkoutViewInterface {
   final TextEditingController workoutTitleController = TextEditingController();
   List<TextEditingController> activityControllers = [TextEditingController()];
   List<TextEditingController> durationControllers = [TextEditingController(text: '10')];
 
-  final WorkoutService workoutService = WorkoutService(); // Initialize WorkoutService
+  late CreateNewWorkoutPresenter presenter;
+
+  @override
+  void initState() {
+    super.initState();
+    presenter = CreateNewWorkoutPresenter(this);
+  }
 
   void _addActivityField() {
     setState(() {
@@ -108,43 +116,12 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> {
               ..._buildActivityFields(),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () async {
-                  try {
-                    final uid = FirebaseAuth.instance.currentUser!.uid;
-                    final workoutData = {
-                      'title': workoutTitleController.text,
-                      'activities': activityControllers.map((controller) => controller.text).toList(),
-                      'durations': durationControllers.map((controller) => int.parse(controller.text)).toList(),
-                    };
-                    await workoutService.createWorkoutData(uid, workoutData);
-                    // Show success message and navigate to WorkoutSummaryPage
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Workout created successfully!'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WorkoutSummaryPage(
-                          workoutTitle: workoutTitleController.text,
-                          duration: durationControllers.map((controller) => int.parse(controller.text)).toList(),
-                          activities: activityControllers.map((controller) => controller.text).toList(),
-                          userId: uid,
-                          workoutId: '', // Optionally, you might want to fetch or pass the workoutId
-                        ),
-                      ),
-                    );
-                  } catch (e) {
-                    // Handle the error
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Failed to create workout: $e'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
+                onPressed: () {
+                  presenter.createWorkout(
+                    workoutTitleController.text,
+                    activityControllers.map((controller) => controller.text).toList(),
+                    durationControllers.map((controller) => int.parse(controller.text)).toList(),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff031927),
@@ -177,6 +154,53 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> {
             }
           }
         },
+      ),
+    );
+  }
+
+  @override
+  void onWorkoutCreated() {
+    // Show a scaffold message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Workout created successfully!'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+
+    // Create the presenter for the WorkoutSummaryView
+    final workoutSummaryPresenter = WorkoutSummaryPresenter(
+      userId: FirebaseAuth.instance.currentUser!.uid,
+      workoutId: '', // Ensure you provide the correct workoutId here
+      workoutTitle: workoutTitleController.text,
+      duration: durationControllers.map((controller) => int.parse(controller.text)).toList(),
+      activities: activityControllers.map((controller) => controller.text).toList(),
+    );
+
+    // Navigate to WorkoutSummaryView
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => WorkoutSummaryView(
+          presenter: workoutSummaryPresenter,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void onError(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK'),
+          ),
+        ],
       ),
     );
   }
