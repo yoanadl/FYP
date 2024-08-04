@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../components/navbar.dart';
 import '../base_page.dart';
-import '../community_page.dart';
+import '../discarded/community_page.dart';
 import '../profile_page.dart';
 import 'workout_page.dart';
 import 'workout_summary.dart';

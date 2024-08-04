@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/premium_user/card_details_page.dart';
 import 'package:food/pages/base_page.dart';
-import 'package:food/pages/community_page.dart';
+import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/home_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';

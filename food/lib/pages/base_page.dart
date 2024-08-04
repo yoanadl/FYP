@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'workout/workout_page.dart';
-import 'community_page.dart';
+import 'discarded/community_page.dart';
 import 'profile_page.dart';
 import 'home_page.dart';
 

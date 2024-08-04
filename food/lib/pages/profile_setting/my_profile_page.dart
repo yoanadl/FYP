@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
-import 'package:food/pages/community_page.dart';
+import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

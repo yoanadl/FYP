@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/community_page.dart';
+import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 import 'package:food/pages/profile_page.dart';
-import 'package:food/pages/Community_page_summary.dart';
+import 'package:food/pages/discarded/Community_page_summary.dart';
 
-class CommunityListPage extends StatefulWidget {
+class CommunityJoined extends StatefulWidget {
   @override
   _ExploreCommunityPageState createState() => _ExploreCommunityPageState();
 }
 
-class _ExploreCommunityPageState extends State<CommunityListPage> {
+class _ExploreCommunityPageState extends State<CommunityJoined> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   List<Map<String, dynamic>> preCommunity = [
@@ -19,21 +19,10 @@ class _ExploreCommunityPageState extends State<CommunityListPage> {
       'intro': ['Squats FOR Live'],
       'amount': [150],
     },
-    
-    {
-      'name': 'Lazy Workout',
-      'intro': ['Buddha Clap'],
-      'amount': [15]
-    },
     {
       'name': 'Running from the Police',
       'intro': ['Always ready to run from the cops'],
       'amount': [20]
-    },
-    {
-      'name': 'Upper Body Blast',
-      'intro': ['Dead Lift 24/7'],
-      'amount': [50]
     }
   ];
 

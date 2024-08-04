@@ -5,7 +5,7 @@ import 'package:food/pages/workout/workout_activity.dart';
 import 'package:food/services/workout_service.dart';
 import '../../components/navbar.dart';
 import '../base_page.dart';
-import '../community_page.dart';
+import '../discarded/community_page.dart';
 import '../profile_page.dart';
 import 'workout_page.dart';
 

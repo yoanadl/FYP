@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/trainer/trainer_main_page.dart';
-import 'package:food/pages/trainer/trainer_my_client_page.dart';
-import 'package:food/pages/trainer/trainer_profile_page.dart';
-import 'package:food/pages/trainer/trainer_workout_plan_page.dart';
-import 'package:food/pages/trainer/trainer_pending_clients.dart'; // Assuming this page exists
+import 'package:food/pages/trainer/views/trainer_main_page.dart';
+import 'package:food/pages/trainer/views/trainer_my_client_page.dart';
+import 'package:food/pages/trainer/views/trainer_profile_page.dart';
+import 'package:food/pages/trainer/views/trainer_workout_plan_page.dart';
+import 'package:food/pages/trainer/views/trainer_pending_clients.dart'; // Assuming this page exists
 import 'package:food/components/trainer_navbar.dart';
 
 class TrainerBasePage extends StatefulWidget {
