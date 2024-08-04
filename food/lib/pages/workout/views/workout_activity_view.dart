@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/workout/models/workout_activity_model.dart';
 import 'package:food/pages/workout/presenters/workout_activity_presenter.dart';
-import 'package:food/pages/workout/workout_done.dart';
+import 'package:food/pages/workout/views/workout_done_view.dart';
+import 'package:food/pages/workout/models/workout_done_model.dart';
+import 'package:food/pages/workout/presenters/workout_done_presenter.dart';
 
 class WorkoutActivityView extends StatefulWidget {
   final WorkoutActivityModel model;
@@ -39,10 +41,20 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
 
   @override
   void navigateToWorkoutDone() {
+    final workoutDoneModel = WorkoutDoneModel(
+      caloriesBurned: 300, 
+      heartRate: 120,      
+    );
+
+    final workoutDoneView = WorkoutDoneViewImplementation();
+    final presenter = WorkoutDonePresenter(workoutDoneView);
+
+    presenter.setModel(workoutDoneModel);
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => WorkoutDone(),
+        builder: (context) => WorkoutDoneView(presenter: presenter),
       ),
     );
   }
@@ -135,5 +147,13 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
   void dispose() {
     _presenter.stopTimer();
     super.dispose();
+  }
+}
+
+class WorkoutDoneViewImplementation implements WorkoutDoneViewInterface {
+  @override
+  void updateView(WorkoutDoneModel model) {
+    print('Calories burned: ${model.caloriesBurned}');
+    print('Heart rate: ${model.heartRate}');
   }
 }
