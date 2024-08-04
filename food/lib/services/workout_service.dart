@@ -19,23 +19,6 @@ class WorkoutService {
     }
   }
 
-  // Future<List<Map<String, dynamic>>> getUserWorkouts(String uid) async {
-
-  //   try {
-  //     QuerySnapshot querySnapshot = await usersCollection
-  //         .doc(uid)
-  //         .collection('workouts')
-  //         .get();
-
-  //     return querySnapshot.docs
-  //         .map((doc) => doc.data() as Map<String, dynamic>)
-  //         .toList();
-  //   } catch (e) {
-  //     print('Error retrieving user workouts: $e');
-  //     throw Exception('Failed to retrieve user workouts.');
-  //   }
-  // }
-
   Future<List<Map<String, dynamic>>> getUserWorkouts(String uid) async {
   try {
     QuerySnapshot querySnapshot = await usersCollection

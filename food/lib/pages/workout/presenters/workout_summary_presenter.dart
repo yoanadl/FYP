@@ -60,6 +60,9 @@ class WorkoutSummaryPresenter {
       try {
         await WorkoutService().deleteWorkout(userId, workoutId!);
         onDelete?.call(); // call the callback to refresh the workout list
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('The selected workout has been successfully deleted')),
+        );
         Navigator.pop(context); // Go back to the previous screen
       } 
       catch (e) {

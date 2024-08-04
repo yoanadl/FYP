@@ -5,6 +5,7 @@ import 'package:food/pages/community_page.dart';
 import 'package:food/pages/profile_page.dart';
 import 'package:food/pages/workout/edit_workout_page.dart';
 import 'package:food/pages/workout/presenters/workout_summary_presenter.dart';
+import 'package:food/pages/workout/views/edit_workout_view.dart';
 import 'package:food/pages/workout/workout_activity.dart';
 import 'package:food/pages/workout/workout_page.dart';
 
@@ -35,7 +36,7 @@ class WorkoutSummaryView extends StatelessWidget {
               Navigator.push(
                 context, 
                 MaterialPageRoute(
-                  builder: (context) => EditWorkoutPage(
+                  builder: (context) => EditWorkoutView(
                     userId: presenter.userId,
                     workoutId: presenter.workoutId ?? '',
                     workoutTitle: presenter.workoutTitle,
