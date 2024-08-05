@@ -57,6 +57,8 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
           presenter: WorkoutDonePresenter(WorkoutDoneViewImplementation()),
           startTime: model.startTime!,
           endTime: model.endTime!,
+          activities: model.activities,
+          durations: model.durations,
         ),
       ),
     );
