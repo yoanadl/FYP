@@ -7,10 +7,13 @@ import 'package:food/pages/profile_setting/settings_page.dart';
 import 'package:food/pages/profile_setting/terms_conditions_page.dart';
 import 'package:food/pages/intro_page.dart';
 import 'package:food/pages/upload_profile_page.dart';
-// import 'package:food/services/setting_trainer_profile_service.dart';
 import 'package:food/services/auth/auth_service.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
+
+import 'package:food/components/trainer_navbar.dart'; 
+import 'trainer_base_page.dart';
+import 'trainer_workout_plan_page.dart';
+import 'trainer_my_client_page.dart';
 
 class RowData {
   final IconData icon;

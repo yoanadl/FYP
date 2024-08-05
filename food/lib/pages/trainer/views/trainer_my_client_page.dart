@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'trainer_client_analytics_page.dart';
+import 'package:food/components/trainer_navbar.dart'; 
+import 'trainer_base_page.dart';
+import 'trainer_workout_plan_page.dart';
+import 'trainer_profile_page.dart';
 
 class TrainerMyClientPage extends StatelessWidget {
   @override
@@ -38,30 +42,6 @@ class TrainerMyClientPage extends StatelessWidget {
             ),
           );
         },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: 'Workout',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Client List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant),
-            label: 'Meal Plan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/components/navbar.dart';
 import 'package:food/components/trainer_navbar.dart';
-import 'package:food/pages/base_page.dart';
-import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/trainer/views/trainer_base_page.dart';
 import 'package:food/pages/trainer/views/trainer_my_client_page.dart';
 import 'package:food/pages/trainer/views/trainer_workout_plan_page.dart';
-import 'package:food/pages/workout/workout_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -252,25 +248,6 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: TrainerNavbar(
-        currentIndex: 3,
-        onTap: (int index) {
-          if (index != 3) {
-            Navigator.pop(context);
-            switch (index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const TrainerBasePage()));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TrainerWorkoutPlanPage()));
-                break;
-              case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TrainerMyClientPage()));
-                break;
-            }
-          }
-        },
       ),
     );
   }

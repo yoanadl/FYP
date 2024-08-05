@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
 import 'trainer_workout_plan_detail_page.dart';
+import 'package:food/components/trainer_navbar.dart'; 
+import 'trainer_base_page.dart';
+import 'trainer_my_client_page.dart';
+import 'trainer_profile_page.dart';
 
 class TrainerWorkoutPlanPage extends StatelessWidget {
   @override
@@ -8,8 +13,13 @@ class TrainerWorkoutPlanPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'Home',
-          style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w600, fontSize: 20),),
+          'Workout Plans',
+          style: TextStyle(
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
+        ),
         backgroundColor: Colors.white,
       ),
       body: Column(
@@ -92,30 +102,6 @@ class TrainerWorkoutPlanPage extends StatelessWidget {
                 );
               },
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: 'Workout',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Client List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant),
-            label: 'Meal Plan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
           ),
         ],
       ),
