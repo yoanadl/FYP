@@ -6,14 +6,8 @@ import 'package:food/pages/profile_setting/privacy_policy_page.dart';
 import 'package:food/pages/profile_setting/settings_page.dart';
 import 'package:food/pages/profile_setting/terms_conditions_page.dart';
 import 'package:food/pages/intro_page.dart';
-import 'package:food/pages/upload_profile_page.dart';
 import 'package:food/services/auth/auth_service.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
-
-import 'package:food/components/trainer_navbar.dart'; 
-import 'trainer_base_page.dart';
-import 'trainer_workout_plan_page.dart';
-import 'trainer_my_client_page.dart';
 
 class RowData {
   final IconData icon;
@@ -48,17 +42,28 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
     setState(() {}); // Update UI after data is fetched
   }
 
-  Widget _loadProfilePicture() {
-    return trainerProfile.profilePictureUrl != null
-    ? CircleAvatar(
-        radius: 60,
-        backgroundImage: CachedNetworkImageProvider(trainerProfile.profilePictureUrl!),
-      )
-    : CircleAvatar(
-        radius: 60,
-        child: Icon(Icons.person),
+Widget _loadProfilePicture() {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TrainerProfileSetting(), 
+        ),
       );
-  }
+    },
+    child: trainerProfile.profilePictureUrl != null
+        ? CircleAvatar(
+            radius: 60,
+            backgroundImage: CachedNetworkImageProvider(trainerProfile.profilePictureUrl!),
+          )
+        : const CircleAvatar(
+            radius: 60,
+            child: Icon(Icons.person),
+          ),
+  );
+}
+
 
   void logout(BuildContext context) async {
     final authService = AuthService();
@@ -78,7 +83,7 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Text(
+          content: const Text(
             'Are you sure you want to log out?',
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
@@ -88,14 +93,14 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 logout(context);
               },
-              child: Text('Logout'),
+              child: const Text('Logout'),
             ),
           ],
         );
@@ -129,7 +134,7 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
       text: 'Terms and Conditions',
       destination: TermsConditionsPage(),
     ),
-    RowData(
+    const RowData(
       icon: Icons.logout,
       text: 'Log Out',
     ),
@@ -142,65 +147,40 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Spacer(),
-            Text(
-              'Profile',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            Spacer(),
-          ],
+        title: const Padding(
+          padding: EdgeInsets.only(top: 36),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Spacer(),
+              Text(
+                'Profile',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              Spacer(),
+            ],
+          ),
         ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 20.0),
-            // Profile image avatar
-            Stack(
-              children: [
-                _loadProfilePicture(),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UploadProfilePage(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF031927),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: 20.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            // Name
-            SizedBox(height: 15.0),
+
+            const SizedBox(height: 20.0),
+            _loadProfilePicture(),
+            SizedBox(height: 10.0),
+
             Text(
               trainerProfile.name ?? 'No name',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w500
               ),
             ),
-            SizedBox(height: 36.0),
-            // Settings
+            const SizedBox(height: 36.0),
+
             Expanded(
               child: ListView.separated(
                 shrinkWrap: true,
@@ -216,7 +196,6 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
     );
   }
 
-  // Function to build each row
   Widget buildRowItem(BuildContext context, RowData data) {
     return InkWell(
       onTap: () {
@@ -229,25 +208,38 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
           );
         }
       },
+
       child: Container(
-        color: Colors.grey[100],
         margin: const EdgeInsets.symmetric(horizontal: 40.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.0), // Optional: adds rounded corners
+        ),
+
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Row(
             children: [
-              Icon(data.icon),
+              Icon(
+                data.icon,
+                color: Color(0XFF508AA8),
+                ),
               Padding(
                 padding: EdgeInsets.only(left: 10.0),
                 child: Text(
                   data.text,
                   style: TextStyle(
                     fontSize: 16.0,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500
                   ),
                 ),
               ),
               Spacer(),
-              Icon(Icons.arrow_right),
+              const Icon(
+                Icons.arrow_right,
+                color: Color(0XFF508AA8),
+                ),
             ],
           ),
         ),

@@ -41,7 +41,7 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
         automaticallyImplyLeading: false, 
         toolbarHeight: 120, 
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 44, 16, 0), 
+          padding: const EdgeInsets.fromLTRB(16, 36, 16, 0), 
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween, 
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/components/trainer_navbar.dart';
-import 'package:food/pages/trainer/views/trainer_base_page.dart';
-import 'package:food/pages/trainer/views/trainer_my_client_page.dart';
-import 'package:food/pages/trainer/views/trainer_workout_plan_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:food/pages/upload_profile_page.dart';
+import 'package:food/pages/trainer/models/trainer_profile_model.dart';
 
 class ProfileTextField extends StatelessWidget {
   final String label;
@@ -25,26 +24,38 @@ class ProfileTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Text(
             label,
             style: TextStyle(
+              fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
               fontSize: 18.0,
             ),
           ),
         ),
-        SizedBox(height: 5.0),
+        SizedBox(height: 8.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
           child: SizedBox(
-            height: 40.0,
+            height: 48.0,
             child: TextFormField(
               controller: controller,
               onChanged: onChanged,
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 8.0),
                 border: OutlineInputBorder(),
                 hintText: 'Enter $label',
+                hintStyle: TextStyle(
+                  color: Colors.grey.shade400,
+                  fontFamily: 'Poppins',
+                  fontSize: 14.0,
+                ),
+              ),
+              style: const TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins',
+                fontSize: 16.0,
               ),
             ),
           ),
@@ -66,6 +77,8 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
   late TextEditingController ageController;
   late TextEditingController heightController;
   late TextEditingController weightController;
+
+  TrainerProfile trainerProfile = TrainerProfile();
 
   Map<String, dynamic> profileData = {
     'Name': '',
@@ -151,35 +164,73 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
     }
   }
 
+  Widget _loadProfilePicture() {
+    return trainerProfile.profilePictureUrl != null
+    ? CircleAvatar(
+        radius: 60,
+        backgroundImage: CachedNetworkImageProvider(trainerProfile.profilePictureUrl!),
+      )
+    : const CircleAvatar(
+        radius: 60,
+        child: Icon(Icons.person),
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Spacer(),
-            Text(
-              'Profile',
-              style: TextStyle(color: Colors.black),
-            ),
-            Spacer()
-          ],
+        centerTitle: true, 
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Poppins',
+            fontSize: 25,
+            fontWeight: FontWeight.w600
+          ),
         ),
       ),
+
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // profile image avatar
-              CircleAvatar(
-                backgroundColor: Colors.grey[100],
-                radius: 50.0,
+              Stack(
+                children: [
+                  _loadProfilePicture(),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UploadProfilePage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5.0),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF031927),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 20.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              // text fields
+
               SizedBox(height: 10.0),
               ProfileTextField(
                 label: 'Name',
@@ -240,7 +291,8 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
                   });
                 },
               ),
-              // update profile button
+
+              SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: updateProfileData,
                 child: Text('Update Profile'),
@@ -252,4 +304,3 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
     );
   }
 }
-
