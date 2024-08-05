@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/workout/presenters/workout_done_presenter.dart';
 import '../models/workout_done_model.dart';
+import 'package:food/services/health_service.dart';
 
 class WorkoutDoneView extends StatefulWidget {
   final WorkoutDonePresenter presenter;
+  final DateTime? startTime;
+  final DateTime? endTime;
 
-  WorkoutDoneView({Key? key, required this.presenter}) : super(key: key);
+  WorkoutDoneView({
+    Key? key,
+    required this.presenter,
+    this.startTime,
+    this.endTime,
+  }) : super(key: key);
 
   @override
   _WorkoutDoneViewState createState() => _WorkoutDoneViewState();
@@ -13,16 +21,49 @@ class WorkoutDoneView extends StatefulWidget {
 
 class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDoneViewInterface {
   late WorkoutDoneModel _model;
+  final HealthService _healthService = HealthService();
 
   @override
   void initState() {
     super.initState();
+
+    DateTime startTime = widget.startTime ?? DateTime.now();
+    DateTime endTime = widget.endTime ?? DateTime.now();
+
+    _model = WorkoutDoneModel(
+      caloriesBurned: 0,
+      heartRate: 120,
+      steps: 0,
+      startTime: startTime,
+      endTime: endTime,
+    );
+
+    widget.presenter.setModel(_model);
+
+    _fetchHealthData(startTime, endTime);
+  }
+
+
+  Future<void> _fetchHealthData(DateTime startTime, DateTime endTime) async {
     
-    // Initialize presenter and model
-    widget.presenter.setModel(WorkoutDoneModel(
-      caloriesBurned: 300, 
-      heartRate: 120,    
-    ));
+    DateTime bufferedStartTime = startTime.subtract(Duration(minutes: 30));
+    DateTime bufferedEndTime = endTime.add(Duration(minutes: 30));
+
+    print('Fetching calories burned from $bufferedStartTime to $bufferedEndTime');
+    double? caloriesBurned = await _healthService.getCaloriesBurnedForThatWorkout(bufferedStartTime, bufferedEndTime);
+    print('Calories burned fetched: $caloriesBurned');
+
+    print('Fetching steps from $bufferedStartTime to $bufferedEndTime');
+    int? steps = await _healthService.getStepsForThatWorkout(bufferedStartTime, bufferedEndTime);
+    print('Steps fetched: $steps');
+
+    setState(() {
+      _model = _model.copyWith(
+        caloriesBurned: caloriesBurned,
+        steps: steps,
+      );
+      widget.presenter.updateView(_model);
+    });
   }
 
   @override
@@ -57,6 +98,12 @@ class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDon
               _buildStatsRow(
                 icon: Icons.local_fire_department,
                 text: 'Calories burned: ${_model.caloriesBurned} kcal',
+              ),
+
+              SizedBox(height: 30),
+              _buildStatsRow(
+                icon: Icons.directions_walk,
+                text: 'Steps took: ${_model.steps} steps',
               ),
               SizedBox(height: 30),
               _buildStatsRow(

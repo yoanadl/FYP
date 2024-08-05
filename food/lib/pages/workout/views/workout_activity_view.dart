@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/workout/models/workout_activity_model.dart';
 import 'package:food/pages/workout/presenters/workout_activity_presenter.dart';
+import 'package:food/pages/workout/presenters/workout_done_presenter.dart';
 import 'package:food/pages/workout/views/workout_done_view.dart';
 import 'package:food/pages/workout/models/workout_done_model.dart';
-import 'package:food/pages/workout/presenters/workout_done_presenter.dart';
 
 class WorkoutActivityView extends StatefulWidget {
   final WorkoutActivityModel model;
@@ -16,20 +16,20 @@ class WorkoutActivityView extends StatefulWidget {
 
 class _WorkoutActivityViewState extends State<WorkoutActivityView> implements WorkoutActivityViewInterface {
   late WorkoutActivityPresenter _presenter;
-  late WorkoutActivityModel _model;
+  late WorkoutActivityModel _currentModel;
 
   @override
   void initState() {
     super.initState();
-    _model = widget.model;
-    _presenter = WorkoutActivityPresenter(this, _model);
+    _currentModel = widget.model;
+    _presenter = WorkoutActivityPresenter(this, _currentModel);
     _presenter.startTimer();
   }
 
   @override
   void updateTimer(int remainingTime) {
     setState(() {
-      _model = _model.copyWith(remainingTimeInSeconds: remainingTime);
+      _currentModel = _currentModel.copyWith(remainingTimeInSeconds: remainingTime);
     });
   }
 
@@ -44,28 +44,27 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
   }
 
   @override
-  void navigateToWorkoutDone() {
-    final workoutDoneModel = WorkoutDoneModel(
-      caloriesBurned: 300,
-      heartRate: 120,
-    );
-
-    final workoutDoneView = WorkoutDoneViewImplementation();
-    final presenter = WorkoutDonePresenter(workoutDoneView);
-
-    presenter.setModel(workoutDoneModel);
+  void navigateToWorkoutDone(WorkoutActivityModel model) {
+    if (model.startTime == null || model.endTime == null) {
+      print('Start time or end time is null');
+      return;
+    }
 
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => WorkoutDoneView(presenter: presenter),
+        builder: (context) => WorkoutDoneView(
+          presenter: WorkoutDonePresenter(WorkoutDoneViewImplementation()),
+          startTime: model.startTime!,
+          endTime: model.endTime!,
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    double progress = 1 - (_model.remainingTimeInSeconds / (_model.duration * 60));
+    double progress = 1 - (_currentModel.remainingTimeInSeconds / (_currentModel.duration * 60));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -79,7 +78,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                _presenter.isBreak ? 'Break' : '${_model.activityTitle}',
+                _presenter.isBreak ? 'Break' : '${_currentModel.activityTitle}',
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -98,7 +97,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
                     ),
                   ),
                   Text(
-                    '${_model.remainingTimeInSeconds ~/ 60}:${(_model.remainingTimeInSeconds % 60).toString().padLeft(2, '0')}',
+                    '${_currentModel.remainingTimeInSeconds ~/ 60}:${(_currentModel.remainingTimeInSeconds % 60).toString().padLeft(2, '0')}',
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -129,7 +128,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
                 child: TextButton(
                   onPressed: () {
                     _presenter.stopTimer();
-                    Navigator.pop(context);
+                    navigateToWorkoutDone(_currentModel);
                   },
                   child: Text(
                     'Stop Workout',
@@ -157,7 +156,6 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
 class WorkoutDoneViewImplementation implements WorkoutDoneViewInterface {
   @override
   void updateView(WorkoutDoneModel model) {
-    print('Calories burned: ${model.caloriesBurned}');
-    print('Heart rate: ${model.heartRate}');
+   
   }
 }

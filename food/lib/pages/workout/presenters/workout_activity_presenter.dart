@@ -4,7 +4,7 @@ import 'package:food/pages/workout/models/workout_activity_model.dart';
 abstract class WorkoutActivityViewInterface {
   void updateTimer(int remainingTime);
   void navigateToNextActivity(WorkoutActivityModel model);
-  void navigateToWorkoutDone();
+  void navigateToWorkoutDone(WorkoutActivityModel model); // Interface method
 }
 
 class WorkoutActivityPresenter {
@@ -24,7 +24,12 @@ class WorkoutActivityPresenter {
     if (_isBreak) {
       _model = _model.copyWith(remainingTimeInSeconds: 30); // 30-second break
     } else {
-      _model = _model.copyWith(remainingTimeInSeconds: _model.duration * 60); // Duration in seconds
+      _model = _model.copyWith(
+        remainingTimeInSeconds: _model.duration * 60, // Duration in seconds
+        startTime: DateTime.now(), 
+        
+      );
+      print('Workout started at: ${_model.startTime}');
     }
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -41,22 +46,24 @@ class WorkoutActivityPresenter {
                 activityTitle: _model.activities[_model.activityIndex + 1],
                 duration: _model.durations[_model.activityIndex + 1],
                 activityIndex: _model.activityIndex + 1,
+                endTime: DateTime.now(),
               ),
             );
           } else {
-            _view.navigateToWorkoutDone();
+            _model = _model.copyWith(endTime: DateTime.now());
+            _view.navigateToWorkoutDone(_model); 
           }
         } else {
           if (_model.activityIndex < _model.activities.length - 1) {
             _isBreak = true;
             startTimer();
           } else {
-            _view.navigateToWorkoutDone();
+            _model = _model.copyWith(endTime: DateTime.now()); 
+            _view.navigateToWorkoutDone(_model); 
           }
         }
       }
     });
-    print('Timer started');
   }
 
   void togglePause() {
@@ -65,6 +72,9 @@ class WorkoutActivityPresenter {
 
   void stopTimer() {
     _timer?.cancel();
-    print('Timer stopped');
+    _model = _model.copyWith(endTime: DateTime.now()); 
+    print('Workout ended at: ${_model.endTime}');
+    _view.navigateToWorkoutDone(_model);
+
   }
 }
