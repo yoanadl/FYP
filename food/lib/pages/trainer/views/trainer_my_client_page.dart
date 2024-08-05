@@ -11,6 +11,7 @@ class TrainerMyClientPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false, 
         backgroundColor: Colors.white,
         title: Text('My Clients', style: TextStyle(fontWeight: FontWeight.w600),),
       ),

@@ -39,68 +39,66 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false, 
+        toolbarHeight: 120, 
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 0), 
-          child: Container(
-            height: 60,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, 
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Hello, $name!',
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                      ),
-                      overflow: TextOverflow.ellipsis,
+          padding: const EdgeInsets.fromLTRB(16, 44, 16, 0), 
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hello, $name!',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
                     ),
-                    Text(
-                      formattedDate,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                      ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    formattedDate,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontSize: 16,
                     ),
-                  ],
+                  ),
+                ],
+              ),
+          
+              IconButton(
+                icon: Container(
+                  width: 61,
+                  height: 61,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage('lib/images/profile_picture.webp'),
+                      fit: BoxFit.cover,
+                    ),
+                    // border: Border.all(color: Colors.black,width: 1.0)
+                  ),
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: AssetImage('lib/images/profile_picture.webp'),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      onPressed: () {
-                        widget.onTabSelected(3);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                onPressed: () {
+                  widget.onTabSelected(3);
+                },
+              ),
+                
+            ],
           ),
         ),
       ),
 
         
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 44, 24, 32),
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
         child: Column(
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 24),
             Container(
               padding: const EdgeInsets.only(left: 16.0),
               alignment: Alignment.centerLeft,

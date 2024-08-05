@@ -199,7 +199,7 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 25.0),
+            SizedBox(height: 36.0),
             // Settings
             Expanded(
               child: ListView.separated(
@@ -233,7 +233,7 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
         color: Colors.grey[100],
         margin: const EdgeInsets.symmetric(horizontal: 40.0),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: Row(
             children: [
               Icon(data.icon),

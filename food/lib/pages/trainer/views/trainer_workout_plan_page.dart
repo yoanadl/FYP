@@ -12,6 +12,7 @@ class TrainerWorkoutPlanPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false, 
         title: Text(
           'Workout Plans',
           style: TextStyle(
