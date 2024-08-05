@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food/pages/trainer/views/trainer_main_page.dart';
 import 'package:food/pages/trainer/views/trainer_my_client_page.dart';
 import 'package:food/pages/trainer/views/trainer_profile_page.dart';
+import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
 import 'package:food/pages/trainer/views/trainer_workout_plan_page.dart';
 import 'package:food/pages/trainer/views/trainer_pending_clients.dart'; // Assuming this page exists
 import 'package:food/components/trainer_navbar.dart';
@@ -29,7 +30,8 @@ class _TrainerBasePageState extends State<TrainerBasePage> {
       TrainerWorkoutPlanPage(),
       TrainerMyClientPage(),
       TrainerProfilePage(),
-      TrainerPendingClientsPage(), // Assuming this is the correct page for pending requests
+      TrainerPendingClientsPage(),
+      TrainerProfileSetting()
     ];
   }
 

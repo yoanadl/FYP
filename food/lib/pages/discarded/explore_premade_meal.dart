@@ -3,7 +3,7 @@ import '../../components/navbar.dart';
 import 'community_page.dart';
 import '../workout/workout_page.dart';
 import '../profile_page.dart';
-import 'package:food/pages/workout/premade_workout_summary.dart';
+// import 'package:food/pages/workout/premade_workout_summary.dart';
 import 'package:food/pages/discarded/Pre_made_Meal/Weight_Loss_Low_carb.dart';
 
 class ExplorePremadeMeal extends StatefulWidget {

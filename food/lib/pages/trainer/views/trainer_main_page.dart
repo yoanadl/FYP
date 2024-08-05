@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
-// import 'package:food/pages/trainer/trainer_profile_page.dart';
+import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
 import 'package:intl/intl.dart';
-// import 'trainer_pending_clients.dart';
-// import 'trainer_my_client_page.dart';
-// import 'trainer_workout_plan_page.dart';
+
 
 class TrainerMainPage extends StatefulWidget {
-  final Function(int) onTabSelected; // Callback to change the selected tab
+  final Function(int) onTabSelected; 
 
   const TrainerMainPage({Key? key, required this.onTabSelected}) : super(key: key);
 
@@ -40,55 +38,64 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false, // Don't show the leading button
-        title: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+        automaticallyImplyLeading: false, 
+        title: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 0), 
+          child: Container(
+            height: 60,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, 
               children: [
-                Text(
-                  'Hello, $name!',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                  overflow: TextOverflow.ellipsis,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hello, $name!',
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      formattedDate,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  formattedDate,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontSize: 16,
-                  ),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage('lib/images/profile_picture.webp'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        widget.onTabSelected(3);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage('lib/images/profile_picture.webp'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: SizedBox.expand(), // Ensures the container takes up the full size
-            ),
-            onPressed: () {
-              widget.onTabSelected(3); // Index of TrainerProfilePage in _pages array
-            },
           ),
-        ],
+        ),
       ),
+
+        
       body: Padding(
         padding: const EdgeInsets.fromLTRB(24, 44, 24, 32),
         child: Column(
@@ -113,16 +120,20 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
               crossAxisCount: 2,
               children: [
                 _buildGridTile(context, 'Workout\nPlan', Color(0xFF508AA8), () {
-                  widget.onTabSelected(1); // Index of TrainerWorkoutPlanPage in _pages array
+                  widget.onTabSelected(1); 
                 }),
                 _buildGridTile(context, 'Profile', Color(0xFF9DD1F1), () {
-                  widget.onTabSelected(3); // Index of TrainerProfilePage in _pages array
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TrainerProfileSetting()),
+                  );
+
                 }),
                 _buildGridTile(context, 'Pending\nRequest', Colors.white, () {
                   widget.onTabSelected(4);
                 }),
                 _buildGridTile(context, 'My\nClient', Color(0xFF000000), () {
-                  widget.onTabSelected(2); // Index of TrainerMyClientPage in _pages array
+                  widget.onTabSelected(2); 
                 }),
               ],
             ),

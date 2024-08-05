@@ -8,8 +8,8 @@ class TrainerWorkoutPlanPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          'Workout Plans',
-          style: TextStyle(fontWeight: FontWeight.w900),),
+          'Home',
+          style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.w600, fontSize: 20),),
         backgroundColor: Colors.white,
       ),
       body: Column(

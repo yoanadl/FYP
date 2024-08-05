@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/profile_setting/help_center_page.dart';
-import 'package:food/pages/profile_setting/my_profile_page.dart';
+import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
 import 'package:food/pages/profile_setting/privacy_policy_page.dart';
 import 'package:food/pages/profile_setting/settings_page.dart';
 import 'package:food/pages/profile_setting/terms_conditions_page.dart';
@@ -104,7 +104,7 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
     RowData(
       icon: Icons.person,
       text: 'Your Profile',
-      destination: MyProfilePage(),
+      destination: TrainerProfileSetting(),
     ),
     RowData(
       icon: Icons.settings,
