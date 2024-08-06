@@ -4,9 +4,9 @@ import 'package:food/pages/workout/edit_workout_page.dart';
 import 'package:food/pages/workout/workout_activity.dart';
 import 'package:food/services/workout_service.dart';
 import '../../components/navbar.dart';
-import '../base_page.dart';
+import '../../components/base_page.dart';
 import '../discarded/community_page.dart';
-import '../profile_page.dart';
+import '../user/view/profile_page.dart';
 import 'workout_page.dart';
 
 class WorkoutSummaryPage extends StatelessWidget {

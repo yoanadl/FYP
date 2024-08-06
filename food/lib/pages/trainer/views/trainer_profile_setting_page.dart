@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:food/pages/upload_profile_page.dart';
+import 'package:food/pages/user/view/upload_profile_page.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
 
 class ProfileTextField extends StatelessWidget {

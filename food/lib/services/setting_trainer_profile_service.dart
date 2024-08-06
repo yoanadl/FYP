@@ -4,9 +4,27 @@ class TrainerSettingProfileService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
-  Future<void> createProfile(String uid, Map<String, dynamic> profile) async {
+  Future<void> createProfile(String uid, {
+    required int age,
+    required int height,
+    required int weight,
+    required String name,
+    required String fitnessGoals,
+    required String gender,
+  }) async {
     try {
-      await usersCollection.doc(uid).collection('TrainerProfile').add(profile);
+      // Prepare the profile data
+      Map<String, dynamic> profileData = {
+        'age': age,
+        'height': height,
+        'name': name,
+        'weight': weight,
+        'fitnessGoals': fitnessGoals,
+        'gender': gender,
+      };
+
+      // Add profile document with the given data
+      await usersCollection.doc(uid).collection('TrainerProfile').add(profileData);
       print('Profile created successfully!');
     } catch (e) {
       print('Error creating profile: $e');
@@ -29,8 +47,7 @@ class TrainerSettingProfileService {
     }
   }
 
-  Future<void> updateSettingProfile(
-      String uid, Map<String, dynamic> newData) async {
+  Future<void> updateSettingProfile(String uid, Map<String, dynamic> newData) async {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
@@ -38,6 +55,7 @@ class TrainerSettingProfileService {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
+        // Update the existing profile
         String profileId = querySnapshot.docs[0].id;
         await usersCollection
             .doc(uid)
@@ -47,9 +65,17 @@ class TrainerSettingProfileService {
         print('Profile updated successfully!');
       } else {
         print('No trainer profile found for uid: $uid');
-        // Create profile if it doesn't exist
-        await createProfile(uid, newData);
-        print('Profile created successfully!');
+        // Create a default profile if it doesn't exist
+        await createProfile(
+          uid,
+          age: 0,
+          height: 0,
+          weight: 0,
+          name: "Default Name",
+          fitnessGoals: "Default Goals",
+          gender: "Unspecified",
+        );
+        print('Profile created successfully with default values!');
       }
     } catch (e) {
       print('Error updating profile: $e');

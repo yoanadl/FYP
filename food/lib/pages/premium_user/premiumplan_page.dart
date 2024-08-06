@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/premium_user/payment_method_page.dart';
-import 'package:food/pages/base_page.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 

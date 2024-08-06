@@ -2,12 +2,12 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food/pages/base_page.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'discarded/mealPlan_page.dart';
+import '../../discarded/mealPlan_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:food/applewatch/injector.dart' show healthFactory;
 // import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;

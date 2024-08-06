@@ -5,7 +5,7 @@ import 'package:food/components/navbar.dart';
 import 'package:food/pages/profile_setting/delete_account.dart';
 import 'package:food/pages/profile_setting/notification_settings.dart';
 import 'package:food/pages/profile_setting/password_manager.dart';
-import 'package:food/pages/base_page.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 

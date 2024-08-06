@@ -5,7 +5,7 @@ import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
 import 'package:food/pages/profile_setting/privacy_policy_page.dart';
 import 'package:food/pages/profile_setting/settings_page.dart';
 import 'package:food/pages/profile_setting/terms_conditions_page.dart';
-import 'package:food/pages/intro_page.dart';
+import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/services/auth/auth_service.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
 
