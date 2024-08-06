@@ -9,9 +9,9 @@ import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'discarded/mealPlan_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:food/applewatch/injector.dart' show healthFactory;
-// import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
-// import 'package:health/health.dart';
+import 'package:food/applewatch/injector.dart' show healthFactory;
+import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
+import 'package:health/health.dart';
 
 
 
@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   double? calories;
   String name = '';
   String? profilePictureUrl;
-  // final HealthService healthService = HealthService();
+  final HealthService healthService = HealthService();
   final SettingProfileService profileService = SettingProfileService();
 
 
@@ -90,16 +90,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchData() async {
-    // int? fetchedSteps = await healthService.getSteps();
+    int? fetchedSteps = await healthService.getSteps();
    
 
-    // setState(() {
+    setState(() {
       
-    //   steps = fetchedSteps ?? 0;
-    //   heartRate = heartRate;
-    //   calories = calories;
+      steps = fetchedSteps ?? 0;
+      heartRate = heartRate;
+      calories = calories;
 
-    // });
+    });
   }
 
   
