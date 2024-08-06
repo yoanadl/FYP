@@ -295,7 +295,19 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
               SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: updateProfileData,
-                child: Text('Update Profile'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, 
+                    backgroundColor: Color(0XFF031927), 
+                    minimumSize: Size(150, 50)
+                  ),
+                  child: const Text(
+                    'Update Profile',
+                    style: TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold, 
+                      fontFamily: 'Poppins', 
+                      color: Colors.white),
+                  ),
               ),
             ],
           ),

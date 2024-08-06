@@ -1,111 +1,178 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
 import 'trainer_workout_plan_detail_page.dart';
-import 'package:food/components/trainer_navbar.dart'; 
-import 'trainer_base_page.dart';
-import 'trainer_my_client_page.dart';
-import 'trainer_profile_page.dart';
 
-class TrainerWorkoutPlanPage extends StatelessWidget {
+class TrainerWorkoutPlanPage extends StatefulWidget {
+  @override
+  _TrainerWorkoutPlanPageState createState() => _TrainerWorkoutPlanPageState();
+}
+
+class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
+  String _selectedSortOrder = 'A to Z';
+  List<String> _items = ['Workout Plan 1', 'Workout Plan 2', 'Workout Plan 3', 'Workout Plan 4', 'Workout Plan 5', 'Workout Plan 6', 'Workout Plan 7'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false, 
-        title: Text(
-          'Workout Plans',
-          style: TextStyle(
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w600,
-            fontSize: 20,
+        automaticallyImplyLeading: false,
+        title: const Padding(
+          padding: EdgeInsets.fromLTRB(16, 24, 16, 0),
+          child: Text(
+            'Workout Plans',
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w600,
+              fontSize: 25,
+            ),
           ),
         ),
         backgroundColor: Colors.white,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search Workout Plan...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search Workout Plan...',
+                  hintStyle: const TextStyle(
+                    fontSize: 20,
+                    color: Colors.grey,
+                  ),
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Sort by:'),
-                DropdownButton<String>(
-                  value: 'A to Z',
-                  items: <String>['A to Z', 'Z to A']
-                      .map((String value) => DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          ))
-                      .toList(),
-                  onChanged: (String? newValue) {
-                    // Handle sort change
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle create new workout plan action
-                  },
-                  child: Text('+ Create'),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 7, // Example workout plan count
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Workout Plan ${index + 1}'),
-                  trailing: PopupMenuButton<String>(
-                    onSelected: (String result) {
-                      if (result == 'View Details') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TrainerWorkoutPlanDetailPage(),
-                          ),
-                        );
-                      } else if (result == 'Edit Workout Plan') {
-                        // Handle edit workout plan action
-                      } else if (result == 'Delete Workout Plan') {
-                        // Handle delete workout plan action
-                      }
-                    },
-                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                      const PopupMenuItem<String>(
-                        value: 'View Details',
-                        child: Text('View Details'),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'Sort by:',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                        ),
                       ),
-                      const PopupMenuItem<String>(
-                        value: 'Edit Workout Plan',
-                        child: Text('Edit Workout Plan'),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'Delete Workout Plan',
-                        child: Text('Delete Workout Plan'),
+                      SizedBox(width: 10),
+                      DropdownButton<String>(
+                        value: _selectedSortOrder,
+                        items: <String>['A to Z', 'Z to A']
+                            .map((String value) => DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedSortOrder = newValue!;
+                            _sortItems();
+                          });
+                        },
+                        icon: Icon(Icons.arrow_drop_down),
+                        underline: Container(),
                       ),
                     ],
                   ),
-                );
-              },
+                  ElevatedButton(
+                    onPressed: () {
+                      // Handle create new workout plan action
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      minimumSize: Size(100, 40),
+                    ),
+                    child: const Text(
+                      '+ Create',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                        color: Color(0XFF031927),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView.builder(
+                itemCount: _items.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                    _items[index],
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 18, 
+                      color: Colors.black, 
+                    ),
+                  ),
+                    trailing: PopupMenuButton<String>(
+                      onSelected: (String result) {
+                        if (result == 'View Details') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  TrainerWorkoutPlanDetailPage(),
+                            ),
+                          );
+                        } else if (result == 'Edit Workout Plan') {
+                          // Handle edit workout plan action
+                        } else if (result == 'Delete Workout Plan') {
+                          // Handle delete workout plan action
+                        }
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<String>>[
+                        const PopupMenuItem<String>(
+                          value: 'View Details',
+                          child: Text('View Details'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Edit Workout Plan',
+                          child: Text('Edit Workout Plan'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'Delete Workout Plan',
+                          child: Text('Delete Workout Plan'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void _sortItems() {
+    setState(() {
+      if (_selectedSortOrder == 'A to Z') {
+        _items.sort((a, b) => a.compareTo(b));
+      } else {
+        _items.sort((a, b) => b.compareTo(a));
+      }
+    });
   }
 }
