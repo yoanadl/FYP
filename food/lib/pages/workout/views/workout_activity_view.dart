@@ -7,8 +7,15 @@ import 'package:food/pages/workout/models/workout_done_model.dart';
 
 class WorkoutActivityView extends StatefulWidget {
   final WorkoutActivityModel model;
+  final String userId;
+  final String workoutId;
 
-  const WorkoutActivityView({Key? key, required this.model}) : super(key: key);
+  const WorkoutActivityView({
+    Key? key, 
+    required this.model,
+    required this.userId,
+    required this.workoutId,
+  }) : super(key: key);
 
   @override
   _WorkoutActivityViewState createState() => _WorkoutActivityViewState();
@@ -38,7 +45,10 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => WorkoutActivityView(model: model),
+        builder: (context) => WorkoutActivityView(
+          model: model,
+          userId: widget.userId,
+          workoutId: widget.workoutId,),
       ),
     );
   }
@@ -59,6 +69,8 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
           endTime: model.endTime!,
           activities: model.activities,
           durations: model.durations,
+          userId: widget.userId,
+          workoutId: widget.workoutId,
         ),
       ),
     );

@@ -8,8 +8,15 @@ import 'package:food/pages/workout/models/workout_activity_model.dart';
 
 class WorkoutSummaryView extends StatelessWidget {
   final WorkoutSummaryPresenter presenter;
+  final String userId;
+  final String workoutId;
 
-  const WorkoutSummaryView({Key? key, required this.presenter}) : super(key: key);
+  const WorkoutSummaryView({
+    Key? key, 
+    required this.presenter,
+    required this.userId,
+    required this.workoutId,
+    }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +95,13 @@ class WorkoutSummaryView extends StatelessWidget {
                         model: WorkoutActivityModel(
                           activityTitle: presenter.activities[0],
                           duration: presenter.duration[0],
-                          remainingTimeInSeconds: presenter.duration[0] * 60,  // Example initialization
-                          activityIndex: 0, // Provide the activityIndex
-                          activities: presenter.activities, // Assuming you need this
-                          durations: presenter.duration, // Assuming you need this
+                          remainingTimeInSeconds: presenter.duration[0] * 60, 
+                          activityIndex: 0, 
+                          activities: presenter.activities, 
+                          durations: presenter.duration, 
                         ),
+                        userId: userId,
+                        workoutId: workoutId,
                       ),
                     ),
                   );

@@ -22,14 +22,14 @@ class CreateNewWorkoutPresenter {
       return;
     }
 
-    // Call Firestore service to create workout
+    // Call Firestore service to create workout and get the documentId
     try {
-      await WorkoutService().createWorkoutData(user.uid, {
+      String workoutId = await WorkoutService().createWorkoutData(user.uid, {
         'title': workoutTitle,
         'activities': activities,
         'durations': durations,
       });
-      view.onWorkoutCreated();
+      view.onWorkoutCreated(workoutId);
     } catch (e) {
       view.onError('Failed to create workout. Please try again later.');
     }

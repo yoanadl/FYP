@@ -277,6 +277,8 @@ class _WorkoutPageState extends State<WorkoutPage> implements WorkoutPageView {
                         workoutId: workoutId,
                         onDelete: _refreshWorkouts,
                       ),
+                      userId: _user!.uid,
+                      workoutId: workoutId,
                     ),
                   ),
                 );

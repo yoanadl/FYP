@@ -1,5 +1,5 @@
 
 abstract class CreateNewWorkoutViewInterface {
-  void onWorkoutCreated();
+  void onWorkoutCreated(String workoutId);
   void onError(String message);
 }

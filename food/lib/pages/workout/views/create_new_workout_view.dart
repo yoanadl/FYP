@@ -159,7 +159,7 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> implements 
   }
 
   @override
-  void onWorkoutCreated() {
+  void onWorkoutCreated(String workoutId) {
     // Show a scaffold message
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -171,7 +171,7 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> implements 
     // Create the presenter for the WorkoutSummaryView
     final workoutSummaryPresenter = WorkoutSummaryPresenter(
       userId: FirebaseAuth.instance.currentUser!.uid,
-      workoutId: '', // Ensure you provide the correct workoutId here
+      workoutId: workoutId, 
       workoutTitle: workoutTitleController.text,
       duration: durationControllers.map((controller) => int.parse(controller.text)).toList(),
       activities: activityControllers.map((controller) => controller.text).toList(),
@@ -183,6 +183,8 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> implements 
       MaterialPageRoute(
         builder: (context) => WorkoutSummaryView(
           presenter: workoutSummaryPresenter,
+          userId: FirebaseAuth.instance.currentUser!.uid,
+          workoutId: workoutId,
         ),
       ),
     );
