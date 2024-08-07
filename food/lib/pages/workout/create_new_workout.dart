@@ -4,7 +4,7 @@ import '../../components/navbar.dart';
 import '../../components/base_page.dart';
 import '../discarded/community_page.dart';
 import '../user/view/profile_page.dart';
-import 'workout_page.dart';
+import '../workout/views/workout_page_view.dart';
 import 'workout_summary.dart';
 import 'package:food/services/workout_service.dart';
 

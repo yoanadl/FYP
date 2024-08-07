@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:food/pages/workout/edit_workout_page.dart';
-import 'package:food/pages/workout/workout_activity.dart';
+// import 'package:food/pages/workout/edit_workout_page.dart';
+// import 'package:food/pages/workout/workout_activity.dart';
 import 'package:food/services/workout_service.dart';
 import '../../components/navbar.dart';
 import '../../components/base_page.dart';
 import '../discarded/community_page.dart';
 import '../user/view/profile_page.dart';
-import 'workout_page.dart';
+import '../workout/views/workout_page_view.dart';
+import '../workout/views/edit_workout_view.dart';
 
 class WorkoutSummaryPage extends StatelessWidget {
   final String workoutTitle;
@@ -108,7 +109,7 @@ class WorkoutSummaryPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context, 
-                MaterialPageRoute(builder: (context) => EditWorkoutPage(
+                MaterialPageRoute(builder: (context) => EditWorkoutView(
                   userId: userId,
                   workoutId: workoutId ?? '',
                   workoutTitle: workoutTitle,
@@ -157,18 +158,18 @@ class WorkoutSummaryPage extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (context) => WorkoutActivityPage(
-                        activityTitle: activities[0],
-                        duration: duration[0], 
-                        activityIndex: 0, 
-                        activities: activities, 
-                        durations: duration,
-                      ),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context, 
+                  //   MaterialPageRoute(
+                  //     builder: (context) => WorkoutActivityPage(
+                  //       activityTitle: activities[0],
+                  //       duration: duration[0], 
+                  //       activityIndex: 0, 
+                  //       activities: activities, 
+                  //       durations: duration,
+                  //     ),
+                  //   ),
+                  // );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xff031927), 

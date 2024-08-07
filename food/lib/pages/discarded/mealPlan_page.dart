@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import '../../components/navbar.dart';
 import 'community_page.dart';
-import '../workout/workout_page.dart';
+import '../workout/views/workout_page_view.dart';
 import '../user/view/profile_page.dart';
 import 'explore_premade_meal.dart';
 
