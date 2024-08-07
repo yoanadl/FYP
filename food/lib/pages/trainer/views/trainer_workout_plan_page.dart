@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'trainer_workout_plan_detail_page.dart';
+import 'trainer_workout_plan_edit_page.dart';
+import 'trainer_create_workout_plan_page.dart';
 
 class TrainerWorkoutPlanPage extends StatefulWidget {
   @override
@@ -8,7 +10,15 @@ class TrainerWorkoutPlanPage extends StatefulWidget {
 
 class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
   String _selectedSortOrder = 'A to Z';
-  List<String> _items = ['Workout Plan 1', 'Workout Plan 2', 'Workout Plan 3', 'Workout Plan 4', 'Workout Plan 5', 'Workout Plan 6', 'Workout Plan 7'];
+  List<String> _items = [
+    'Workout Plan 1',
+    'Workout Plan 2',
+    'Workout Plan 3',
+    'Workout Plan 4',
+    'Workout Plan 5',
+    'Workout Plan 6',
+    'Workout Plan 7'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +82,7 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
                                   value: value,
                                   child: Text(
                                     value,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 14,
                                     ),
@@ -91,8 +101,13 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
                     ],
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      // Handle create new workout plan action
+                   onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateWorkoutPlanPage(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -117,13 +132,13 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(
-                    _items[index],
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 18, 
-                      color: Colors.black, 
+                      _items[index],
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 18,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
                     trailing: PopupMenuButton<String>(
                       onSelected: (String result) {
                         if (result == 'View Details') {
@@ -135,9 +150,16 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
                             ),
                           );
                         } else if (result == 'Edit Workout Plan') {
-                          // Handle edit workout plan action
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditWorkoutPlanPage(
+                                workoutPlan: _items[index],
+                              ),
+                            ),
+                          );
                         } else if (result == 'Delete Workout Plan') {
-                          // Handle delete workout plan action
+                          _deleteWorkoutPlan(index);
                         }
                       },
                       itemBuilder: (BuildContext context) =>
@@ -163,6 +185,35 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void _deleteWorkoutPlan(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Workout Plan'),
+          content: Text('Are you sure you want to delete this workout plan?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () { //change this to handle the deleting on firebase later
+                setState(() {
+                  _items.removeAt(index);
+                });
+                Navigator.of(context).pop(); // Dismiss the dialog
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
     );
   }
 

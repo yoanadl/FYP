@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
+import 'package:food/pages/fitnessPlans/view/fitness_plan_show.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
@@ -392,7 +393,7 @@ class _HomePageState extends State<HomePage> {
                InkWell(
                 onTap: () => Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => MealPlanPage()),
+                  MaterialPageRoute(builder: (context) => FitnessPlanShow()),
                 ),
                  child: Container(
                   width: 350,
@@ -418,7 +419,7 @@ class _HomePageState extends State<HomePage> {
                         top: 15,
                         left: 15,
                         child: Text(
-                          'Meal Plan', 
+                          'Explore Fitness Plan', 
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

@@ -2,14 +2,14 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:food/pages/profile_setting/bmi_page.dart';
-import 'package:food/pages/profile_setting/goals_preferences.dart';
-import 'package:food/pages/profile_setting/help_center_page.dart';
-import 'package:food/pages/profile_setting/membership_page.dart';
-import 'package:food/pages/profile_setting/my_profile_page.dart';
-import 'package:food/pages/profile_setting/privacy_policy_page.dart';
-import 'package:food/pages/profile_setting/settings_page.dart';
-import 'package:food/pages/profile_setting/terms_conditions_page.dart';
+import 'package:food/pages/profileSetting/bmi_page.dart';
+import 'package:food/pages/profileSetting/goals_preferences.dart';
+import 'package:food/pages/profileSetting/help_center_page.dart';
+import 'package:food/pages/profileSetting/membership_page.dart';
+import 'package:food/pages/profileSetting/my_profile_page.dart';
+import 'package:food/pages/profileSetting/privacy_policy_page.dart';
+import 'package:food/pages/profileSetting/settings_page.dart';
+import 'package:food/pages/profileSetting/terms_conditions_page.dart';
 import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/pages/user/view/upload_profile_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';

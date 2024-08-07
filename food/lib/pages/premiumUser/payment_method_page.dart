@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/premium_user/card_details_page.dart';
+import 'package:food/pages/premiumUser/card_details_page.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/user/view/home_page.dart';
