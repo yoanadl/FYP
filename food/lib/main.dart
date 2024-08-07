@@ -6,6 +6,7 @@ import 'pages/intro_page.dart';
 import 'package:food/applewatch/injector.dart' show initializeDependencies;
 import 'package:health/health.dart';
 
+
 // initialize the HealthFactory globally
 final HealthFactory healthFactory = HealthFactory();
 

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'dart:io';
 import 'package:food/pages/workout/presenters/workout_done_presenter.dart';
 import 'package:food/services/workout_service.dart';
 import '../models/workout_done_model.dart';
 import 'package:food/services/health_service.dart';
+
 
 class WorkoutDoneView extends StatefulWidget {
   final WorkoutDonePresenter presenter;
@@ -32,6 +39,7 @@ class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDon
   late WorkoutDoneModel _model;
   final HealthService _healthService = HealthService();
   final WorkoutService _workoutService = WorkoutService();
+  final GlobalKey _globalKey = GlobalKey();
 
   @override
   void initState() {
@@ -121,6 +129,96 @@ class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDon
 
   }
 
+  // Future<void> _shareWorkoutData() async {
+
+  //   try {
+  //     // delay to ensure the widget is fully rendered
+  //     await Future.delayed(Duration(milliseconds: 100));
+
+  //     RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+  //     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+  //     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+  //     if (byteData != null) {
+  //       Uint8List pngBytes = byteData.buffer.asUint8List();
+
+  //       final directory = await getApplicationDocumentsDirectory();
+  //       final imagePath = '${directory.path}/screenshot.png';
+  //       final imageFile = File(imagePath);
+  //       await imageFile.writeAsBytes(pngBytes);
+
+  //       if (await imageFile.exists()) {
+  //         print('File exists at $imagePath');
+  //       } else {
+  //         print('File does not exist');
+  //       }
+
+  //       final result = await Share.shareXFiles(
+  //         [XFile(imagePath)], 
+  //         text: 'Check out my workout results!'
+  //       ).catchError((error) {
+  //         print('Error sharing: $error');
+  //       });
+
+  //       if (result.status == ShareResultStatus.success) {
+  //         print('Thank you for sharing the picture!');
+  //       } else if (result.status == ShareResultStatus.dismissed) {
+  //         print('Share was dismissed.');
+  //       }
+    
+  //     }
+      
+  //   }
+
+  //   catch (e) {
+  //     print('Error taking screenshot: $e');
+
+  //   }
+  // }
+
+  Future<void> _shareWorkoutData() async {
+  try {
+    // Delay to ensure the widget is fully rendered
+    await Future.delayed(Duration(milliseconds: 100));
+
+    RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+    if (byteData != null) {
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = '${directory.path}/screenshot.png';
+      final imageFile = File(imagePath);
+      await imageFile.writeAsBytes(pngBytes);
+
+      if (await imageFile.exists()) {
+        print('File exists at $imagePath');
+        final result = await Share.shareXFiles(
+          [XFile(imagePath)],
+          
+        ).catchError((error) {
+          print('Error sharing: $error');
+        });
+
+        if (result.status == ShareResultStatus.success) {
+          print('Thank you for sharing the picture!');
+        } else if (result.status == ShareResultStatus.dismissed) {
+          print('Share was dismissed.');
+        }
+      } else {
+        print('File does not exist at $imagePath');
+      }
+    } else {
+      print('Error: ByteData is null');
+    }
+  } catch (e) {
+    print('Error taking screenshot: $e');
+  }
+}
+
+
 
   @override
   void updateView(WorkoutDoneModel model) {
@@ -139,52 +237,69 @@ class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDon
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'You did it!',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+          child: RepaintBoundary(
+            key: _globalKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'You did it!',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(height: 30),
-              _buildStatsRow(
-                icon: Icons.local_fire_department,
-                text: 'Calories burned: ${_model.caloriesBurned} kcal',
-              ),
-              SizedBox(height: 30),
-              _buildStatsRow(
-                icon: Icons.directions_walk,
-                text: 'Steps took: ${_model.steps} steps',
-              ),
-              SizedBox(height: 30),
-              _buildStatsRow(
-                icon: Icons.favorite,
-                text: 'Average Heart rate: ${_model.averageHeartRate} bpm',
-              ),
-               SizedBox(height: 30),
-              _buildStatsRow(
-                icon: Icons.favorite,
-                text: 'Max Heart rate: ${_model.maxHeartRate} bpm',
-              ),
-              SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'Exit Workout',
-                  style: TextStyle(fontSize: 20),
+                SizedBox(height: 30),
+                _buildStatsRow(
+                  icon: Icons.local_fire_department,
+                  text: 'Calories burned: ${_model.caloriesBurned} kcal',
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff031927),
-                  foregroundColor: Colors.white,
+                SizedBox(height: 30),
+                _buildStatsRow(
+                  icon: Icons.directions_walk,
+                  text: 'Steps took: ${_model.steps} steps',
                 ),
-              ),
-            ],
+                SizedBox(height: 30),
+                _buildStatsRow(
+                  icon: Icons.favorite,
+                  text: 'Average Heart rate: ${_model.averageHeartRate} bpm',
+                ),
+                 SizedBox(height: 30),
+                _buildStatsRow(
+                  icon: Icons.favorite,
+                  text: 'Max Heart rate: ${_model.maxHeartRate} bpm',
+                ),
+                SizedBox(height: 40),
+              
+                ElevatedButton(
+                  onPressed: _shareWorkoutData, 
+                  child: Text(
+                    'Share',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:  Color(0xff031927),
+                  ),
+                ),
+                SizedBox(height: 20,),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Exit Workout',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xff031927),
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
