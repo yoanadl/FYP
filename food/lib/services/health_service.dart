@@ -881,11 +881,79 @@ Future<double?> getAverageHeartRateForThatActivity(DateTime startTime, DateTime 
     }
   }
 
-//   // filter - select any time period
+  // filter - select any time period
 
-//   Future<Map<String, dynamic>> getFilterHealthData(DateTime fromDate, DateTime toDate) async {
-//     // query firestore for heal
-//   }
+  Future<Map<String, dynamic>> getFilterHealthData(DateTime fromDate, DateTime toDate) async {
+    
+    try {
+      
+      final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+
+      if (requested) {
+        final healthData = await Future.wait([
+          healthFactory.getHealthDataFromTypes(fromDate, toDate, [HealthDataType.STEPS]),
+          healthFactory.getHealthDataFromTypes(fromDate, toDate, [HealthDataType.ACTIVE_ENERGY_BURNED]),
+          healthFactory.getHealthDataFromTypes(fromDate, toDate, [HealthDataType.HEART_RATE]),
+        ]);
+
+        // extract data
+        final stepsData = healthData[0];
+        final caloriesData = healthData[1];
+        final heartRateData = healthData[2];
+
+        // calculate total steps
+        int totalSteps = stepsData.fold(0, (sum, data) {
+          if (data.value is NumericHealthValue) {
+            return sum + ((data.value as NumericHealthValue).numericValue?.toInt() ?? 0);
+          }
+          return sum;
+        });
+
+        // calculate total calories burned
+        double totalCalories = caloriesData.fold(0.0, (sum, data) {
+          if (data.value is NumericHealthValue) {
+            return sum + ((data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0);
+          }
+          return sum;
+        });
+
+        // Calculate average heart rate
+        List<double> heartRateValues = heartRateData
+            .where((data) => data.value is NumericHealthValue)
+            .map((data) => (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0)
+            .toList();
+
+        double averageHeartRate = heartRateValues.isNotEmpty
+            ? heartRateValues.reduce((a, b) => a + b) / heartRateValues.length
+            : 0.0;
+
+        // Calculate maximum heart rate
+        double maxHeartRate = heartRateValues.isNotEmpty ? heartRateValues.reduce((a, b) => a > b ? a : b) : 0.0;
+
+        return {
+          'totalSteps': totalSteps,
+          'totalCalories': totalCalories,
+          'averageHeartRate': averageHeartRate,
+          'maxHeartRate': maxHeartRate,
+        };
+      }
+
+      else {
+        throw Exception('HealthKit authorixation not granted');
+      }
+    
+    }
+    catch (e) {
+      print('Error fetching health data: $e');
+      
+      return {
+        'totalSteps': 0,
+        'totalCalories': 0.0,
+        'averageHeartRate': 0.0,
+        'maxHeartRate': 0.0,
+      };
+    }
+  }
 
 
 

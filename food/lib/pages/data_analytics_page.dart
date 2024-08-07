@@ -38,6 +38,14 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   double? averageMonthlyHeartRate;
   double? maxHeartRateInMonth = 0.0;
 
+  DateTime? _fromDate;
+  DateTime? _toDate;
+
+  int? filterSteps = 0;
+  double? filterCalories = 0.0;
+  double? filterAverageHeartRate = 0.0;
+  double? filterMaxHeartRate = 0.0;
+
   final TextEditingController _fromDateController = TextEditingController();
   final TextEditingController _toDateController = TextEditingController();
 
@@ -163,6 +171,26 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
 
   }
 
+  void _fetchFilterData() async {
+
+    print('From Date: $_fromDate');
+    print('To Date: $_toDate');
+
+    if (_fromDate != null && _toDate != null) {
+      var data = await healthService.getFilterHealthData(_fromDate!, _toDate!);
+
+      setState(() {
+        filterSteps = data['totalSteps'];
+        filterCalories = data['totalCalories'];
+        filterAverageHeartRate = data['averageHeartRate'];
+        filterMaxHeartRate = data['maxHeartRate'];
+      });
+    }
+    else {
+      print('Please select both from and to dates.');
+    }
+  }
+
   Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
     
     showCupertinoModalPopup(
@@ -182,6 +210,13 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                     onDateTimeChanged: (DateTime newDate) {
                       setState(() {
                         controller.text = DateFormat('yyyy-MM-dd').format(newDate);
+                        if (controller == _fromDateController) {
+                          _fromDate = newDate;
+
+                        }
+                        else if (controller == _toDateController) {
+                          _toDate = newDate;
+                        }
                       });
                     },
                     use24hFormat: true,
@@ -225,7 +260,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 ),
               ),
               Text(
-                '${totalStepsInMonth}',
+                '${filterSteps?.toString() ?? 'N/A'}',
                   style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -245,7 +280,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 ),
               ),
               Text(
-                '${totalCaloriesInMonth?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                '${filterCalories?.toStringAsFixed(1) ?? 'N/A'} kcal',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -265,7 +300,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 ),
               ),
               Text(
-                '${averageMonthlyHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                '${filterAverageHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -285,7 +320,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 ),
               ),
               Text(
-                '${maxHeartRateInMonth?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                '${filterAverageHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
@@ -793,6 +828,27 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
             ),
           ],
         ),
+        SizedBox(height: 15,),
+        Align(
+          alignment: Alignment.center,
+          child: ElevatedButton(
+            onPressed: () {
+              _fetchFilterData();
+            }, 
+            child: Text('Get Data',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+             ),
+             style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF031927), 
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+             ),
+            ),
+        )
        
         
       ],
