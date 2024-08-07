@@ -213,10 +213,10 @@ class _HomePageState extends State<HomePage> {
               
       
               InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DataAnalyticsPage(),
-                )),
+                // onTap: () => Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => DataAnalyticsPage(),
+                // )),
                 child: Container(
                   width: 350,
                   height: 190,
