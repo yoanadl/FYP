@@ -881,5 +881,12 @@ Future<double?> getAverageHeartRateForThatActivity(DateTime startTime, DateTime 
     }
   }
 
+//   // filter - select any time period
+
+//   Future<Map<String, dynamic>> getFilterHealthData(DateTime fromDate, DateTime toDate) async {
+//     // query firestore for heal
+//   }
+
+
 
 }

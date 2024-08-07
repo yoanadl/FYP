@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food/applewatch/injector.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/base_page.dart';
 import 'package:food/services/health_service.dart';
@@ -38,7 +38,8 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
   double? averageMonthlyHeartRate;
   double? maxHeartRateInMonth = 0.0;
 
-  
+  final TextEditingController _fromDateController = TextEditingController();
+  final TextEditingController _toDateController = TextEditingController();
 
 
   @override
@@ -159,6 +160,142 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
       maxHeartRateInMonth = maxMonthlyHeartRate;
       
     });
+
+  }
+
+  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+    
+    showCupertinoModalPopup(
+      context: context, 
+      builder: (_) => SafeArea(
+        child: Container(
+          height: 250,
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  height: 180,
+                  child: CupertinoDatePicker(
+                    initialDateTime: DateTime.now(),
+                    onDateTimeChanged: (DateTime newDate) {
+                      setState(() {
+                        controller.text = DateFormat('yyyy-MM-dd').format(newDate);
+                      });
+                    },
+                    use24hFormat: true,
+                    mode: CupertinoDatePickerMode.date,
+                  ),
+                ),
+                CupertinoButton(
+                  child: Text('OK'), 
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          ),
+        ),
+      )
+    );
+  }
+
+  Widget buildFilterDataTable() {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.grey.shade300,
+        ),
+      ),
+      child: Column (
+        crossAxisAlignment: CrossAxisAlignment.start,
+        
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total Steps',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                '${totalStepsInMonth}',
+                  style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey.shade400),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total Calories Burned',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                '${totalCaloriesInMonth?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Average Heart Rate',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                '${averageMonthlyHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+          Divider(color: Colors.grey),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Maximum Heart Rate',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+              Text(
+                '${maxHeartRateInMonth?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
 
   }
 
@@ -546,14 +683,16 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
               ),
               SizedBox(height: 16),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _buildPeriodButton('Today'),
-                  SizedBox(width: 20),
+                  SizedBox(width: 3,),
                   _buildPeriodButton('Week'),
-                  SizedBox(width: 20),
+                  SizedBox(width: 3,),
                   _buildPeriodButton('Month'),
-                  SizedBox(width: 20)
+                  SizedBox(width: 3,),
+                  _buildPeriodButton('Filter'),
+                  
                 ],
               ),
               SizedBox(height: 16),
@@ -572,6 +711,13 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
 
                 if (selectedPeriod == 'Month')
                   buildMonthlyDataTable(),
+
+                if (selectedPeriod == 'Filter') ... [
+                  SizedBox(height: 15,),
+                  buildFilterWidget(),
+                  SizedBox(height: 35,),
+                  buildFilterDataTable(),
+                ],
             ],
           ),
         ),
@@ -590,6 +736,69 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
       ),
     );
   }
+
+
+  Widget buildFilterWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              'From',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            SizedBox(width: 5,),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                child: TextFormField(
+                  controller: _fromDateController,
+                  decoration: InputDecoration(
+                    labelText: 'From Date',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  ),
+                  readOnly: true,
+                  onTap: () => _selectDate(context, _fromDateController),
+                ),
+              ),
+            ),
+            SizedBox(width: 10),
+            Text(
+              'To',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            SizedBox(width: 5,),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                child: TextFormField(
+                  controller: _toDateController,
+                  decoration: InputDecoration(
+                    labelText: 'To Date',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  ),
+                  readOnly: true,
+                  onTap: () => _selectDate(context, _toDateController),
+                ),
+              ),
+            ),
+          ],
+        ),
+       
+        
+      ],
+    );
+  }
+
 
    Widget _todayData() {
     return Container(
@@ -836,6 +1045,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
         backgroundColor: selectedPeriod == period ? Color(0xFF031927) : Colors.grey.shade200,
         foregroundColor: selectedPeriod == period ? Colors.white: Colors.black,
       ),
+      
     );
   }
 
