@@ -1,6 +1,7 @@
 //temp code
 
 import 'package:flutter/material.dart';
+import 'package:food/pages/workout/views/workout_page_view.dart';
 
 import '../../components/navbar.dart';
 import 'community_page.dart';

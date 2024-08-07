@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/pages/workout/presenters/edit_workout_presenter.dart';
+import 'package:food/services/workout_service.dart';
 
-class EditWorkoutPage extends StatefulWidget {
+class EditWorkoutView extends StatefulWidget {
   final String userId;
   final String workoutId;
   final String workoutTitle;
   final List<int> duration;
   final List<String> activities;
 
-  EditWorkoutPage({
+  EditWorkoutView({
     required this.userId,
     required this.workoutId,
     required this.workoutTitle,
@@ -17,69 +18,25 @@ class EditWorkoutPage extends StatefulWidget {
   });
 
   @override
-  _EditWorkoutPageState createState() => _EditWorkoutPageState();
+  _EditWorkoutViewState createState() => _EditWorkoutViewState();
 }
 
-class _EditWorkoutPageState extends State<EditWorkoutPage> {
+class _EditWorkoutViewState extends State<EditWorkoutView> implements EditWorkoutViewInterface {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final List<TextEditingController> _activityControllers = [];
   final List<TextEditingController> _durationControllers = [];
+  late EditWorkoutPresenter _presenter;
 
   @override
   void initState() {
     super.initState();
+    _presenter = EditWorkoutPresenter(WorkoutService());
+    _presenter.attachView(this);
 
-    // initialize controllers with existing workout details
     _titleController.text = widget.workoutTitle;
     _activityControllers.addAll(widget.activities.map((activity) => TextEditingController(text: activity)));
     _durationControllers.addAll(widget.duration.map((duration) => TextEditingController(text: duration.toString())));
-  }
-
-  void _saveWorkout() {
-
-    if (_formKey.currentState!.validate()) {
-
-      try {
-        // collect updated data from controllers
-        List<String> activities = _activityControllers.map((controller) => controller.text.trim()).toList();
-        List<int> durations = _durationControllers.map((controller) => int.tryParse(controller.text.trim()) ?? 0).toList();
-
-        // update firestore document with new data
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(widget.userId)
-            .collection('workouts')
-            .doc(widget.workoutId)
-            .update({
-              'title': _titleController.text,
-              'duration': durations,
-              'activities': activities,
-        });
-
-        // Navigate back after successful update
-        Navigator.pop(context);
-
-      } 
-      catch (e) {
-        print('Error saving workout: $e');
-
-        // show error dialog if update fails
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to save workout. Please try again later.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
-    }
   }
 
   @override
@@ -96,8 +53,6 @@ class _EditWorkoutPageState extends State<EditWorkoutPage> {
           key: _formKey,
           child: ListView(
             children: [
-
-              // workout title input field
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(labelText: 'Workout Title'),
@@ -109,7 +64,6 @@ class _EditWorkoutPageState extends State<EditWorkoutPage> {
                 },
               ),
               SizedBox(height: 20),
-
               Column(
                 children: List.generate(
                   _activityControllers.length,
@@ -123,16 +77,13 @@ class _EditWorkoutPageState extends State<EditWorkoutPage> {
                   ),
                 ),
               ),
-
-              // save button
               ElevatedButton(
                 onPressed: _saveWorkout,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xff031927), 
-                  foregroundColor: Colors.white, 
+                  backgroundColor: Color(0xff031927),
+                  foregroundColor: Colors.white,
                 ),
-                child: Text(
-                  'Save Workout'),
+                child: Text('Save Workout'),
               ),
             ],
           ),
@@ -175,15 +126,41 @@ class _EditWorkoutPageState extends State<EditWorkoutPage> {
     );
   }
 
+  void _saveWorkout() {
+    if (_formKey.currentState!.validate()) {
+      List<String> activities = _activityControllers.map((controller) => controller.text.trim()).toList();
+      List<int> durations = _durationControllers.map((controller) => int.tryParse(controller.text.trim()) ?? 0).toList();
+      _presenter.saveWorkout(widget.userId, widget.workoutId, _titleController.text, activities, durations);
+    }
+  }
+
+  @override
+  void onSaveSuccess() {
+    Navigator.pop(context);
+  }
+
+  @override
+  void onSaveError(String error) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text('Failed to save workout: $error'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void dispose() {
-    
-    // dispose controllers to avoid memory leaks
     _titleController.dispose();
     _activityControllers.forEach((controller) => controller.dispose());
     _durationControllers.forEach((controller) => controller.dispose());
     super.dispose();
   }
 }
-
-

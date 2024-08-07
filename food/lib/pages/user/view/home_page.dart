@@ -132,27 +132,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.white,
           centerTitle: false,
           actions: [
-
-            // sync to smart watch icon
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-
-                child: IconButton(
-                  onPressed: () {}, 
-                  icon: Icon(Icons.sync),
-                  iconSize: 25,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-
-
+            
             // notification icon
             Padding(
               padding: const EdgeInsets.all(3.0),
@@ -232,111 +212,117 @@ class _HomePageState extends State<HomePage> {
               ),
               
       
-              Container(
-                width: 350,
-                height: 190,
-                margin: EdgeInsets.only(top: 10),
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Color(0x99C8E0F4),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-      
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(right: 5),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white, 
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Heart Rate \n 72 bpm',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+              InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DataAnalyticsPage(),
+                )),
+                child: Container(
+                  width: 350,
+                  height: 190,
+                  margin: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Color(0x99C8E0F4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                      
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(right: 5),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white, 
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Heart Rate \n ${heartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 5),
-                              Icon(Icons.favorite, color: Color(0xFF508AA8)),
-                            ],
-                          
+                                SizedBox(width: 5),
+                                Icon(Icons.favorite, color: Color(0xFF508AA8)),
+                              ],
+                            
+                            ),
                           ),
                         ),
                       ),
-                    ),
-      
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 10),
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Calories \n 350 kcal',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold
+                      
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Calories \n ${calories?.toStringAsFixed(1) ?? 'N/A'} kcal',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold
+                                      ),
                                     ),
+                                    SizedBox(width: 5),
+                                    Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
+                                    
+                                    ],
                                   ),
-                                  SizedBox(width: 5),
-                                  Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
-                                  
-                                  ],
                                 ),
                               ),
-                            ),
-      
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white, 
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-      
-                             child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Steps \n 10,000',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold
-                                    ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
-                                  
-                                  ],
-                                ),
+                      
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white, 
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                          )
-                        ],
-                      ))
-                  ],
-      
-                )
-                
-              ),
+                      
+                               child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Steps \n ${steps?.toString() ?? 'N/A'}',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
+                                    
+                                    ],
+                                  ),
+                                ),
+                            )
+                          ],
+                        ))
+                    ],
+                      
+                  )
+                  ),
+                ),
+        
       
               SizedBox(height: 20),
       
@@ -369,7 +355,7 @@ class _HomePageState extends State<HomePage> {
                         top: 15,
                         left: 15,
                         child: Text(
-                          'Workout Plan', 
+                          'Workouts', 
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

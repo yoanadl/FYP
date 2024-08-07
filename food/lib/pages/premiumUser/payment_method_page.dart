@@ -9,6 +9,7 @@ import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/user/view/home_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:food/pages/workout/views/workout_page_view.dart';
 import 'package:http/http.dart' as http;
 
 class PaymentMethodPage extends StatelessWidget {
