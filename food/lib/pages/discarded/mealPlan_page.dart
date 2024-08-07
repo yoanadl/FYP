@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../components/navbar.dart';
 import 'community_page.dart';
 import '../workout/workout_page.dart';
-import '../profile_page.dart';
+import '../user/view/profile_page.dart';
 import 'explore_premade_meal.dart';
 
 class RowData{

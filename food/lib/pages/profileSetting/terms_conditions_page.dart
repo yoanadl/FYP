@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/base_page.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 
-class PrivacyPolicyPage extends StatelessWidget {
+class TermsConditionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +21,7 @@ class PrivacyPolicyPage extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                'Privacy Policy',
+                'Terms & Conditions',
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w600,
@@ -63,6 +63,7 @@ class PrivacyPolicyPage extends StatelessWidget {
               case 2:
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const CommunityPage()));
                 break;
+              
             }
           }
         },

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food/pages/admin/models/admin_profile_model.dart';
 import 'package:food/pages/admin/views/admin_profile_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/pages/intro_page.dart';
+import 'package:food/pages/user/view/intro_page.dart';
 
 class AdminProfilePresenter {
   final AdminProfileModel model;

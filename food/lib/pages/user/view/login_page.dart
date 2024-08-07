@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/base_page.dart'; 
+import 'package:food/components/base_page.dart'; 
 import 'package:food/services/auth/auth_service.dart';
-import '../components/my_button.dart';
-import '../components/my_textfield.dart';
+import '../../../components/my_button.dart';
+import '../../../components/my_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {

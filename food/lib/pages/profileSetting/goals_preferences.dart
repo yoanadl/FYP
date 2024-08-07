@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/base_page.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/workout/workout_page.dart';
 
@@ -68,28 +68,28 @@ class GoalsPreferences extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 50),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          'Dietary \nPreferences',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600
-                          ),
-                        ),
-                        Container(
-                          width: 200,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Enter dietary preferences',
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     Text(
+                    //       'Dietary \nPreferences',
+                    //       style: TextStyle(
+                    //         fontSize: 18,
+                    //         fontWeight: FontWeight.w600
+                    //       ),
+                    //     ),
+                    //     Container(
+                    //       width: 200,
+                    //       child: TextField(
+                    //         decoration: InputDecoration(
+                    //           hintText: 'Enter dietary preferences',
+                    //           filled: true,
+                    //           fillColor: Colors.white,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
 
                     SizedBox(height: 50),
                     Center(

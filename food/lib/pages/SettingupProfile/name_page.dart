@@ -18,30 +18,30 @@ class NamePageState extends State<NamePage> {
   @override
   void initState() {
     super.initState();
-    _nameController.addListener(_updateAge);
+    _nameController.addListener(_updateName);
   }
 
   @override
   void dispose() {
-    _nameController.removeListener(_updateAge);
+    _nameController.removeListener(_updateName);
     _nameController.dispose();
     super.dispose();
   }
 
-  void _updateAge() {
+  void _updateName() {
     setState(() {
       _Name = _nameController.text;
     });
   }
 
-  void _SetName() async {
+  void _setName() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       print('User is not authenticated');
       return;
     }
 
-    if (_Name == null) {
+    if (_Name == null || _Name!.isEmpty) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -57,12 +57,20 @@ class NamePageState extends State<NamePage> {
       );
       return;
     }
-    try {
-      await SettingProfileService().createProfile(user.uid,  {
-        'Name': _Name,
-      });
 
-      // Navigate to Height page
+    try {
+      // Provide default values for other parameters
+      await SettingProfileService().createProfile(
+        user.uid,
+        name: _Name!,
+        age: 0,              // Provide default value or get from user input
+        height: 0,           // Provide default value or get from user input
+        weight: 0,           // Provide default value or get from user input
+        fitnessGoals: "Not set", // Provide default value or get from user input
+        gender: "Not set",  // Provide default value or get from user input
+      );
+
+      // Navigate to Gender page
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -70,12 +78,12 @@ class NamePageState extends State<NamePage> {
         ),
       );
     } catch (e) {
-      print('Failed to save Age: $e');
+      print('Failed to save name: $e');
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Error'),
-          content: Text('Failed to save Age. Please try again later.'),
+          content: Text('Failed to save name. Please try again later.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -127,9 +135,9 @@ class NamePageState extends State<NamePage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: ElevatedButton(
-                onPressed: _SetName,
+                onPressed: _setName,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF031927), // Updated background color parameter
+                  backgroundColor: Color(0xFF031927),
                   padding: EdgeInsets.symmetric(vertical: 16.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),

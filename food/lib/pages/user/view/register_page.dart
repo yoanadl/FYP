@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:food/pages/SettingupProfile/name_page.dart';
 import 'package:food/pages/trainer/views/trainer_register_page.dart';
 import 'package:food/services/auth/auth_service.dart';
-import '../components/my_button.dart';
-import '../components/my_textfield.dart';
+import '../../../components/my_button.dart';
+import '../../../components/my_textfield.dart';
 
 class RegisterPage extends StatefulWidget {
 

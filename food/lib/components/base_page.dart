@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
-import 'workout/workout_page.dart';
-import 'discarded/community_page.dart';
-import 'profile_page.dart';
-import 'home_page.dart';
+import '../pages/workout/workout_page.dart';
+import '../pages/discarded/community_page.dart';
+import '../pages/user/view/profile_page.dart';
+import '../pages/user/view/home_page.dart';
 
 class BasePage extends StatefulWidget {
   final int initialIndex;
