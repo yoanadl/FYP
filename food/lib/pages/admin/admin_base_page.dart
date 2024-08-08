@@ -5,6 +5,7 @@ import 'package:food/components/admin_navbar.dart';
 import 'package:food/pages/admin/views/admin_profile_view.dart';
 import 'package:food/pages/admin/views/admin_view_all_user_accounts.dart';
 import 'package:food/pages/admin/admin_view_all_user_profile.dart';
+import 'package:food/pages/admin/views/admin_view_user_profiles_view.dart';
 
 import 'admin_home_page.dart';
 
@@ -27,7 +28,7 @@ class _AdminBasePageState extends State<AdminBasePage> {
   final List<Widget> _pages = [
     AdminHomePage(),
     AdminViewAllUserAccounts(),
-    UserProfilePage(),
+    AdminViewUserProfilesView(),
     AdminProfileViewImpl(),
   ];
 
