@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
+import 'package:food/pages/challenge_and_reward_page.dart';
 import 'package:food/pages/workout/views/workout_page_view.dart';
-import '../pages/discarded/community_page.dart';
 import '../pages/user/view/profile_page.dart';
 import '../pages/user/view/home_page.dart';
 
@@ -24,7 +24,7 @@ class _HomePageState extends State<BasePage> {
   final List<Widget> _pages = [
     HomePage(),
     WorkoutPage(),
-    CommunityPage(),
+    ChallengePage(),
     ProfilePage(),
   ];
 

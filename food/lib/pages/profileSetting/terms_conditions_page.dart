@@ -55,13 +55,13 @@ class TermsConditionsPage extends StatelessWidget {
             Navigator.pop(context);
             switch (index) {
               case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
                 break;
               case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
                 break;
               case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CommunityPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
                 break;
               
             }

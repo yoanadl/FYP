@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 
 class ChallengePage extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Home'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // This will navigate back to the previous page
-          },
-        ),
+        backgroundColor: Colors.white,
+        title: Text('Challenges', style: TextStyle(fontWeight: FontWeight.bold),),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

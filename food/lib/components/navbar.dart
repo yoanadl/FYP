@@ -27,7 +27,7 @@ class Navbar extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.group),
-            label : 'Community',
+            label : 'Challenges',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
