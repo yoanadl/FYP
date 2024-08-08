@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food/components/navbar.dart';
-import 'package:food/pages/premiumUser/payment_method_page.dart';
 import 'package:food/components/base_page.dart';
+import 'package:food/components/navbar.dart';
+import 'package:food/pages/PremiumUser/payment_method_page.dart';
+import 'package:food/pages/base_page.dart';
+import 'package:food/pages/community_page.dart';
 import 'package:food/pages/discarded/community_page.dart';
-import 'package:food/pages/workout/workout_page.dart';
+import 'package:food/pages/workout/views/workout_page_view.dart';
 
 class PremiumPlanPage extends StatefulWidget {
   @override

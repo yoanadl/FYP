@@ -1,10 +1,11 @@
+// lib/pages/explore_workouts_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/discarded/community_page.dart';
-import 'package:food/pages/workout/workout_page.dart';
-import 'package:food/pages/user/view/profile_page.dart';
-import 'package:food/pages/workout/premade_workout_summary.dart';
-// import 'workout_summary.dart';
+import 'package:food/pages/base_page.dart';
+import 'package:food/pages/workout/views/premade_workout_summary_view.dart';
+import '../models/workout_model.dart';
+import '../presenters/explore_workouts_presenter.dart';
 
 class ExploreWorkoutsPage extends StatefulWidget {
   @override
@@ -13,30 +14,16 @@ class ExploreWorkoutsPage extends StatefulWidget {
 
 class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
   final TextEditingController _searchController = TextEditingController();
+  final ExploreWorkoutsPresenter _presenter = ExploreWorkoutsPresenter(WorkoutModel());
+  List<Map<String, dynamic>> _preMadeWorkouts = [];
   String _searchQuery = '';
-  List<Map<String, dynamic>> preMadeWorkouts = [
-     {
-      'title': 'Upper Body Blast',
-      'activities': ['Push-ups', 'Pull-ups', 'Bicep Curls'],
-      'durations': [10, 15, 20],
-    },
-    
-    {
-      'title': 'Lower Body Strength',
-      'activities': ['Squats', 'Lunges', 'Leg Press'],
-      'durations': [10, 15, 20]
-    },
-    {
-      'title': 'Cardio Blast',
-      'activities': ['Running', 'Cycling', 'Jump Rope'],
-      'durations': [20, 15, 10]
-    },
-    {
-      'title': 'Flexibility & Core',
-      'activities': ['Yoga', 'Planks', 'Pilates'],
-      'durations': [20, 15, 20]
-    }
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+    _loadWorkouts();
+  }
 
   void _onSearchChanged() {
     setState(() {
@@ -44,10 +31,11 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(_onSearchChanged);
+  Future<void> _loadWorkouts() async {
+    final workouts = await _presenter.getPreMadeWorkouts();
+    setState(() {
+      _preMadeWorkouts = workouts;
+    });
   }
 
   @override
@@ -59,9 +47,7 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> filteredWorkouts = preMadeWorkouts.where((workout) {
-      return workout['title'].toLowerCase().contains(_searchQuery.toLowerCase());
-    }).toList();
+    List<Map<String, dynamic>> filteredWorkouts = _presenter.filterWorkouts(_preMadeWorkouts, _searchQuery);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -96,11 +82,6 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
-                IconButton(
-                  icon: Icon(Icons.filter_list),
-                  onPressed: () {},
-                ),
               ],
             ),
           ),
@@ -117,7 +98,7 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => PreMadeWorkoutSummaryPage(
+                          builder: (context) => PreMadeWorkoutSummaryView(
                             workoutTitle: workout['title'],
                             activities: List<String>.from(workout['activities']),
                             duration: List<int>.from(workout['durations']),
@@ -149,20 +130,23 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
           ),
         ],
       ),
-      bottomNavigationBar: Navbar(
-        currentIndex: 0,
+       bottomNavigationBar: Navbar(
+        currentIndex: 1,
         onTap: (int index) {
-          if (index != 3) {
+          if (index != 1) {
             Navigator.pop(context);
             switch (index) {
+              case 0:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
+                break;
               case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
                 break;
               case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CommunityPage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
                 break;
               case 3:
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  ProfilePage()));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3,)));
                 break;
             }
           }

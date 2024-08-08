@@ -1,40 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/pages/workout/models/workout_done_model.dart';
 
 class WorkoutService {
+  
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
-  Future<void> createWorkoutData(
+  Future<String> createWorkoutData(
       String uid, Map<String, dynamic> workoutData) async {
     try {
 
       // Access the Firestore collection 'workouts' under the user's document identified by 'uid'
-      await usersCollection
+      DocumentReference workoutRef = await  usersCollection
           .doc(uid) // Get the document reference for the user using 'uid'
           .collection('workouts') // Access the subcollection 'workouts' under the user document
           .add(workoutData); // Add a new document with workoutData to the 'workouts' collection
+
+      // return the document id of the newly created workout
+      return workoutRef.id;
     } catch (e) {
       print('Error creating workout: $e');
       throw Exception('Failed to create workout.');
     }
   }
-
-  // Future<List<Map<String, dynamic>>> getUserWorkouts(String uid) async {
-
-  //   try {
-  //     QuerySnapshot querySnapshot = await usersCollection
-  //         .doc(uid)
-  //         .collection('workouts')
-  //         .get();
-
-  //     return querySnapshot.docs
-  //         .map((doc) => doc.data() as Map<String, dynamic>)
-  //         .toList();
-  //   } catch (e) {
-  //     print('Error retrieving user workouts: $e');
-  //     throw Exception('Failed to retrieve user workouts.');
-  //   }
-  // }
 
   Future<List<Map<String, dynamic>>> getUserWorkouts(String uid) async {
   try {
@@ -54,12 +42,13 @@ class WorkoutService {
   }
 }
 
-
+  // save workout details user created
   Future<void> saveUserWorkout(
       String uid,
       String workoutTitle,
       List<String> activities,
-      List<int> duration) async {
+      List<int> duration,
+      bool isPremade) async {
     try {
       await usersCollection
           .doc(uid)
@@ -68,6 +57,7 @@ class WorkoutService {
         'title': workoutTitle,
         'activities': activities,
         'durations': duration,
+        'isPremade': isPremade,
       });
     } catch (e) {
       print('Error saving workout: $e');
@@ -102,5 +92,38 @@ class WorkoutService {
       print('Error deleting workout: $e');
       throw Exception('Failed to delete workout.');
     }
+  }
+
+  // save workout data fetched from apple watch to firestore
+  Future<void> saveWorkoutData(String userId, String workoutId, WorkoutDoneModel model) async {
+
+    try {
+      // create a new document for this workout isntance
+      final instanceId = DateTime.now().toIso8601String();
+
+      await usersCollection
+        .doc(userId)
+        .collection('workouts')
+        .doc(workoutId)
+        .collection('instances')
+        .doc(instanceId)
+        .set({
+          'startTime': Timestamp.fromDate(model.startTime),
+          'endTime': Timestamp.fromDate(model.endTime),
+          'calories': model.caloriesBurned,
+          'steps': model.steps,
+          'averageHeartRate': model.averageHeartRate,
+          'maxHeartRate': model.maxHeartRate,
+        });
+
+      print("Workout data saved successfully");
+
+    }
+
+    catch (e) {
+      print("Error saving workout data: $e");
+    }
+
+
   }
 }

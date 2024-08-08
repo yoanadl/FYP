@@ -5,8 +5,16 @@ const dataTypesIos = [
   HealthDataType.HEART_RATE,
   HealthDataType.ACTIVE_ENERGY_BURNED,
 ];
+const permissions = [
+  HealthDataAccess.READ, 
+  HealthDataAccess.READ,
+  HealthDataAccess.READ
+];
 
-const permissions = [HealthDataAccess.READ];
-final currentDate = DateTime.now();
-final midNight = DateTime(currentDate.year, currentDate.month, currentDate.day);
+final currentDate = DateTime(
+  DateTime.now().year,
+  DateTime.now().month,
+  DateTime.now().day,
+); // start of today (midnight that just passed)
 
+final midNight = currentDate.add(Duration(days: 1));  

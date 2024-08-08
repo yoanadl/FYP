@@ -85,23 +85,30 @@ class _AdminHomePageState extends State<AdminHomePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Hello, Admin!',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
+              Padding(
+                padding: const EdgeInsets.only(left: 35.0),
+                child: Text(
+                  'Hello, Admin!',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 19,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
-              Text(
-                formattedDate,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              Padding(
+                padding: const EdgeInsets.only(left: 35.0),
+                child: Text(
+                  formattedDate,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 19,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food/pages/admin/edit_profile_page.dart';
+import 'package:food/pages/admin/models/user_profile.dart';
 import 'create_new_profile_page.dart'; 
-import 'user_profile.dart';
+
 
 
 class UserProfilePage extends StatelessWidget {
@@ -32,8 +33,8 @@ class UserProfilePage extends StatelessWidget {
                   'User Profile',
                   textAlign: TextAlign.center, // Center align the text
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22.0,
                     fontFamily: 'Poppins',
                     color: Colors.black,
                   ),
