@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ChallengePage extends StatelessWidget {
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,8 +96,10 @@ class RewardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Challenge'),
+        backgroundColor: Colors.white,
+        title: Text('Rewards', style: TextStyle(fontWeight: FontWeight.bold),),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
