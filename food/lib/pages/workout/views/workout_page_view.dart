@@ -219,7 +219,7 @@ class _WorkoutPageState extends State<WorkoutPage> implements WorkoutPageView {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color(0XFF031927),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(Icons.add, color: Colors.white),

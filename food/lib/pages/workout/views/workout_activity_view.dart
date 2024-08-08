@@ -76,6 +76,57 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
     );
   }
 
+  Future<void> _confirmStopWorkout() async {
+    bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Stop Workout'),
+          content: Text('Are you sure you want to stop the workout?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Stop'),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirm == true) {
+      _presenter.stopTimer();
+      navigateToWorkoutDone(_currentModel);
+    }
+  }
+
+  Future<void> _confirmSkipWorkout() async {
+    bool? confirm = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Skip Activity'),
+          content: Text('Are you sure you want to skip to the next activity?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Skip'),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirm == true) {
+      _presenter.skipToNextActivity();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double progress = 1 - (_currentModel.remainingTimeInSeconds / (_currentModel.duration * 60));
@@ -132,26 +183,47 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
                 ),
               ),
               SizedBox(height: 20),
-              Container(
-                height: 50,
-                width: 220,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color(0xFFBA1200),
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    _presenter.stopTimer();
-                    navigateToWorkoutDone(_currentModel);
-                  },
-                  child: Text(
-                    'Stop Workout',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 50,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFFBA1200),
+                    ),
+                    child: TextButton(
+                      onPressed: _confirmStopWorkout,
+                      child: Text(
+                        'Stop',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  SizedBox(width: 20),
+                  Container(
+                    height: 50,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFF007BA7),
+                    ),
+                    child: TextButton(
+                      onPressed: _confirmSkipWorkout,
+                      child: Text(
+                        'Skip',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

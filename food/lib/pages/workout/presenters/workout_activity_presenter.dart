@@ -27,7 +27,6 @@ class WorkoutActivityPresenter {
       _model = _model.copyWith(
         remainingTimeInSeconds: _model.duration * 60, // Duration in seconds
         startTime: DateTime.now(), 
-        
       );
       print('Workout started at: ${_model.startTime}');
     }
@@ -75,6 +74,24 @@ class WorkoutActivityPresenter {
     _model = _model.copyWith(endTime: DateTime.now()); 
     print('Workout ended at: ${_model.endTime}');
     _view.navigateToWorkoutDone(_model);
+  }
 
+  void skipToNextActivity() {
+    _timer?.cancel();
+    if (_model.activityIndex < _model.activities.length - 1) {
+      _view.navigateToNextActivity(
+        _model.copyWith(
+          activityTitle: _model.activities[_model.activityIndex + 1],
+          duration: _model.durations[_model.activityIndex + 1],
+          remainingTimeInSeconds: _model.durations[_model.activityIndex + 1] * 60,
+          activityIndex: _model.activityIndex + 1,
+          startTime: DateTime.now(),
+          endTime: null,
+        ),
+      );
+    } else {
+      _model = _model.copyWith(endTime: DateTime.now());
+      _view.navigateToWorkoutDone(_model);
+    }
   }
 }

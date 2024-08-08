@@ -120,7 +120,7 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                 _buildGridTile(context, 'Workout\nPlan', Color(0xFF508AA8), () {
                   widget.onTabSelected(1); 
                 }),
-                _buildGridTile(context, 'Profile', Color(0xFF9DD1F1), () {
+                _buildGridTile(context, 'Feedbacks', Color(0xFF9DD1F1), () {
                     Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TrainerProfileSetting()),
