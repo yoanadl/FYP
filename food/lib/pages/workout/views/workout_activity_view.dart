@@ -102,30 +102,6 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
     }
   }
 
-  Future<void> _confirmSkipWorkout() async {
-    bool? confirm = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Skip Activity'),
-          content: Text('Are you sure you want to skip to the next activity?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Skip'),
-            ),
-          ],
-        );
-      },
-    );
-    if (confirm == true) {
-      _presenter.skipToNextActivity();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,25 +180,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
                       ),
                     ),
                   ),
-                  SizedBox(width: 20),
-                  Container(
-                    height: 50,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFF007BA7),
-                    ),
-                    child: TextButton(
-                      onPressed: _confirmSkipWorkout,
-                      child: Text(
-                        'Skip',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Removed skip button container
                 ],
               ),
             ],
@@ -232,12 +190,12 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
     );
   }
 
-  @override
-  void dispose() {
-    _presenter.stopTimer();
-    super.dispose();
+    @override
+    void dispose() {
+      _presenter.stopTimer();
+      super.dispose();
+    }
   }
-}
 
 class WorkoutDoneViewImplementation implements WorkoutDoneViewInterface {
   @override
