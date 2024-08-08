@@ -25,7 +25,7 @@ class SettingProfileService {
       };
 
       // Add profile document with the given data
-      await usersCollection.doc(uid).collection('TrainerProfile').add(profileData);
+      await usersCollection.doc(uid).collection('UserProfile').add(profileData);
       print('Profile created successfully!');
     } catch (e) {
       print('Error creating profile: $e');
@@ -91,7 +91,7 @@ class SettingProfileService {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
-          .collection('TrainerProfile')
+          .collection('UserProfile')
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
