@@ -32,8 +32,8 @@ class UserProfilePage extends StatelessWidget {
                   'User Profile',
                   textAlign: TextAlign.center, // Center align the text
                   style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22.0,
                     fontFamily: 'Poppins',
                     color: Colors.black,
                   ),

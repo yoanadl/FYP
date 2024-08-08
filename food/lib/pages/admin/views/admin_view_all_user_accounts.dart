@@ -56,6 +56,7 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> impl
           'User Accounts',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 22.0,
           ),
         ),
       ),

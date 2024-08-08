@@ -144,7 +144,7 @@ Future<void> fetchActiveUsersCount() async {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 23,
+                    fontSize: 19,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -156,7 +156,7 @@ Future<void> fetchActiveUsersCount() async {
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w400,
-                    fontSize: 20,
+                    fontSize: 19,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
