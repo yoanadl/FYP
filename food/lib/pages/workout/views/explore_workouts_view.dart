@@ -1,8 +1,8 @@
 // lib/pages/explore_workouts_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/base_page.dart';
 import 'package:food/pages/workout/views/premade_workout_summary_view.dart';
 import '../models/workout_model.dart';
 import '../presenters/explore_workouts_presenter.dart';

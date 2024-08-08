@@ -96,7 +96,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                overflow: TextOverflow.ellipsis,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 35.0),

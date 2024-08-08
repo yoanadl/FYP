@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/base_page.dart';
 import 'package:food/pages/workout/presenters/create_new_workout_presenter.dart';
 import 'package:food/pages/workout/views/create_new_workout_view_interface.dart';
 import 'package:food/pages/workout/presenters/workout_summary_presenter.dart';

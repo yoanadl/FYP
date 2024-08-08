@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/base_page.dart';
 import 'package:food/pages/workout/presenters/workout_summary_presenter.dart';
 import 'package:food/pages/workout/views/edit_workout_view.dart';
 import 'package:food/pages/workout/views/workout_activity_view.dart';  
