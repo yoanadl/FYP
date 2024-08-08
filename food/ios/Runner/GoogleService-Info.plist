@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.food</string>
+	<string>com.example.goodgrit</string>
 	<key>PROJECT_ID</key>
 	<string>fyp-goodgrit-a8601</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:607478788866:ios:62f8bfa77dcc13d7ae881b</string>
+	<string>1:607478788866:ios:f2ca5c474ed71b15ae881b</string>
 </dict>
 </plist>
