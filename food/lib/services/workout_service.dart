@@ -47,7 +47,8 @@ class WorkoutService {
       String uid,
       String workoutTitle,
       List<String> activities,
-      List<int> duration) async {
+      List<int> duration,
+      bool isPremade) async {
     try {
       await usersCollection
           .doc(uid)
@@ -56,6 +57,7 @@ class WorkoutService {
         'title': workoutTitle,
         'activities': activities,
         'durations': duration,
+        'isPremade': isPremade,
       });
     } catch (e) {
       print('Error saving workout: $e');

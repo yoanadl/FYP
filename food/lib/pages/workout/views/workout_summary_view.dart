@@ -10,12 +10,14 @@ class WorkoutSummaryView extends StatelessWidget {
   final WorkoutSummaryPresenter presenter;
   final String userId;
   final String workoutId;
+  final bool isPremade;
 
   const WorkoutSummaryView({
     Key? key, 
     required this.presenter,
     required this.userId,
     required this.workoutId,
+    required this.isPremade,
     }) : super(key: key);
 
   @override
@@ -35,6 +37,7 @@ class WorkoutSummaryView extends StatelessWidget {
             onPressed: () => presenter.confirmDelete(context),
             icon: const Icon(Icons.delete),
           ),
+          if (!isPremade) // check if the workout is not premade
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -46,6 +49,7 @@ class WorkoutSummaryView extends StatelessWidget {
                     workoutTitle: presenter.workoutTitle,
                     duration: presenter.duration,
                     activities: presenter.activities,
+                    isPremade: false,
                   ),
                 ),
               );

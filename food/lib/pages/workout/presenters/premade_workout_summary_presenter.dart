@@ -22,6 +22,7 @@ class PreMadeWorkoutSummaryPresenter {
         workoutTitle,
         activities,
         duration,
+        true, // mark this as a pre-made workout
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Workout added to your ongoing workouts')),

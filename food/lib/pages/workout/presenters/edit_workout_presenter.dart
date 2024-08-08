@@ -16,7 +16,13 @@ class EditWorkoutPresenter {
     _view = view;
   }
 
-  void saveWorkout(String userId, String workoutId, String title, List<String> activities, List<int> durations) async {
+  void saveWorkout(String userId, String workoutId, String title, List<String> activities, List<int> durations, bool isPremade) async {
+    
+    if (isPremade) {
+      _view.onSaveError('Cannot edit pre-made workouts');
+      return;
+    }
+    
     Map<String, dynamic> newData = {
       'title': title,
       'activities': activities,

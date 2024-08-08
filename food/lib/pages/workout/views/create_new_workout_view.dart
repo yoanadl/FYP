@@ -185,6 +185,7 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> implements 
           presenter: workoutSummaryPresenter,
           userId: FirebaseAuth.instance.currentUser!.uid,
           workoutId: workoutId,
+          isPremade: false,
         ),
       ),
     );

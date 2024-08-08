@@ -8,6 +8,8 @@ class EditWorkoutView extends StatefulWidget {
   final String workoutTitle;
   final List<int> duration;
   final List<String> activities;
+  final bool isPremade;
+
 
   EditWorkoutView({
     required this.userId,
@@ -15,6 +17,7 @@ class EditWorkoutView extends StatefulWidget {
     required this.workoutTitle,
     required this.duration,
     required this.activities,
+    required this.isPremade,
   });
 
   @override
@@ -62,6 +65,7 @@ class _EditWorkoutViewState extends State<EditWorkoutView> implements EditWorkou
                   }
                   return null;
                 },
+                enabled: !widget.isPremade, // disable if pre-made
               ),
               SizedBox(height: 20),
               Column(
@@ -102,6 +106,7 @@ class _EditWorkoutViewState extends State<EditWorkoutView> implements EditWorkou
         }
         return null;
       },
+      enabled: !widget.isPremade,  // disable if pre-made
     );
   }
 
@@ -123,6 +128,7 @@ class _EditWorkoutViewState extends State<EditWorkoutView> implements EditWorkou
         }
         return null;
       },
+      enabled: !widget.isPremade, // disable if pre-made
     );
   }
 
@@ -130,7 +136,7 @@ class _EditWorkoutViewState extends State<EditWorkoutView> implements EditWorkou
     if (_formKey.currentState!.validate()) {
       List<String> activities = _activityControllers.map((controller) => controller.text.trim()).toList();
       List<int> durations = _durationControllers.map((controller) => int.tryParse(controller.text.trim()) ?? 0).toList();
-      _presenter.saveWorkout(widget.userId, widget.workoutId, _titleController.text, activities, durations);
+      _presenter.saveWorkout(widget.userId, widget.workoutId, _titleController.text, activities, durations, widget.isPremade);
     }
   }
 

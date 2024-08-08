@@ -260,6 +260,7 @@ class _WorkoutPageState extends State<WorkoutPage> implements WorkoutPageView {
         itemBuilder: (context, index) {
           Map<String, dynamic> workout = workouts[index];
           String workoutId = workout['id'];
+          bool isPremade = workout['isPremade'] ?? false;
 
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -279,6 +280,7 @@ class _WorkoutPageState extends State<WorkoutPage> implements WorkoutPageView {
                       ),
                       userId: _user!.uid,
                       workoutId: workoutId,
+                      isPremade: isPremade,
                     ),
                   ),
                 );

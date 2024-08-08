@@ -23,6 +23,7 @@ class CommunityPageSummary extends StatelessWidget {
         communityname,
         communityintro,
         communitymemberamount, 
+        true,
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Community added to your joined community')),
