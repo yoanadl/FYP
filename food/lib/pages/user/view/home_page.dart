@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/pages/data_analytics_page.dart';
 import 'package:food/pages/fitnessPlans/view/fitness_plan_show.dart';
+import 'package:food/pages/notification_page.dart';
+import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
@@ -147,7 +149,12 @@ class _HomePageState extends State<HomePage> {
                 ),
 
                 child: IconButton(
-                  onPressed: () {}, 
+                  onPressed: () {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NotificationPage(title: 'Set Notification',)),
+                    );
+                  }, 
                   icon: Icon(Icons.notifications),
                   iconSize: 25,
                   color: Colors.black,

@@ -5,6 +5,9 @@ import 'package:food/firebase_options.dart';
 import 'pages/user/view/intro_page.dart';
 import 'package:food/applewatch/injector.dart' show initializeDependencies;
 import 'package:health/health.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:food/pages/notification_page.dart';
+import 'package:food/services/notifi_service.dart';
 
 
 // initialize the HealthFactory globally
@@ -19,7 +22,8 @@ Future<void> main() async {
 
   // request healthkit authorization
   await requestHealthKitAuthorization();
-
+  NotificationService().initNotification();
+  tz.initializeTimeZones();
   runApp( const MyApp());
   
 }
