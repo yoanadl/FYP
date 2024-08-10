@@ -126,4 +126,34 @@ class WorkoutService {
 
 
   }
+
+  Future<void> markWorkoutAsComplete(String userId, String workoutId) async {
+    try {
+      final workoutRef = usersCollection
+          .doc(userId)
+          .collection('workouts')
+          .doc(workoutId);
+
+      final workoutData = await workoutRef.get();
+
+      if (workoutData.exists) {
+        await usersCollection
+            .doc(userId)
+            .collection('completedWorkouts')
+            .doc(workoutId)
+            .set(workoutData.data()!);
+
+        await workoutRef.delete();
+      }
+    } catch (e) {
+      print('Error marking workout as complete: $e');
+      throw Exception('Failed to mark workout as complete.');
+    }
+  }
+
+  
+
+
+
+
 }

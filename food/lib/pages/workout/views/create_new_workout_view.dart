@@ -175,6 +175,7 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> implements 
       workoutTitle: workoutTitleController.text,
       duration: durationControllers.map((controller) => int.parse(controller.text)).toList(),
       activities: activityControllers.map((controller) => controller.text).toList(),
+      
     );
 
     // Navigate to WorkoutSummaryView
