@@ -7,8 +7,6 @@ import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/premiumUser/premiumplan_page.dart';
 import 'package:food/pages/workout/views/workout_page_view.dart';
 
-import 'bmi_reports_page.dart';
-
 class MembershipPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

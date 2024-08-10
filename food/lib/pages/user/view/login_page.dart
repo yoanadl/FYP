@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food/components/base_page.dart'; 
+import 'package:food/components/base_page.dart';
+import 'package:food/pages/user/view/register_page.dart'; 
 import 'package:food/services/auth/auth_service.dart';
 import '../../../components/my_button.dart';
 import '../../../components/my_textfield.dart';
@@ -28,10 +29,7 @@ class _LoginPageState extends State<LoginPage> {
         passwordController.text,
       );
 
-      if (user != null) {
-        // Navigation is handled inside AuthService based on user's role
-        // No need for further navigation here
-      }
+      
     } catch (e) {
       showDialog(
         context: context,
@@ -49,6 +47,17 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     }
+  }
+
+  void navigateToRegisterPage() {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => RegisterPage(
+        onTap: () {
+          
+        },
+      )),
+    );
   }
 
   @override
@@ -140,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(width: 15),
 
                           GestureDetector(
-                            onTap: widget.onTap,
+                            onTap: navigateToRegisterPage,
                             child: Text(
                               "Sign up",
                               style: TextStyle(
