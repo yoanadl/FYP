@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food/services/notification_service.dart'; 
+
 
 class FitnessReminders extends StatefulWidget {
   @override
@@ -22,11 +24,50 @@ class _FitnessRemindersState extends State<FitnessReminders> {
 
   final List<String> selectedGoals = [];
   Map<String, String> savedReminders = {};
+  final NotificationService _notificationService = NotificationService();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
 
   @override
   void initState() {
     super.initState();
     _loadSavedReminders();
+    _checkAndNotifyGoals();
+  }
+
+  // Check and notify based on existing reminders and goals
+  Future<void> _checkAndNotifyGoals() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
+
+      final userId = user.uid;
+      final userDoc = firestore.collection('users').doc(userId);
+      final remindersCollection = userDoc.collection('fitnessReminders');
+
+      // Check if the daily step goal reminder exists
+      final stepGoalDoc = await remindersCollection.doc('Daily step count').get();
+      if (stepGoalDoc.exists) {
+        await _notificationService.checkDailyStepGoal(); // Check if the daily step goal is met
+      }
+
+      // Check if the daily exercise duration reminder exists
+      final exerciseGoalDoc = await remindersCollection.doc('Daily exercise duration').get();
+      if (exerciseGoalDoc.exists) {
+        await _notificationService.checkDailyExerciseGoal(); // Check if the daily exercise duration goal is met
+      }
+
+      // Check if the weekly exercise count reminder exists
+      final weeklyGoalDoc = await remindersCollection.doc('Weekly workout count').get();
+      if (weeklyGoalDoc.exists) {
+        await _notificationService.checkAndNotifyWeeklyWorkoutGoal(); // Check if the weekly exercise count goal is met
+      }
+
+      
+
+    } catch (e) {
+      print('Error checking and notifying goals: $e');
+    }
   }
 
   void _loadSavedReminders() async {
@@ -205,13 +246,19 @@ class _FitnessRemindersState extends State<FitnessReminders> {
     final remindersCollection = userDoc.collection('fitnessReminders');
 
     reminders.forEach((goal, value) async {
-      if (value.isNotEmpty) {
+    if (value.isNotEmpty) {
+      // Example validation (e.g., ensure it's a valid number)
+      final parsedValue = int.tryParse(value);
+      if (parsedValue != null) {
         await remindersCollection.doc(goal).set({
           'goal': goal,
           'value': value,
         });
+      } else {
+        print('Invalid value for $goal');
       }
-    });
+    }
+  });
 
     setState(() {
       savedReminders = Map.from(reminders);
