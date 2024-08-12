@@ -114,6 +114,7 @@ class WorkoutService {
           'steps': model.steps,
           'averageHeartRate': model.averageHeartRate,
           'maxHeartRate': model.maxHeartRate,
+          'timestamp': Timestamp.now(),
         });
 
       print("Workout data saved successfully");
