@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:food/challenge_owner_view_joined_page.dart';
+import 'package:food/challenge_viewer_view_joined_page.dart';
+import 'package:food/challenge_viewer_view_page.dart';
+import 'package:food/create_new_challenge_page.dart';
+import 'package:food/my_challenge_page.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
@@ -54,45 +59,50 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AdminViewAllUserAccounts()),
+                      MaterialPageRoute(builder: (context) => ChallengeOwnerViewJoinedPage()),
                     );
                   },
-                  child: Text('Go to View All User Accounts Page'),
+                  child: Text('Go to Challenge Owner View Joined Page'),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AdminCreateNewAccount()),
+                      MaterialPageRoute(builder: (context) => ChallengeViewerViewPage()),
                     );
                   },
-                  child: Text('Go to Create New Account Page'),
+                  child: Text('Go to Challenge Viewer View Page'),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AdminUpdateAccount()),
+                      MaterialPageRoute(builder: (context) => ChallengeViewerViewJoinedPage()),
                     );
                   },
-                  child: Text('Go to Update Account Page'),
+                  child: Text('Go to Challenge Viewer View joined Page'),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ChallengePage()),
+                      MaterialPageRoute(builder: (context) => CreateNewChallengePage()),
                     );
                   },
-                  child: Text('Go to Trainer Main Page'),
+                  child: Text('Go to Create New Challenge Page'),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () => _takeScreenshotAndShare(context),
-                  child: Text('Share To Social Media'),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MyChallengePage()),
+                    );
+                  },
+                  child: Text('Go to My Challenge Page'),
                 ),
               ],
             ),
