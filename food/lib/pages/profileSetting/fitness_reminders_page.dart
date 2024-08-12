@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/services/notification_service.dart'; 
+import 'dart:async';
+import 'dart:math';
 
 
 class FitnessReminders extends StatefulWidget {
@@ -32,12 +34,34 @@ class _FitnessRemindersState extends State<FitnessReminders> {
   void initState() {
     super.initState();
     _loadSavedReminders();
-    _checkAndNotifyGoals();
+    _scheduleRandomChecks();
+
   }
+
+  // get random duration between 60 and 120 minutes
+  Duration _getRandomInterval() {
+    final random = Random();
+    final minMinutes = 60; // 1 hour
+    final maxMinutes = 120; // 2 hours
+    final minutes = minMinutes + random.nextInt(maxMinutes - minMinutes);
+    return Duration(minutes: minutes);
+  }
+
+  void _scheduleRandomChecks() {
+    Timer.periodic(Duration(hours: 1), (timer) {
+      final interval = _getRandomInterval();
+      Future.delayed(interval, () {
+        _checkAndNotifyGoals();
+        _scheduleRandomChecks(); // Reschedule the next check
+      });
+    });
+  }
+
 
   // Check and notify based on existing reminders and goals
   Future<void> _checkAndNotifyGoals() async {
     try {
+      print("Checking and notifying goals...");
       final User? user = FirebaseAuth.instance.currentUser;
       if (user == null) return;
 
