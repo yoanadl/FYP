@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food/challenge_owner_view_page.dart';
+import 'package:food/pages/challenges/challenge_owner_view_page.dart';
 
 class CreateNewChallengePage extends StatefulWidget {
   @override
@@ -13,16 +13,24 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Create New Challenge'),
+        title: Text(
+          'Create New Challenge',
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+          )),
       ),
-      body: isFirstPage ? _buildFirstPage() : _buildSecondPage(),
+      body: Container(
+        color: Colors.white,
+        child: isFirstPage ? _buildFirstPage() : _buildSecondPage()),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 2,
         items: [

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food/leaderboard.dart';
+import 'package:food/pages/challenges/leaderboard.dart';
 
 class ChallengeViewerViewPage extends StatelessWidget {
   @override

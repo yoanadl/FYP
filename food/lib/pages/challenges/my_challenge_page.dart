@@ -12,12 +12,18 @@ class _MyChallengePageState extends State<MyChallengePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('My Challenges'),
+        title: Text(
+          'My Challenges',
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+          ),),
       ),
       body: Column(
         children: [
@@ -33,7 +39,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      
     );
   }
 
@@ -165,16 +171,5 @@ class _MyChallengePageState extends State<MyChallengePage> {
     );
   }
 
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      currentIndex: 2,
-      type: BottomNavigationBarType.fixed,
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
-        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
-    );
-  }
+  
 }
