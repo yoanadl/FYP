@@ -273,73 +273,213 @@
 
 // }
 
+// old one
+
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:timezone/data/latest.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
+
+// class NotificationService {
+//   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+//   Future<void> initNotification() async {
+//     tz.initializeTimeZones();
+
+//     final InitializationSettings initializationSettings = InitializationSettings(
+//       android: AndroidInitializationSettings('app_icon'),
+//       iOS: DarwinInitializationSettings(
+//         requestAlertPermission: true,
+//         requestBadgePermission: true,
+//         requestSoundPermission: true,
+//         onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload) async {
+//           // Handle when the app is in the foreground
+//         },
+//       ),
+//     );
+
+//     await _flutterLocalNotificationsPlugin.initialize(
+//       initializationSettings,
+//       onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
+//         // Handle notification response
+//       },
+//     );
+//   }
+
+//   // Future<void> scheduleDailyNotification() async {
+//   //   const DarwinNotificationDetails iOSPlatformChannelSpecifics = DarwinNotificationDetails(
+//   //     sound: 'default',
+//   //     presentAlert: true,
+//   //     presentBadge: true,
+//   //     presentSound: true,
+//   //   );
+
+//   //   const NotificationDetails platformChannelSpecifics = NotificationDetails(
+//   //     iOS: iOSPlatformChannelSpecifics,
+//   //   );
+
+//   //   await _flutterLocalNotificationsPlugin.zonedSchedule(
+//   //     0,
+//   //     'Daily Reminder',
+//   //     'Time to check your fitness goals!',
+//   //     _nextInstanceOfFivePM(),
+//   //     platformChannelSpecifics,
+//   //     uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+//   //   );
+//   // }
+
+//   tz.TZDateTime _nextInstanceOfFivePM() {
+//     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+//     final tz.TZDateTime fivePM = tz.TZDateTime(
+//       tz.local,
+//       now.year,
+//       now.month,
+//       now.day,
+//       17,
+//       0,
+//     );
+
+//     if (now.isBefore(fivePM)) {
+//       return fivePM;
+//     } else {
+//       return fivePM.add(Duration(days: 1));
+//     }
+//   }
+// }
+
+
+
+// new one
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+// import 'package:timezone/data/latest.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
+
+// class NotificationService {
+//   final FlutterLocalNotificationsPlugin notificationsPlugin =
+//       FlutterLocalNotificationsPlugin();
+
+//   Future<void> initNotification() async {
+//     AndroidInitializationSettings initializationSettingsAndroid =
+//         const AndroidInitializationSettings('flutter_logo');
+
+//     var initializationSettingsIOS = DarwinInitializationSettings(
+//         requestAlertPermission: true,
+//         requestBadgePermission: true,
+//         requestSoundPermission: true,
+//         onDidReceiveLocalNotification:
+//             (int id, String? title, String? body, String? payload) async {});
+
+//     var initializationSettings = InitializationSettings(
+//         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+//     await notificationsPlugin.initialize(initializationSettings,
+//         onDidReceiveNotificationResponse:
+//             (NotificationResponse notificationResponse) async {});
+//   }
+
+//   notificationDetails() {
+//     return const NotificationDetails(
+//         android: AndroidNotificationDetails('channelId', 'channelName',
+//             importance: Importance.max),
+//         iOS: DarwinNotificationDetails());
+//   }
+
+//   Future showNotification(
+//       {int id = 0, String? title, String? body, String? payLoad}) async {
+//     return notificationsPlugin.show(
+//         id, title, body, await notificationDetails());
+//   }
+
+//   Future scheduleNotification(
+//       {int id = 0,
+//       String? title,
+//       String? body,
+//       String? payLoad,
+//       required DateTime scheduledNotificationDateTime}) async {
+//     return notificationsPlugin.zonedSchedule(
+//         id,
+//         title,
+//         body,
+//         tz.TZDateTime.from(
+//           scheduledNotificationDateTime,
+//           tz.local,
+//         ),
+//         await notificationDetails(),
+//         androidAllowWhileIdle: true,
+//         uiLocalNotificationDateInterpretation:
+//             UILocalNotificationDateInterpretation.absoluteTime);
+//   }
+// }
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final FlutterLocalNotificationsPlugin notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   Future<void> initNotification() async {
-    tz.initializeTimeZones();
+    AndroidInitializationSettings initializationSettingsAndroid =
+        const AndroidInitializationSettings('flutter_logo');
 
-    final InitializationSettings initializationSettings = InitializationSettings(
-      android: AndroidInitializationSettings('app_icon'),
-      iOS: DarwinInitializationSettings(
+    var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
         requestSoundPermission: true,
-        onDidReceiveLocalNotification: (int id, String? title, String? body, String? payload) async {
-          // Handle when the app is in the foreground
-        },
-      ),
-    );
+        onDidReceiveLocalNotification:
+            (int id, String? title, String? body, String? payload) async {});
 
-    await _flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
-        // Handle notification response
-      },
-    );
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    await notificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) async {});
   }
 
-  Future<void> scheduleDailyNotification() async {
-    const DarwinNotificationDetails iOSPlatformChannelSpecifics = DarwinNotificationDetails(
-      sound: 'default',
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      iOS: iOSPlatformChannelSpecifics,
-    );
-
-    await _flutterLocalNotificationsPlugin.zonedSchedule(
-      0,
-      'Daily Reminder',
-      'Time to check your fitness goals!',
-      _nextInstanceOfFivePM(),
-      platformChannelSpecifics,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-    );
+  notificationDetails() {
+    return const NotificationDetails(
+        android: AndroidNotificationDetails('channelId', 'channelName',
+            importance: Importance.max),
+        iOS: DarwinNotificationDetails());
   }
 
-  tz.TZDateTime _nextInstanceOfFivePM() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    final tz.TZDateTime fivePM = tz.TZDateTime(
-      tz.local,
+  Future showNotification(
+      {int id = 0, String? title, String? body, String? payLoad}) async {
+    return notificationsPlugin.show(
+        id, title, body, await notificationDetails());
+  }
+
+  Future scheduleDailyNotification(
+      {int id = 0,
+      String? title,
+      String? body,
+      String? payLoad,
+      required DateTime scheduledTime}) async {
+    // Ensure tz is initialized
+    tz.initializeTimeZones();
+
+    // Calculate the next instance of the time the user selected
+    final now = DateTime.now();
+    final nextScheduledTime = DateTime(
       now.year,
       now.month,
       now.day,
-      17,
-      0,
+      scheduledTime.hour,
+      scheduledTime.minute,
     );
 
-    if (now.isBefore(fivePM)) {
-      return fivePM;
-    } else {
-      return fivePM.add(Duration(days: 1));
-    }
+    final tz.TZDateTime scheduledDate = nextScheduledTime.isBefore(now)
+        ? tz.TZDateTime.from(nextScheduledTime.add(Duration(days: 1)), tz.local)
+        : tz.TZDateTime.from(nextScheduledTime, tz.local);
+
+    return notificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        scheduledDate,
+        await notificationDetails(),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time); // Repeat daily
   }
 }
