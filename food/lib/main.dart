@@ -65,37 +65,98 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class HomePage extends StatelessWidget {
+  final GlobalKey _globalKey = GlobalKey();
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text("Flutter is fun"),
+      ),
+      body: RepaintBoundary(
+        key: _globalKey,
+        child: Container(
+          color: Colors.green,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdminViewAllUserAccounts()),
+                    );
+                  },
+                  child: Text('Go to View All User Accounts Page'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdminCreateNewAccount()),
+                    );
+                  },
+                  child: Text('Go to Create New Account Page'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdminUpdateAccount()),
+                    );
+                  },
+                  child: Text('Go to Update Account Page'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChallengePage()),
+                    );
+                  },
+                  child: Text('Go to Trainer Main Page'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () => _takeScreenshotAndShare(context),
+                  child: Text('Share To Social Media'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
+  void _takeScreenshotAndShare(BuildContext context) async {
+    try {
+      // Delay to ensure the widget is fully rendered
+      await Future.delayed(Duration(milliseconds: 100));
 
+      RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
 
-// local notifications
+      if (byteData != null) {
+        Uint8List pngBytes = byteData.buffer.asUint8List();
 
-// import 'package:flutter/material.dart';
-// import 'package:food/pages/user/view/home_page.dart';
-// import 'package:food/services/notification_service.dart';
-// import 'package:timezone/data/latest.dart' as tz;
+        final directory = await getApplicationDocumentsDirectory();
+        final imagePath = await File('${directory.path}/screenshot.png').create();
+        await imagePath.writeAsBytes(pngBytes);
 
-
-// void main() {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   NotificationService().initNotification();
-//   tz.initializeTimeZones();
-//   runApp(const MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Notifications',
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: const MyHomePage(title: 'Flutter Local Notifications'),
-//     );
-//   }
-// }
+        await Share.shareFiles([imagePath.path]).catchError((error) {
+          print('Error sharing: $error');
+        });
+      }
+    } catch (e) {
+      print('Error taking screenshot: $e');
+    }
+  }
+}
