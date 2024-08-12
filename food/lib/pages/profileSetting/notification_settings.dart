@@ -13,6 +13,7 @@ class NotificationSettings extends StatefulWidget {
 
 class _NotificationSettingsState extends State<NotificationSettings> {
   final NotificationService _notificationService = NotificationService();
+  bool _isBreakReminderEnabled = false;
 
   @override
   void initState() {
@@ -38,6 +39,14 @@ class _NotificationSettingsState extends State<NotificationSettings> {
         duration: Duration(seconds: 2),
       ),
     );
+  }
+
+  void _toggleBreakReminder(bool value) {
+    setState(() {
+      _isBreakReminderEnabled = value;
+    });
+
+
   }
 
   @override
@@ -117,12 +126,21 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                     ),
                   ],
                 ),
-                child: Text(
-                  'Take break reminder',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Take break reminder',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    CupertinoSwitch(
+                      value: _isBreakReminderEnabled, 
+                      onChanged: _toggleBreakReminder,
+                    )
+                  ],
                 ),
               ),
             ],
