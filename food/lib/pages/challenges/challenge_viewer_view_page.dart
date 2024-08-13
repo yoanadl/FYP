@@ -1,90 +1,265 @@
+// import 'package:flutter/material.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:food/components/base_page.dart';
+// import 'package:food/components/navbar.dart';
+// import 'package:food/services/challenge_service.dart';
+
+// class ChallengeViewerViewPage extends StatelessWidget {
+//   final String challengeId;
+
+//   ChallengeViewerViewPage({required this.challengeId});
+
+//   @override
+//   Widget build(BuildContext context) {
+
+//     final ChallengeService challengeService = ChallengeService();
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       appBar: AppBar(
+//         backgroundColor: Colors.white,
+//         leading: IconButton(
+//           icon: Icon(Icons.arrow_back),
+//           onPressed: () => Navigator.pop(context),
+//         ),
+//         title: FutureBuilder<DocumentSnapshot>(
+//           future: FirebaseFirestore.instance.collection('challenges').doc(challengeId).get(),
+//           builder: (context, snapshot) {
+//             if (snapshot.connectionState == ConnectionState.waiting) {
+//               return Text('Loading...');
+//             }
+//             if (!snapshot.hasData || !snapshot.data!.exists) {
+//               return Text('Challenge Details');
+//             }
+//             var challengeData = snapshot.data!.data() as Map<String, dynamic>;
+//             return Text(
+//               challengeData['title'] ?? 'No title',
+//               style:TextStyle(fontSize: 24, fontWeight: FontWeight.bold) ,);
+//           },
+//         ),
+//       ),
+//       body: FutureBuilder<DocumentSnapshot>(
+//         future: FirebaseFirestore.instance.collection('challenges').doc(challengeId).get(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(child: CircularProgressIndicator());
+//           }
+
+//           if (!snapshot.hasData || !snapshot.data!.exists) {
+//             return Center(child: Text('Challenge not found'));
+//           }
+
+//           var challengeData = snapshot.data!.data() as Map<String, dynamic>;
+
+//           return Padding(
+//             padding: EdgeInsets.all(35.0),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 FutureBuilder<String?>(
+//                   future: challengeService.fetchCreatorName(challengeData['creatorUid'] ?? ''),
+//                   builder: (context, creatorSnapshot) {
+//                     if (creatorSnapshot.connectionState == ConnectionState.waiting) {
+//                       return Text('Loading creator name...');
+//                     }
+//                     if (!creatorSnapshot.hasData || creatorSnapshot.data == null) {
+//                       return Text('Created by: Unknown');
+//                     }
+//                     return Text(
+//                       'Created by: ${creatorSnapshot.data}',
+//                       style: TextStyle(fontSize: 14, color: Colors.grey[900]),
+//                     );
+//                   },
+//                 ),
+//                 SizedBox(height: 25),
+//                 Text(
+//                   challengeData['description'] ?? 'No description',
+//                   style: TextStyle(fontSize: 16),
+//                 ),
+//                 SizedBox(height: 25),
+//                 Text(
+//                   'Rewards: ${challengeData['points'] ?? '0'}',
+//                   style: TextStyle(fontSize: 16),
+//                 ),
+//                 SizedBox(height: 16),
+//                 Text(
+//                   'Duration: ${challengeData['duration'] ?? 'Not specified'}',
+//                   style: TextStyle(fontSize: 16),
+//                 ),
+//                 SizedBox(height: 16),
+//                 Text(
+//                   'Activities:',
+//                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                 ),
+//                 SizedBox(height: 8),
+//                 Expanded(
+//                   child: ListView.builder(
+//                     itemCount: (challengeData['activities'] as List<dynamic>?)?.length ?? 0,
+//                     itemBuilder: (context, index) {
+//                       var activity = (challengeData['activities'] as List<dynamic>)[index];
+//                       return ListTile(
+//                         title: Text(activity['name'] ?? 'No activity name'),
+//                         subtitle: Text('Duration: ${activity['duration'] ?? 'Not specified'}'),
+//                       );
+//                     },
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           );
+//         },
+//       ),
+//       bottomNavigationBar: Navbar(
+//         currentIndex: 2,
+//         onTap: (int index) {
+//           if (index != 2) {
+//             Navigator.pop(context);
+//             switch (index) {
+//               case 0:
+//                 Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0)));
+//                 break;
+//               case 1:
+//                 Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1)));
+//                 break;
+//               case 3:
+//                 Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3)));
+//                 break;
+//             }
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
-import 'package:food/pages/challenges/leaderboard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/components/base_page.dart';
+import 'package:food/components/navbar.dart';
+import 'package:food/services/challenge_service.dart';
 
 class ChallengeViewerViewPage extends StatelessWidget {
+  final String challengeId;
+
+  ChallengeViewerViewPage({required this.challengeId});
+
   @override
   Widget build(BuildContext context) {
+    final ChallengeService challengeService = ChallengeService();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Challenge Title'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.emoji_events),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LeaderboardPage()),
-            ),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Challenge Title', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
-            Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
-            SizedBox(height: 16),
-            Text('Rewards: 00 pts'),
-            SizedBox(height: 16),
-            _buildActivityList(),
-            Spacer(),
-            Center(
-              child: ElevatedButton(
-                child: Text('Start'),
-                onPressed: () {
-                  // TODO: Implement start logic
-                
-                },
-              ),
-            ),
-          ],
+        title: FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance.collection('challenges').doc(challengeId).get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text('Loading...');
+            }
+            if (!snapshot.hasData || !snapshot.data!.exists) {
+              return Text('Challenge Details');
+            }
+            var challengeData = snapshot.data!.data() as Map<String, dynamic>;
+            return Text(
+              challengeData['title'] ?? 'No title',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            );
+          },
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
+      body: FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance.collection('challenges').doc(challengeId).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-  Widget _buildActivityList() {
-    List<Map<String, String>> activities = [
-      {'name': 'Challenge Activity 1', 'duration': '000 reps'},
-      {'name': 'Challenge Activity 2', 'duration': '000 mins'},
-      {'name': 'Challenge Activity 3', 'duration': '000 reps'},
-      {'name': 'Challenge Activity 4', 'duration': '000 mins'},
-    ];
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            return Center(child: Text('Challenge not found'));
+          }
 
-    return Column(
-      children: activities.map((activity) => _buildActivityItem(activity)).toList(),
-    );
-  }
+          var challengeData = snapshot.data!.data() as Map<String, dynamic>;
 
-  Widget _buildActivityItem(Map<String, String> activity) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(activity['name']!),
-          Text(activity['duration']!),
-        ],
+          return Padding(
+            padding: EdgeInsets.all(35.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FutureBuilder<String?>(
+                  future: challengeService.fetchCreatorName(challengeId),
+                  builder: (context, creatorSnapshot) {
+                    if (creatorSnapshot.connectionState == ConnectionState.waiting) {
+                      return Text('Loading creator name...');
+                    }
+                    if (!creatorSnapshot.hasData || creatorSnapshot.data == null) {
+                      return Text('Created by: Unknown');
+                    }
+                    return Text(
+                      'Created by: ${creatorSnapshot.data}',
+                      style: TextStyle(fontSize: 14, color: Colors.grey[900]),
+                    );
+                  },
+                ),
+                SizedBox(height: 25),
+                Text(
+                  challengeData['description'] ?? 'No description',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 25),
+                Text(
+                  'Rewards: ${challengeData['points'] ?? '0'}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Duration: ${challengeData['duration'] ?? 'Not specified'}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Activities:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 8),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: (challengeData['activities'] as List<dynamic>?)?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      var activity = (challengeData['activities'] as List<dynamic>)[index];
+                      return ListTile(
+                        title: Text(activity['name'] ?? 'No activity name'),
+                        subtitle: Text('Duration: ${activity['duration'] ?? 'Not specified'}'),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      currentIndex: 2,
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
-        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
+      bottomNavigationBar: Navbar(
+        currentIndex: 2,
+        onTap: (int index) {
+          if (index != 2) {
+            Navigator.pop(context);
+            switch (index) {
+              case 0:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0)));
+                break;
+              case 1:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1)));
+                break;
+              case 3:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3)));
+                break;
+            }
+          }
+        },
+      ),
     );
   }
 }
