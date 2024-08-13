@@ -1,33 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:food/components/base_page.dart';
+import 'package:food/components/navbar.dart';
+import 'package:food/pages/challenges/challenge_activity.dart';
+import 'package:food/services/challenge_service.dart';
 
 class ChallengeOwnerViewPage extends StatefulWidget {
+  final String challengeId; // Add challengeId parameter
+  final String title;
+  final String details;
+  final int points;
+  final List<ChallengeActivity> activities;
+
+  ChallengeOwnerViewPage({
+    required this.challengeId,
+    required this.title,
+    required this.details,
+    required this.points,
+    required this.activities,
+  });
+
   @override
   _ChallengeOwnerViewPageState createState() => _ChallengeOwnerViewPageState();
 }
 
 class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
   bool isEditing = false;
-  TextEditingController titleController = TextEditingController(text: 'Challenge Title');
-  TextEditingController detailsController = TextEditingController(text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.');
+  late TextEditingController titleController;
+  late TextEditingController detailsController;
+  late List<ChallengeActivity> activities;
 
-  List<ChallengeActivity> activities = [
-    ChallengeActivity(activity: 'Challenge Activity 1', duration: '000 reps'),
-    ChallengeActivity(activity: 'Challenge Activity 2', duration: '000 mins'),
-    ChallengeActivity(activity: 'Challenge Activity 3', duration: '000 reps'),
-    ChallengeActivity(activity: 'Challenge Activity 4', duration: '000 mins'),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.title);
+    detailsController = TextEditingController(text: widget.details);
+    activities = widget.activities;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text('Challenge Title'),
+        title: Text(widget.title),
         actions: [
           IconButton(
             icon: Icon(Icons.delete),
@@ -50,19 +72,19 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
           children: [
             isEditing
                 ? TextField(controller: titleController)
-                : Text(titleController.text, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                : Text(widget.title, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             SizedBox(height: 16),
             isEditing
                 ? TextField(controller: detailsController, maxLines: 3)
-                : Text(detailsController.text),
+                : Text(widget.details),
             SizedBox(height: 16),
-            Text('Rewards: 00 pts'),
+            Text('Rewards: ${widget.points} pts'),
             SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: activities.length,
                 itemBuilder: (context, index) {
-                  return _buildActivityItem(activities[index]);
+                  return _buildActivityItem(activities[index], index);
                 },
               ),
             ),
@@ -70,11 +92,11 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
               Center(
                 child: ElevatedButton(
                   child: Text('Save Changes'),
-                  onPressed: () {
+                  onPressed: () async {
+                    await _updateChallenge();
                     setState(() {
                       isEditing = false;
                     });
-                    // TODO: Implement save changes logic
                   },
                 ),
               )
@@ -90,19 +112,29 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: Navbar(
         currentIndex: 2,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
-          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+        onTap: (int index) {
+          if (index != 2) {
+            Navigator.pop(context);
+            switch(index) {
+              case 0:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
+                break;
+              case 1:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
+                break;
+              case 3:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3,)));
+                break;
+            }
+          }
+        }
       ),
     );
   }
 
-  Widget _buildActivityItem(ChallengeActivity activity) {
+  Widget _buildActivityItem(ChallengeActivity activity, int index) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -113,7 +145,7 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
             child: isEditing
                 ? TextField(
                     controller: TextEditingController(text: activity.activity),
-                    onChanged: (value) => activity.activity = value,
+                    onChanged: (value) => activities[index].activity = value,
                   )
                 : Text(activity.activity),
           ),
@@ -123,12 +155,33 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
             child: isEditing
                 ? TextField(
                     controller: TextEditingController(text: activity.duration),
-                    onChanged: (value) => activity.duration = value,
+                    onChanged: (value) => activities[index].duration = value,
                   )
                 : Text(activity.duration),
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _updateChallenge() async {
+    final challengeService = ChallengeService();
+
+    // Convert List<ChallengeActivity> to List<Map<String, String>>
+    List<Map<String, String>> activitiesData = activities
+        .where((activity) => activity.activity.isNotEmpty && activity.duration.isNotEmpty)
+        .map((activity) => {
+              'activity': activity.activity,
+              'duration': activity.duration,
+            })
+        .toList();
+
+    await challengeService.updateChallenge(
+      challengeId: widget.challengeId,
+      title: titleController.text,
+      details: detailsController.text,
+      points: widget.points, // Assuming points do not change, modify if needed
+      activities: activitiesData,
     );
   }
 
@@ -148,8 +201,8 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
             ),
             TextButton(
               child: Text('Delete', style: TextStyle(color: Colors.red)),
-              onPressed: () {
-                // TODO: Implement delete logic
+              onPressed: () async {
+                await _deleteChallenge();
                 Navigator.of(context).pop();
               },
             ),
@@ -158,11 +211,14 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
       },
     );
   }
-}
 
-class ChallengeActivity {
-  String activity;
-  String duration;
+  Future<void> _deleteChallenge() async {
+    final challengeService = ChallengeService();
 
-  ChallengeActivity({required this.activity, required this.duration});
+    try {
+      await challengeService.deleteChallenge(widget.challengeId);
+    } catch (e) {
+      print("Error deleting challenge: $e");
+    }
+  }
 }
