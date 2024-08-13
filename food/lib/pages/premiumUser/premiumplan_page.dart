@@ -122,25 +122,6 @@ class _PremiumPlanPageState extends State<PremiumPlanPage> {
           ],
         ),
       ),
-      bottomNavigationBar: Navbar(
-        currentIndex: 3,
-        onTap: (int index) {
-          if (index != 3) {
-            Navigator.pop(context);
-            switch (index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage()));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutPage()));
-                break;
-              case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CommunityPage()));
-                break;
-            }
-          }
-        },
-      ),
     );
   }
 }

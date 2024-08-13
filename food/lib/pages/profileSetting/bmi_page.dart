@@ -402,9 +402,9 @@ class _BmiPageState extends State<BmiPage> {
       ),
 
       bottomNavigationBar: Navbar(
-        currentIndex: 3,
+        currentIndex: 4,
         onTap: (int index) {
-          if (index != 3) {
+          if (index != 4) {
             Navigator.pop(context);
             switch(index) {
               case 0:
@@ -415,6 +415,9 @@ class _BmiPageState extends State<BmiPage> {
                 break;
               case 2:
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
+                break;
+              case 3:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3,)));
                 break;
             }
           }

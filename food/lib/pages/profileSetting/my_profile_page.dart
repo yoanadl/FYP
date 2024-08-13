@@ -249,25 +249,6 @@ class _MyProfilePageState extends State<MyProfilePage> {
           ),
         ),
       ),
-      bottomNavigationBar: Navbar(
-        currentIndex: 3,
-        onTap: (int index) {
-          if (index != 3) {
-            Navigator.pop(context);
-            switch (index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
-                break;
-              case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
-                break;
-            }
-          }
-        },
-      ),
     );
   }
 }

@@ -26,8 +26,12 @@ class Navbar extends StatelessWidget {
             label : 'Workout',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.group),
+            icon: Icon(Icons.flag_circle),
             label : 'Challenges',
+          ),
+           BottomNavigationBarItem(
+            icon: Icon(Icons.sports_mma),
+            label : 'Trainer',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

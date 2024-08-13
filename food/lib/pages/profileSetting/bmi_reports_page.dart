@@ -123,24 +123,17 @@ class BmiReportsPage extends StatelessWidget {
       ),
 
       bottomNavigationBar: Navbar(
-        currentIndex: 3,
+        currentIndex: 4, // Set the current index to highlight the active page
         onTap: (int index) {
-          if (index != 3) {
-            Navigator.pop(context);
-            switch(index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
-                break;
-              case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
-                break;
-            }
+          if (index != 4) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BasePage(initialIndex: index),
+              ),
+            );
           }
-        }
-
+        },
       ),
     );
   }
