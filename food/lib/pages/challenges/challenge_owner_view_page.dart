@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
@@ -5,18 +6,10 @@ import 'package:food/pages/challenges/challenge_activity.dart';
 import 'package:food/services/challenge_service.dart';
 
 class ChallengeOwnerViewPage extends StatefulWidget {
-  final String challengeId; // Add challengeId parameter
-  final String title;
-  final String details;
-  final int points;
-  final List<ChallengeActivity> activities;
+  final String challengeId;
 
   ChallengeOwnerViewPage({
     required this.challengeId,
-    required this.title,
-    required this.details,
-    required this.points,
-    required this.activities,
   });
 
   @override
@@ -27,18 +20,61 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
   bool isEditing = false;
   late TextEditingController titleController;
   late TextEditingController detailsController;
+  late TextEditingController pointsController;
+  late TextEditingController durationController;
   late List<ChallengeActivity> activities;
+  bool isLoading = true;
+  String? creatorNameText;
 
   @override
   void initState() {
     super.initState();
-    titleController = TextEditingController(text: widget.title);
-    detailsController = TextEditingController(text: widget.details);
-    activities = widget.activities;
+    _fetchChallengeData();
+  }
+
+  Future<void> _fetchChallengeData() async {
+    final challengeService = ChallengeService();
+    final challengeData = await challengeService.getChallengeDetails(widget.challengeId);
+
+    if (challengeData != null) {
+      setState(() {
+        titleController = TextEditingController(text: challengeData['title']);
+        detailsController = TextEditingController(text: challengeData['description']);
+        pointsController = TextEditingController(text: challengeData['points'].toString());
+        durationController = TextEditingController(text: challengeData['duration']);
+        activities = (challengeData['activities'] as List<dynamic>)
+            .map((activity) => ChallengeActivity(
+                  activity: activity['name'],
+                  duration: activity['duration'],
+                ))
+            .toList();
+        isLoading = false;
+      });
+
+      // Fetch the creator's name
+      final creatorName = await challengeService.fetchCreatorName(challengeData['creatorUid']);
+      setState(() {
+        // Add 'Created by' text with the creator's name
+        creatorNameText = 'Created by: $creatorName';
+        isLoading = false;
+      });
+
+    } else {
+      print('Challenge data not found');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -49,7 +85,9 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
             Navigator.pop(context);
           },
         ),
-        title: Text(widget.title),
+        title: isEditing
+                ? TextField(controller: titleController)
+                : Text(titleController.text, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: Icon(Icons.delete),
@@ -66,20 +104,36 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(35.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            isEditing
-                ? TextField(controller: titleController)
-                : Text(widget.title, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
+            if (creatorNameText != null) ...[
+              Text(
+                creatorNameText!,
+                style: TextStyle(fontSize: 14, color: Colors.grey[900]),
+              ),
+              SizedBox(height: 25),
+            ],
             isEditing
                 ? TextField(controller: detailsController, maxLines: 3)
-                : Text(widget.details),
-            SizedBox(height: 16),
-            Text('Rewards: ${widget.points} pts'),
-            SizedBox(height: 16),
+                : Text(detailsController.text),
+            SizedBox(height: 25),
+            isEditing
+                ? TextField(
+                    controller: pointsController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(labelText: 'Points'),
+                  )
+                : Text('Rewards: ${pointsController.text} pts'),
+            SizedBox(height: 25),
+            isEditing
+                ? TextField(
+                    controller: durationController,
+                    decoration: InputDecoration(labelText: 'Duration'),
+                  )
+                : Text('Duration: ${durationController.text}'),
+            SizedBox(height: 25),
             Expanded(
               child: ListView.builder(
                 itemCount: activities.length,
@@ -94,6 +148,7 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
                   child: Text('Save Changes'),
                   onPressed: () async {
                     await _updateChallenge();
+                    await _fetchChallengeData();
                     setState(() {
                       isEditing = false;
                     });
@@ -117,19 +172,19 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
         onTap: (int index) {
           if (index != 2) {
             Navigator.pop(context);
-            switch(index) {
+            switch (index) {
               case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0)));
                 break;
               case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1)));
                 break;
               case 3:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3,)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3)));
                 break;
             }
           }
-        }
+        },
       ),
     );
   }
@@ -171,7 +226,7 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
     List<Map<String, String>> activitiesData = activities
         .where((activity) => activity.activity.isNotEmpty && activity.duration.isNotEmpty)
         .map((activity) => {
-              'activity': activity.activity,
+              'name': activity.activity,
               'duration': activity.duration,
             })
         .toList();
@@ -180,8 +235,11 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
       challengeId: widget.challengeId,
       title: titleController.text,
       details: detailsController.text,
-      points: widget.points, // Assuming points do not change, modify if needed
+      points: int.parse(pointsController.text), // Convert pointsController text to int
       activities: activitiesData,
+      startDate: Timestamp.fromDate(DateTime.now()), // Update as needed
+      endDate: Timestamp.fromDate(DateTime.now().add(Duration(days: 7))), // Update as needed
+      duration: durationController.text,
     );
   }
 

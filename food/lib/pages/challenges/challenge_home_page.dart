@@ -3,6 +3,8 @@ import 'package:food/pages/challenges/create_new_challenge_page.dart';
 import 'package:food/pages/challenges/my_challenge_page.dart';
 import 'package:food/pages/challenges/reward_page.dart';
 import 'package:food/pages/challenges/view_all_challenge_view.dart';
+import 'package:food/services/challenge_service.dart';
+
 
 class ChallengeHomePage extends StatefulWidget {
   @override
@@ -14,6 +16,14 @@ class _ChallengeHomePageState extends State<ChallengeHomePage> {
     viewportFraction: 0.3, // Adjust the viewportFraction for width
     initialPage: 1, // Center the initial page
   );
+
+  Future<List<Map<String, dynamic>>>? _challengesFuture;
+
+  @override 
+  void initState() {
+    super.initState();
+    _challengesFuture = ChallengeService().getAllChallenges(); // fetch challenges
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,63 +114,79 @@ class _ChallengeHomePageState extends State<ChallengeHomePage> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 20),
-                Container(
-                  height: 90,
-                  child: Stack(
-                    children: [
-                      PageView.builder(
-                        controller: _pageController,
-                        itemCount: 5, // Number of challenges
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.symmetric(horizontal: 8.0),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFC8E0F4),
-                              borderRadius: BorderRadius.circular(10),
+                FutureBuilder<List<Map<String, dynamic>>>(
+                  future: _challengesFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error loading challenges'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No challenges available'));
+                    } else {
+                      final challenges = snapshot.data!;
+                      return Container(
+                        height: 90,
+                        child: Stack(
+                          children: [
+                            PageView.builder(
+                              controller: _pageController,
+                              itemCount: challenges.length,
+                              itemBuilder: (context, index) {
+                                final challenge = challenges[index];
+                                return Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 8.0),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFC8E0F4),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      challenge['title'] ?? 'Challenge ${index + 1}',
+                                      style: TextStyle(
+                                        color: Colors.grey[800],
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            child: Center(
-                              child: Text(
-                                'Challenge ${index + 1}',
-                                style: TextStyle(
-                                  color: Colors.grey[800],
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            Positioned(
+                              left: 0,
+                              top: 0,
+                              bottom: 0,
+                              child: IconButton(
+                                icon: Icon(Icons.arrow_back_ios),
+                                onPressed: () {
+                                  _pageController.previousPage(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                },
                               ),
                             ),
-                          );
-                        },
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 0,
-                        bottom: 0,
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back_ios),
-                          onPressed: () {
-                            _pageController.previousPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          },
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              bottom: 0,
+                              child: IconButton(
+                                icon: Icon(Icons.arrow_forward_ios),
+                                onPressed: () {
+                                  _pageController.nextPage(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        bottom: 0,
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_forward_ios),
-                          onPressed: () {
-                            _pageController.nextPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+                      );
+                    }
+                  },
                 ),
                 SizedBox(height: 20,),
                 Padding(
