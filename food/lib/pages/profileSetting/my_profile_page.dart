@@ -128,9 +128,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
         nameController.text = profileData['Name'] ?? '';
         emailController.text = profileData_1['Email'] ?? '';
         genderController.text = profileData['gender'] ?? '';
-        ageController.text = profileData['Age'] ?? '';
-        heightController.text = profileData['Height(cm)'] ?? '';
-        weightController.text = profileData['Weight(kg)'] ?? '';
+        ageController.text = profileData['age'] ?? '';
+        heightController.text = profileData['height'] ?? '';
+        weightController.text = profileData['weight'] ?? '';
       });
     } catch (e) {
       print('Error fetching profile data: $e');

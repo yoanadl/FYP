@@ -19,7 +19,7 @@ class SettingProfileService {
         'age': age,
         'height': height,
         'weight': weight,
-        'name': name,
+        'Name': name,
         'fitnessGoals': fitnessGoals,
         'gender': gender,
       };
@@ -38,7 +38,7 @@ class SettingProfileService {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
-          .collection('TrainerProfile')
+          .collection('UserProfile')
           .get();
       return querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
@@ -54,7 +54,7 @@ class SettingProfileService {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
-          .collection('TrainerProfile')
+          .collection('UserProfile')
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -62,7 +62,7 @@ class SettingProfileService {
         String profileId = querySnapshot.docs[0].id;
         await usersCollection
             .doc(uid)
-            .collection('TrainerProfile')
+            .collection('UserProfile')
             .doc(profileId)
             .update(newData);
         print('Profile updated successfully!');

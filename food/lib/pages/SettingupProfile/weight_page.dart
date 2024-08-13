@@ -60,7 +60,7 @@ class WeightPageState extends State<WeightPage> {
 
     try {
       await SettingProfileService().updateSettingProfile(user.uid, {
-        'Weight(kg)': _Weight,
+        'weight': _Weight,
       });
 
       // Navigate to FitnessGoal page

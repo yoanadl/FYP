@@ -17,7 +17,7 @@ const logger = require("firebase-functions/logger");
 //   logger.info("Hello logs!", {structuredData: true});
 //   response.send("Hello from Firebase!");
 // });
-const functions = require("firebase-functions");
+/*const functions = require("firebase-functions");
 const stripe = require("stripe")("sk_test_51Pa6OlGwNxjo4qONO4Zv4saXl2vxxE63xn3wAbIC2e5Z3SqoD7di1bDE9yduk5f4MxuOQsXJS2UMDFIk1g6LYJrA00IzraCnlM");
 
 exports.stripePaymentIntentRequest = functions.https.onRequest(async (req, res) => {
@@ -63,5 +63,31 @@ exports.stripePaymentIntentRequest = functions.https.onRequest(async (req, res) 
         
     } catch (error) {
         res.status(404).send({ success: false, error: error.message })
+    }
+});
+*/
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+const stripe = require('stripe')('sk_test_51Pa6OlGwNxjo4qONO4Zv4saXl2vxxE63xn3wAbIC2e5Z3SqoD7di1bDE9yduk5f4MxuOQsXJS2UMDFIk1g6LYJrA00IzraCnlM'); // Replace with your Stripe Secret Key
+
+admin.initializeApp();
+
+exports.createSubscription = functions.https.onRequest(async (req, res) => {
+    const { customerId, priceId } = req.body; // Expecting customerId and priceId in request body
+
+    if (!customerId || !priceId) {
+        return res.status(400).send({ error: 'Missing customerId or priceId' });
+    }
+
+    try {
+        const subscription = await stripe.subscriptions.create({
+            customer: customerId,
+            items: [{ price: priceId }],
+            expand: ['latest_invoice.payment_intent'],
+        });
+        res.status(200).send(subscription);
+    } catch (error) {
+        console.error('Error creating subscription:', error);
+        res.status(500).send({ error: error.message });
     }
 });

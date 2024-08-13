@@ -23,7 +23,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_svg: ^2.0.10+1
   health: ^8.1.0
-  flutter_stripe: ^10.2.0
+  flutter_stripe: ^11.0.0
   http: ^1.2.2
   provider: ^6.1.2
   image_picker: ^1.1.2

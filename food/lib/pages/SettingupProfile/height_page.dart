@@ -59,7 +59,7 @@ class HeightPageState extends State<HeightPage> {
     }
     try {
       await SettingProfileService().updateSettingProfile(user.uid,  {
-        'Height(cm)': _Height,
+        'height': _Height,
       });
 
       // Navigate to Height page

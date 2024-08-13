@@ -22,7 +22,7 @@ class _FitnessGoalScreenState extends State<FitnessGoalPage> {
     }
     try {
       await SettingProfileService().updateSettingProfile(user.uid, {
-        'fitness goals': _selectedGoal,
+        'fitnessGoals': _selectedGoal,
       });
 
       // Navigate to age page

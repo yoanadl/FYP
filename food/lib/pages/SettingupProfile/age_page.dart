@@ -59,7 +59,7 @@ class AgePageState extends State<AgePage> {
     }
     try {
       await SettingProfileService().updateSettingProfile(user.uid,  {
-        'Age': _Age,
+        'age': _Age,
       });
 
       // Navigate to Height page
