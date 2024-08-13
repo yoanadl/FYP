@@ -159,13 +159,12 @@ class _MyProfilePageState extends State<MyProfilePage> {
         backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Spacer(),
             Text(
               'Profile',
               style: TextStyle(color: Colors.black),
             ),
-            Spacer()
           ],
         ),
       ),

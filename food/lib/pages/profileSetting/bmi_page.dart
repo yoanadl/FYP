@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +6,7 @@ import 'package:food/components/base_page.dart';
 import 'package:food/pages/discarded/community_page.dart';
 import '/pages/workout/views/workout_page_view.dart';
 import 'package:food/services/setting_user_profile_service.dart';
-import 'dart:math' as math;
-
-
+import '../profileSetting/bmi_controller.dart';
 
 class BmiPage extends StatefulWidget {
   @override
@@ -26,6 +22,7 @@ class _BmiPageState extends State<BmiPage> {
   bool editMode = false;
 
   final SettingProfileService settingprofileService = SettingProfileService();
+  final BmiController _bmiController = BmiController(); // Instantiate BmiController
 
   @override
   void initState() {
@@ -77,13 +74,48 @@ class _BmiPageState extends State<BmiPage> {
     }
   }
 
+  Future<void> _saveHeightAndWeight() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User? user = _auth.currentUser;
+
+    if (user != null) {
+      final String uid = user.uid;
+      double height = double.tryParse(heightController.text) ?? 0.0;
+      double weight = double.tryParse(weightController.text) ?? 0.0;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Updating height/weight...'),
+        ),
+      );
+
+      await _bmiController.updateHeightAndWeight(uid, height, weight);
+      
+      setState(() {
+        userHeight = height;
+        userWeight = weight;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Height/Weight updated successfully'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    double height = double.tryParse(heightController.text) ?? 0.0;
+    double weight = double.tryParse(weightController.text) ?? 0.0;
+    double bmi = _bmiController.calculateBMI(height, weight);
+    String bmiStatus = _bmiController.getBMIStatus(bmi);
+    Color bmiColor = _bmiController.getColorByBMIStatus(bmiStatus);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-      
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -171,14 +203,14 @@ class _BmiPageState extends State<BmiPage> {
                             enabled: editMode,
                             decoration: editMode ?  // Apply border if editMode is true
                               InputDecoration(
-                                hintText: 'Enter Height (cm)',
+                                hintText: 'Enter Weight (kg)',
                                 border: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue),
                                 ),
                                 isDense: true, // Reduce padding
                               ) :
                               InputDecoration(
-                                hintText: 'Enter Height (cm)',
+                                hintText: 'Enter Weight (kg)',
                                 // No border when not editable
                                 border: InputBorder.none,
                                 isDense: true, // Reduce padding
@@ -222,10 +254,7 @@ class _BmiPageState extends State<BmiPage> {
                       ),
                       SizedBox(height: 5.0),
                       Text(
-                        calculateBMI(
-                          double.tryParse(heightController.text) ?? 0.0, 
-                          double.tryParse(weightController.text) ?? 0.0)
-                          .toStringAsFixed(2),
+                        bmi.toStringAsFixed(2),
                         style: TextStyle(
                           fontSize: 18.0, 
                           fontWeight: FontWeight.bold,
@@ -233,14 +262,10 @@ class _BmiPageState extends State<BmiPage> {
                       ),
                       SizedBox(height: 5.0),
                       Text(
-                        getBMIStatus(calculateBMI(
-                          double.tryParse(heightController.text) ?? 0.0, 
-                          double.tryParse(weightController.text) ?? 0.0)),
+                        bmiStatus,
                         style: TextStyle(
                           fontSize: 16.0,
-                          color:getColorByBMIStatus(getBMIStatus(calculateBMI(
-                            double.tryParse(heightController.text) ?? 0.0,
-                            double.tryParse(weightController.text) ?? 0.0))),
+                          color: bmiColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -255,54 +280,17 @@ class _BmiPageState extends State<BmiPage> {
                     setState(() {
                       editMode = !editMode;
                       if (!editMode) {
-
-                        final FirebaseAuth _auth = FirebaseAuth.instance;
-                        // get current user
-                        final User? user = _auth.currentUser;
-
-                        if (user != null) {
-                          final String uid = user.uid;
-
-                          // show a snackbar while updating
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Updating height/weight...'),
-                            ),
-                          );
-
-                          // update firestore with height and weight
-                          Map<String, dynamic> newData = {
-                          'Height(cm)': heightController.text,
-                          'Weight(kg)' : weightController.text,
-                        };
-                        settingprofileService.updateSettingProfile(uid, newData)
-                          .then((_) {
-                            // show success message
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Height/Weight updated successfully'),
-                              ),
-                            );
-                          }).catchError((error) {
-                          // Handle errors (optional)
-                          print('Error updating profile: $error');
-                          
-                        });;
-                          
-                        }
-                        
+                        _saveHeightAndWeight(); // Call the method to save height and weight
                       }
                     });
                   },
-                  
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xff031927),
                     foregroundColor: Colors.white,
                   ),
                   child: Text(editMode ? 'Save Height and Weight' : 'Edit Height and Weight'),
-                  )
                 ),
-              
+              ),
               SizedBox(height: 30.0),
               Text(
                 'BMI Reports',
@@ -400,7 +388,6 @@ class _BmiPageState extends State<BmiPage> {
           ),
         ),
       ),
-
       bottomNavigationBar: Navbar(
         currentIndex: 3,
         onTap: (int index) {
@@ -419,50 +406,7 @@ class _BmiPageState extends State<BmiPage> {
             }
           }
         }
-
       ),
     );
   }
-
-  double calculateBMI(double height, double weight) {
-
-    if (height > 0 && weight > 0) {
-      return weight /math.pow(height / 100, 2); // Formula for BMI (kg/m^2)
-    } 
-    else {
-      return 0.0; // Handle cases with invalid height or weight
-    }
-  }
-
-  String getBMIStatus(double bmi) {
-
-    if (bmi < 18.5) {
-      return 'Underweight';
-    } else if (bmi >= 18.5 && bmi < 24.9) {
-      return 'Normal';
-    } else if (bmi >= 24.9 && bmi < 29.9) {
-      return 'Overweight';
-    } else {
-      return 'Obese';
-    }
-  }
-
-  Color getColorByBMIStatus(String bmiStatus) {
-
-    switch (bmiStatus) {
-      case 'Underweight':
-        return Colors.orange;
-      case 'Normal':
-        return Colors.green;
-      case 'Overweight':
-        return Colors.red;
-      case 'Obese':
-        return Colors.redAccent;
-      default:
-        return Colors.black;
-
-    }
-  }
-
-  
 }

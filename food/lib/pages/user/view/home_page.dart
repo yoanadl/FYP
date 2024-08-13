@@ -4,12 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/pages/fitnessPlans/view/fitness_plan_show.dart';
+import 'package:food/pages/profileSetting/my_profile_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../discarded/mealPlan_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import '../../fitnessPlans/view/fitness_plan_show.dart';
 // import 'package:food/applewatch/injector.dart' show healthFactory;
 // import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
 // import 'package:health/health.dart';
@@ -152,11 +154,21 @@ class _HomePageState extends State<HomePage> {
             ),
             
             //profile icon
-            if (user != null)
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: loadProfilePicture(context, user.uid),
-              )
+            InkWell(
+                onTap: () {
+                  // Navigate to ProfilePage when the profile picture is tapped
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyProfilePage(), 
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: loadProfilePicture(context, user!.uid),
+                ),
+              ),
           ],
 
           title: Column(
@@ -379,7 +391,7 @@ class _HomePageState extends State<HomePage> {
                InkWell(
                 onTap: () => Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => FitnessPlanShow()),
+                  MaterialPageRoute(builder: (context) => FitnessPlanPage()),
                 ),
                  child: Container(
                   width: 350,
@@ -395,7 +407,7 @@ class _HomePageState extends State<HomePage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.asset(
-                          'lib/images/food.png',
+                          'lib/images/fitnessplan.jpg',
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,

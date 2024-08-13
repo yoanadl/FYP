@@ -25,7 +25,7 @@ class SettingProfileService {
       };
 
       // Add profile document with the given data
-      await usersCollection.doc(uid).collection('TrainerProfile').add(profileData);
+      await usersCollection.doc(uid).collection('UserProfile').add(profileData);
       print('Profile created successfully!');
     } catch (e) {
       print('Error creating profile: $e');
@@ -38,7 +38,7 @@ class SettingProfileService {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
-          .collection('TrainerProfile')
+          .collection('UserProfile')
           .get();
       return querySnapshot.docs
           .map((doc) => doc.data() as Map<String, dynamic>)
@@ -54,7 +54,7 @@ class SettingProfileService {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
-          .collection('TrainerProfile')
+          .collection('UserProfile')
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -62,12 +62,12 @@ class SettingProfileService {
         String profileId = querySnapshot.docs[0].id;
         await usersCollection
             .doc(uid)
-            .collection('TrainerProfile')
+            .collection('UserProfile')
             .doc(profileId)
             .update(newData);
         print('Profile updated successfully!');
       } else {
-        print('No trainer profile found for uid: $uid');
+        print('No User profile found for uid: $uid');
         // Create a default profile if it doesn't exist
         await createProfile(
           uid,
@@ -91,7 +91,7 @@ class SettingProfileService {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
-          .collection('TrainerProfile')
+          .collection('UserProfile')
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -116,4 +116,29 @@ class SettingProfileService {
       return null;
     }
   }
+
+  // Method to fetch the user's height and weight
+  Future<Map<String, int?>> getUserHeightAndWeight(String uid) async {
+    try {
+      Map<String, dynamic>? userData = await fetchUserData(uid);
+
+      if (userData != null) {
+        int? height = userData['height'] as int?;
+        int? weight = userData['weight'] as int?;
+
+        return {
+          'height': height,
+          'weight': weight,
+        };
+      } else {
+        print('No user data found for uid: $uid');
+        return {'height': null, 'weight': null};
+      }
+    } catch (e) {
+      print('Error fetching height and weight: $e');
+      throw Exception('Failed to fetch height and weight.');
+    }
+  }
 }
+
+
