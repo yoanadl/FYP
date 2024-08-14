@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/challenges/challenge_activity.dart';
+import 'package:food/pages/challenges/challenge_activity_page.dart';
 import 'package:food/pages/challenges/leaderboard.dart';
 import 'package:food/services/challenge_service.dart';
 
@@ -189,11 +190,14 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF031927),
                       foregroundColor: Colors.white),
-                    onPressed: () => {
-                      
-                    },
+                    onPressed: () => Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => ChallengeActivityPage(challengeId: widget.challengeId),
+                      ),
                   ),
                 ),
+              ),
           ],
         ),
       ),

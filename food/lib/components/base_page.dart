@@ -1,12 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:food/pages/challenges/challenge_owner_view_joined_page.dart';
-import 'package:food/pages/challenges/challenge_owner_view_page.dart';
-import 'package:food/pages/challenges/challenge_viewer_view_joined_page.dart';
-import 'package:food/pages/challenges/challenge_viewer_view_page.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/challenges/my_challenge_page.dart';
 import 'package:food/pages/challenges/challenge_home_page.dart';
 import 'package:food/pages/workout/views/workout_page_view.dart';
 import '../pages/user/view/profile_page.dart';

@@ -144,6 +144,11 @@ class ChallengeViewerViewPage extends StatelessWidget {
                           ])
                         });
 
+                        // Show success SnackBar
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Challenge added')),
+                        );
+
                     } catch (e) {
 
                       // Handle error

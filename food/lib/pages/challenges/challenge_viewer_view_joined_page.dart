@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/challenges/challenge_activity_page.dart';
 import 'package:food/pages/challenges/leaderboard.dart';
+import 'package:flutter/cupertino.dart';
+
 
 class ChallengeViewerViewJoinedPage extends StatelessWidget {
   final String challengeId;
@@ -49,6 +52,60 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
               context,
               MaterialPageRoute(builder: (context) => LeaderboardPage()),
             ),
+          ),
+          IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () async {
+              bool? shouldQuit = await showCupertinoDialog<bool>(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    title: Text('Confirm Quit'),
+                    content: Text('Are you sure you want to quit this challenge?'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text('Cancel'),
+                        onPressed: () => Navigator.pop(context, false),
+                      ),
+                      CupertinoDialogAction(
+                        child: Text('Quit'),
+                        onPressed: () => Navigator.pop(context, true),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (shouldQuit == true) {
+                String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+                try {
+                  // Remove the challenge from the user's challenges in Firestore
+                  await FirebaseFirestore.instance.collection('users').doc(userId).update({
+                    'challenges': FieldValue.arrayRemove([
+                      {
+                        'challengeId': challengeId,
+                        'type': 'joined'
+                      }
+                    ])
+                  });
+
+                  // Show success SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Challenge removed')),
+                  );
+
+                  // Navigate back to previous screen or refresh the current page
+                  Navigator.pop(context);
+
+                } catch (e) {
+                  // Handle error
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to quit the challenge')),
+                  );
+                }
+              }
+            },
           ),
         ],
       ),
