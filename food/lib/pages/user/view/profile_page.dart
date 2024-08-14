@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/pages/profileSetting/bmi_page.dart';
-import 'package:food/pages/profileSetting/goals_preferences.dart';
 import 'package:food/pages/profileSetting/help_center_page.dart';
 import 'package:food/pages/profileSetting/membership_page.dart';
 import 'package:food/pages/profileSetting/my_profile_page.dart';
@@ -142,11 +141,6 @@ class _ProfilePageState extends State<ProfilePage> {
       icon: Icons.person,
       text: 'Your Profile',
       destination: MyProfilePage(),
-    ),
-    RowData(
-      icon: Icons.flag,
-      text: 'My Goals & Dietary',
-      destination: GoalsPreferences(),
     ),
     RowData(
       icon: Icons.monitor_weight,

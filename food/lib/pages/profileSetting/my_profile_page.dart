@@ -63,6 +63,73 @@ class ProfileTextField extends StatelessWidget {
   }
 }
 
+class ProfileDropdownField extends StatelessWidget {
+  final String label;
+  final String? selectedValue;
+  final List<String> options;
+  final ValueChanged<String?> onChanged;
+
+  const ProfileDropdownField({
+    Key? key,
+    required this.label,
+    required this.selectedValue,
+    required this.options,
+    required this.onChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 18.0,
+            ),
+          ),
+        ),
+        SizedBox(height: 8.0),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 6.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Color(0XFF031927), width: 1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: DropdownButtonFormField<String>(
+                value: selectedValue,
+                onChanged: onChanged,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Select $label',
+                  hintStyle: TextStyle(
+                    color: Colors.grey.shade400,
+                    fontFamily: 'Poppins',
+                    fontSize: 14.0,
+                  ),
+                ),
+                items: options.map((String option) {
+                  return DropdownMenuItem<String>(
+                    value: option,
+                    child: Text(option),
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
 class MyProfilePage extends StatefulWidget {
   @override
   _MyProfilePageState createState() => _MyProfilePageState();
@@ -75,6 +142,16 @@ class _MyProfilePageState extends State<MyProfilePage> {
   late TextEditingController ageController;
   late TextEditingController heightController;
   late TextEditingController weightController;
+  
+  // Add this for fitness goals
+  String? selectedGoal;
+  final List<String> fitnessGoals = [
+    'Lose Weight',
+    'Build Muscle',
+    'Improve Stamina',
+    'Increase Flexibility',
+    'Maintain Fitness'
+  ];
 
   Map<String, dynamic> profileData = {
     'Name': '',
@@ -82,6 +159,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     'Age': '',
     'Height(cm)': '',
     'Weight(kg)': '',
+    'fitnessGoals': '',
   };
 
   Map<String, dynamic> profileData_1 = {
@@ -97,6 +175,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
     ageController = TextEditingController(text: profileData['Age'] ?? '');
     heightController = TextEditingController(text: profileData['Height(cm)'] ?? '');
     weightController = TextEditingController(text: profileData['Weight(kg)'] ?? '');
+    selectedGoal = profileData['fitnessGoals'] as String?;
 
     fetchProfileData();
   }
@@ -140,6 +219,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
         ageController.text = profileData['Age'] ?? '';
         heightController.text = profileData['Height(cm)'] ?? '';
         weightController.text = profileData['Weight(kg)'] ?? '';
+        selectedGoal = profileData['fitnessGoals'] as String?;
       });
     } catch (e) {
       print('Error fetching profile data: $e');
@@ -153,6 +233,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
       return;
     }
     try {
+      profileData['fitnessGoals'] = selectedGoal;
       await SettingProfileService().updateSettingProfile(user.uid, profileData);
       print('Profile updated successfully!');
     } catch (e) {
@@ -181,7 +262,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Poppins',
-            fontSize: 25,
+            fontSize: 23,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -191,6 +272,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 10),
               Stack(
                 children: [
                   _loadUserProfilePicture(),
@@ -223,7 +305,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.0),
+              SizedBox(height: 16.0),
               ProfileTextField(
                 label: 'Name',
                 controller: nameController,
@@ -283,7 +365,19 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   });
                 },
               ),
-              SizedBox(height: 24.0),
+              SizedBox(height: 10.0),
+              ProfileDropdownField(
+                label: 'Fitness Goal',
+                selectedValue: selectedGoal,
+                options: fitnessGoals,
+                onChanged: (value) {
+                  setState(() {
+                    selectedGoal = value;
+                    profileData['fitnessGoals'] = value;
+                  });
+                },
+              ),
+              SizedBox(height: 36.0),
               ElevatedButton(
                 onPressed: updateProfileData,
                 style: ElevatedButton.styleFrom(
@@ -301,6 +395,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   ),
                 ),
               ),
+
+              SizedBox(height: 64.0),
             ],
           ),
         ),
