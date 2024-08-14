@@ -463,27 +463,13 @@ Future<void> checkDailyExerciseGoal() async {
   }
 
 
-  // for testing purposes
-  // Future<void> scheduleBreakReminderNotification() async {
-  //   // Schedule the break reminder notification
-  //   await notificationsPlugin.zonedSchedule(
-  //     1,
-  //     'Break Reminder',
-  //     'You\'ve been exercising for 5 minutes. Time to take a break!',
-  //     _calculateBreakReminderTime(),
-  //     notificationDetails(),
-  //     androidAllowWhileIdle: true,
-  //     uiLocalNotificationDateInterpretation:
-  //         UILocalNotificationDateInterpretation.absoluteTime,
-  //   );
-  // }
-
+  //for testing purposes
   Future<void> scheduleBreakReminderNotification() async {
     // Schedule the break reminder notification
     await notificationsPlugin.zonedSchedule(
       1,
       'Break Reminder',
-      'You\'ve been exercising for one hour. Time to take a break!',
+      'You\'ve been exercising for 1 hour. Time to take a break!',
       _calculateBreakReminderTime(),
       notificationDetails(),
       androidAllowWhileIdle: true,
@@ -491,6 +477,20 @@ Future<void> checkDailyExerciseGoal() async {
           UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
+
+  // Future<void> scheduleBreakReminderNotification() async {
+  //   // Schedule the break reminder notification
+  //   await notificationsPlugin.zonedSchedule(
+  //     1,
+  //     'Break Reminder',
+  //     'You\'ve been exercising for one hour. Time to take a break!',
+  //     _calculateBreakReminderTime(),
+  //     notificationDetails(),
+  //     androidAllowWhileIdle: true,
+  //     uiLocalNotificationDateInterpretation:
+  //         UILocalNotificationDateInterpretation.absoluteTime,
+  //   );
+  // }
 
   Future<void> cancelBreakReminderNotification() async {
     await notificationsPlugin.cancel(1);
@@ -506,18 +506,18 @@ Future<void> checkDailyExerciseGoal() async {
     // Retrieve status from persistent storage if needed
   }
 
-  tz.TZDateTime _calculateBreakReminderTime() {
-    // Calculate the time for the break reminder (e.g., 1 hour from now)
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    return now.add(const Duration(hours: 1));
-  }
+  // tz.TZDateTime _calculateBreakReminderTime() {
+  //   // Calculate the time for the break reminder (e.g., 1 hour from now)
+  //   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+  //   return now.add(const Duration(hours: 1));
+  // }
 
   // for testing purposes
-  // tz.TZDateTime _calculateBreakReminderTime() {
-  //   // Calculate the time for the break reminder (e.g., 5 minutes from now)
-  //   final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-  //   return now.add(const Duration(minutes: 5));
-  // }
+  tz.TZDateTime _calculateBreakReminderTime() {
+    // Calculate the time for the break reminder (e.g., 5 minutes from now)
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    return now.add(const Duration(minutes: 5));
+  }
 
 
   Future<void> checkExerciseDuration(String uid) async {

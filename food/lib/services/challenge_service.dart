@@ -133,26 +133,76 @@ class ChallengeService {
 
   
   Future<String?> fetchCreatorName(String challengeId) async {
-  try {
-   
-    // Fetch the challenge document
-    final DocumentSnapshot challengeDoc = await FirebaseFirestore.instance
-        .collection('challenges')
-        .doc(challengeId)
-        .get();
+    try {
+    
+      // Fetch the challenge document
+      final DocumentSnapshot challengeDoc = await FirebaseFirestore.instance
+          .collection('challenges')
+          .doc(challengeId)
+          .get();
 
-    // Check if the challenge document exists
-    if (!challengeDoc.exists) {
-      print('Challenge document does not exist.');
+      // Check if the challenge document exists
+      if (!challengeDoc.exists) {
+        print('Challenge document does not exist.');
+        return null;
+      }
+
+      // Access the creatorName field
+      final challengeData = challengeDoc.data() as Map<String, dynamic>;
+      return challengeData['creatorName'] ?? 'Unknown Creator';
+    } catch (e) {
+      print('Error fetching creator name: $e');
       return null;
     }
+  }
 
-    // Access the creatorName field
-    final challengeData = challengeDoc.data() as Map<String, dynamic>;
-    return challengeData['creatorName'] ?? 'Unknown Creator';
+  Future<void> joinChallenge({
+    required String userId,
+    required String challengeId,
+  }) async {
+    try {
+      // Add the challenge to the user's challenges
+      await addOtherChallengeIdToUserDoc(userId, challengeId, 'joined');
+
+      // Update the challenge's participants list
+      await _firestore.collection('challenges').doc(challengeId).update({
+        'participants': FieldValue.arrayUnion([userId]),
+      });
+    } catch (e) {
+      print("Error joining challenge: $e");
+      rethrow;
+    }
+  }
+
+  Future<void> addOtherChallengeIdToUserDoc(String userId, String challengeId, String type) async {
+    try {
+      await _firestore.collection('users').doc(userId).update({
+        'challenges': FieldValue.arrayUnion([
+          {
+            'challengeId': challengeId,
+            'type': type,
+          }
+        ]),
+      });
+    } catch (e) {
+      print("Error updating user challenges: $e");
+      rethrow;
+    }
+  }
+
+  Future<void> addOwnChallengeToUserDoc(String userId, String challengeId) async {
+  try {
+    await _firestore.collection('users').doc(userId).update({
+      'challenges': FieldValue.arrayUnion([
+        {
+          'challengeId': challengeId,
+          'type': 'own',
+        }
+      ]),
+    });
   } catch (e) {
-    print('Error fetching creator name: $e');
-    return null;
+    print("Error updating user challenges: $e");
+    rethrow;
   }
 }
 
@@ -161,5 +211,12 @@ class ChallengeService {
 
 
 
-
 }
+
+
+
+
+
+
+
+

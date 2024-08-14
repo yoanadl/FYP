@@ -1,218 +1,9 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-
-// class MyChallengePage extends StatefulWidget {
-//   @override
-//   _MyChallengePageState createState() => _MyChallengePageState();
-// }
-
-// class _MyChallengePageState extends State<MyChallengePage> {
-//   bool isOngoing = true;
-//   String sortOption = 'own challenges';
-//   late String currentUserId;
-  
-//   @override
-//   void initState() {
-//     super.initState();
-//     currentUserId = FirebaseAuth.instance.currentUser!.uid;  
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         backgroundColor: Colors.white,
-//         leading: IconButton(
-//           icon: Icon(Icons.arrow_back),
-//           onPressed: () => Navigator.pop(context),
-//         ),
-//         title: Text(
-//           'My Challenges',
-//           style: TextStyle(
-//             fontWeight: FontWeight.w700,
-//           ),
-//         ),
-//       ),
-//       body: Column(
-//         children: [
-//           _buildTabs(),
-//           _buildSearchAndSort(),
-//           Expanded(
-//             child: _buildChallengeList(),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildTabs() {
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//       child: Row(
-//         children: [
-//           Expanded(
-//             child: ElevatedButton(
-//               child: Text(
-//                 'Ongoing',
-//                 style: TextStyle(color: isOngoing ? Colors.white : Colors.black),
-//               ),
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: isOngoing ? Colors.black : Colors.white,
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(20),
-//                 ),
-//               ),
-//               onPressed: () => setState(() => isOngoing = true),
-//             ),
-//           ),
-//           SizedBox(width: 16),
-//           Expanded(
-//             child: ElevatedButton(
-//               child: Text(
-//                 'Completed',
-//                 style: TextStyle(color: !isOngoing ? Colors.white : Colors.black),
-//               ),
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: !isOngoing ? Colors.black : Colors.white,
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(20),
-//                 ),
-//               ),
-//               onPressed: () => setState(() => isOngoing = false),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildSearchAndSort() {
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-//       child: Row(
-//         children: [
-//           Expanded(
-//             child: TextField(
-//               decoration: InputDecoration(
-//                 hintText: 'Search',
-//                 prefixIcon: Icon(Icons.search),
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(20),
-//                 ),
-//               ),
-//             ),
-//           ),
-//           SizedBox(width: 8),
-//           PopupMenuButton<String>(
-//             icon: Icon(Icons.sort),
-//             onSelected: (String result) {
-//               setState(() {
-//                 sortOption = result;
-//               });
-//             },
-//             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-//               PopupMenuItem<String>(
-//                 value: 'own challenges',
-//                 child: Row(
-//                   children: [
-//                     Text('Own Challenges'),
-//                     if (sortOption == 'own challenges')
-//                       Icon(Icons.check, color: Colors.blue),
-//                   ],
-//                 ),
-//               ),
-//               PopupMenuItem<String>(
-//                 value: 'others',
-//                 child: Row(
-//                   children: [
-//                     Text('Others'),
-//                     if (sortOption == 'others')
-//                       Icon(Icons.check, color: Colors.blue),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildChallengeList() {
-//     return StreamBuilder<QuerySnapshot>(
-//       stream: FirebaseFirestore.instance
-//           .collection('challenges')
-//           .where('creatorUid', isEqualTo: currentUserId)
-//           .snapshots(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.waiting) {
-//           return Center(child: CircularProgressIndicator());
-//         }
-//         if (snapshot.hasError) {
-//           return Center(child: Text('Error: ${snapshot.error}'));
-//         }
-
-//         final challenges = snapshot.data?.docs ?? [];
-//         if (challenges.isEmpty) {
-//           return Center(child: Text('No challenges found.'));
-//         }
-
-//         return ListView.separated(
-//           padding: EdgeInsets.all(16),
-//           itemCount: challenges.length,
-//           separatorBuilder: (context, index) => SizedBox(height: 16),
-//           itemBuilder: (context, index) {
-//             final challengeData = challenges[index].data() as Map<String, dynamic>;
-//             return _buildChallengeCard(challengeData);
-//           },
-//         );
-//       },
-//     );
-//   }
-
-//   Widget _buildChallengeCard(Map<String, dynamic> challengeData) {
-//     return GestureDetector(
-//       onTap: () {
-//         // TODO: Implement navigation to challenge details
-//         print('Clicked on challenge: ${challengeData['title']}');
-//       },
-//       child: Container(
-//         decoration: BoxDecoration(
-//           color: Colors.grey[200],
-//           borderRadius: BorderRadius.circular(10),
-//         ),
-//         padding: EdgeInsets.all(16),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Text(
-//               challengeData['title'] ?? 'Challenge Title',
-//               style: TextStyle(
-//                 fontWeight: FontWeight.bold,
-//                 fontSize: 18,
-//               ),
-//             ),
-//             Text(
-//               'Own Challenge',
-//               style: TextStyle(
-//                 color: Colors.grey[600],
-//                 fontSize: 14,
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/challenges/challenge_owner_view_page.dart';
 import 'package:food/pages/challenges/challenge_viewer_view_page.dart';
+import 'package:food/services/challenge_service.dart';
 
 class MyChallengePage extends StatefulWidget {
   @override
@@ -223,11 +14,12 @@ class _MyChallengePageState extends State<MyChallengePage> {
   bool isOngoing = true;
   String sortOption = 'own challenges';
   late String currentUserId;
-  
+  ChallengeService challengeService = ChallengeService();
+
   @override
   void initState() {
     super.initState();
-    currentUserId = FirebaseAuth.instance.currentUser!.uid;  
+    currentUserId = FirebaseAuth.instance.currentUser!.uid;
   }
 
   @override
@@ -237,15 +29,17 @@ class _MyChallengePageState extends State<MyChallengePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'My Challenges',
           style: TextStyle(
+            color: Colors.black,
             fontWeight: FontWeight.w500,
           ),
         ),
+        elevation: 0,
       ),
       body: Column(
         children: [
@@ -259,6 +53,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
     );
   }
 
+  // Builds the tabs for filtering ongoing/completed challenges
   Widget _buildTabs() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -300,6 +95,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
     );
   }
 
+  // Builds the search and sort options
   Widget _buildSearchAndSort() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -318,7 +114,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
           ),
           SizedBox(width: 8),
           PopupMenuButton<String>(
-            icon: Icon(Icons.sort),
+            icon: Icon(Icons.sort, color: Colors.black),
             onSelected: (String result) {
               setState(() {
                 sortOption = result;
@@ -326,21 +122,21 @@ class _MyChallengePageState extends State<MyChallengePage> {
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
-                value: 'own challenges',
+                value: 'own',
                 child: Row(
                   children: [
-                    Text('Own Challenges'),
-                    if (sortOption == 'own challenges')
+                    Text('Own'),
+                    if (sortOption == 'own')
                       Icon(Icons.check, color: Colors.blue),
                   ],
                 ),
               ),
               PopupMenuItem<String>(
-                value: 'others',
+                value: 'joined',
                 child: Row(
                   children: [
-                    Text('Others'),
-                    if (sortOption == 'others')
+                    Text('Joined'),
+                    if (sortOption == 'joined')
                       Icon(Icons.check, color: Colors.blue),
                   ],
                 ),
@@ -353,68 +149,141 @@ class _MyChallengePageState extends State<MyChallengePage> {
   }
 
   Widget _buildChallengeList() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection('challenges')
-          .where('creatorUid', isEqualTo: currentUserId)
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
+  return StreamBuilder<DocumentSnapshot>(
+    stream: FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUserId)
+        .snapshots(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(child: CircularProgressIndicator());
+      }
+      if (snapshot.hasError) {
+        return Center(child: Text('Error: ${snapshot.error}'));
+      }
 
-        final challenges = snapshot.data?.docs ?? [];
-        if (challenges.isEmpty) {
-          return Center(child: Text('No challenges found.'));
-        }
+      final userDoc = snapshot.data;
+      if (userDoc == null || !userDoc.exists) {
+        return Center(child: Text('User not found.'));
+      }
 
-        return ListView.separated(
-          padding: EdgeInsets.all(16),
-          itemCount: challenges.length,
-          separatorBuilder: (context, index) => SizedBox(height: 16),
-          itemBuilder: (context, index) {
-            final challengeData = challenges[index].data() as Map<String, dynamic>;
-            return _buildChallengeCard(challenges[index].id, challengeData);
-          },
-        );
-      },
-    );
+      final challenges = userDoc['challenges'] as List<dynamic>? ?? [];
+      if (challenges.isEmpty) {
+        return Center(child: Text('No challenges found.'));
+      }
+
+      return FutureBuilder<List<Map<String, dynamic>>>(
+        future: _fetchChallengeDetailsFromService(challenges),
+        builder: (context, futureSnapshot) {
+          if (futureSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (futureSnapshot.hasError) {
+            return Center(child: Text('Error: ${futureSnapshot.error}'));
+          }
+
+          final challengeDetails = futureSnapshot.data ?? [];
+          if (challengeDetails.isEmpty) {
+            return Center(child: Text('No challenges found.'));
+          }
+
+          return ListView.separated(
+            padding: EdgeInsets.all(16),
+            itemCount: challengeDetails.length,
+            separatorBuilder: (context, index) => SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              final challenge = challengeDetails[index];
+              return _buildChallengeCard(challenge);
+            },
+          );
+        },
+      );
+    },
+  );
+}
+
+Future<List<Map<String, dynamic>>> _fetchChallengeDetailsFromService(List<dynamic> challenges) async {
+  List<Map<String, dynamic>> challengeDetails = [];
+
+  for (var challenge in challenges) {
+    final challengeId = challenge['challengeId'] as String;
+    final type = challenge['type'] as String;
+
+    // Use the getChallengeDetails method from the challengeService
+    Map<String, dynamic>? details = await challengeService.getChallengeDetails(challengeId);
+
+    if (details != null) {
+      challengeDetails.add({
+        'challengeId': challengeId,
+        'title': details['title'] ?? 'Challenge Title',
+        'type': type,
+      });
+    }
   }
 
-  Widget _buildChallengeCard(String challengeId, Map<String, dynamic> challengeData) {
+  return challengeDetails;
+}
+
+
+
+  
+  // Builds a card for each challenge
+  Widget _buildChallengeCard(Map<String, dynamic> challenge) {
+    final challengeId = challenge['challengeId'] ?? '';
+    final title = challenge['title'] ?? 'Challenge Title';
+    final type = challenge['type'] ?? 'own'; // 'own' or 'joined'
+
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChallengeOwnerViewPage(challengeId: challengeId),
-          ),
-        );
+        if (challengeId.isNotEmpty) {
+          final route = type == 'own'
+              ? ChallengeOwnerViewPage(challengeId: challengeId)
+              : ChallengeViewerViewPage(challengeId: challengeId);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => route),
+          );
+        } else {
+          // Handle empty ID case
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Challenge ID is missing.')),
+          );
+        }
       },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.grey[200],
           borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
         ),
         padding: EdgeInsets.all(16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              challengeData['title'] ?? 'Challenge Title',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+            SizedBox(width: 8),
             Text(
-              'Own Challenge',
+              type == 'own' ? 'Own ' : 'Joined ',
               style: TextStyle(
-                color: Colors.grey[600],
+                color: type == 'own' ? Colors.blue : Colors.green,
                 fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],

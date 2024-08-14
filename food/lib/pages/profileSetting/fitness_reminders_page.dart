@@ -38,24 +38,43 @@ class _FitnessRemindersState extends State<FitnessReminders> {
 
   }
 
-  // get random duration between 60 and 120 minutes
+  // // get random duration between 60 and 120 minutes
+  // Duration _getRandomInterval() {
+  //   final random = Random();
+  //   final minMinutes = 60; // 1 hour
+  //   final maxMinutes = 120; // 2 hours
+  //   final minutes = minMinutes + random.nextInt(maxMinutes - minMinutes);
+  //   return Duration(minutes: minutes);
+  // }
+
+  // void _scheduleRandomChecks() {
+  //   Timer.periodic(Duration(hours: 1), (timer) {
+  //     final interval = _getRandomInterval();
+  //     Future.delayed(interval, () {
+  //       _checkAndNotifyGoals();
+  //       _scheduleRandomChecks(); // Reschedule the next check
+  //     });
+  //   });
+  // }
+
+  // for testing purposes
+  // get random duration between 1 and 5 minutes
   Duration _getRandomInterval() {
     final random = Random();
-    final minMinutes = 60; // 1 hour
-    final maxMinutes = 120; // 2 hours
+    final minMinutes = 1; // 1 minute
+    final maxMinutes = 3; // 3 minutes
     final minutes = minMinutes + random.nextInt(maxMinutes - minMinutes);
     return Duration(minutes: minutes);
   }
 
   void _scheduleRandomChecks() {
-    Timer.periodic(Duration(hours: 1), (timer) {
       final interval = _getRandomInterval();
       Future.delayed(interval, () {
         _checkAndNotifyGoals();
         _scheduleRandomChecks(); // Reschedule the next check
       });
-    });
   }
+  
 
 
   // Check and notify based on existing reminders and goals
