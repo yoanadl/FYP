@@ -4,14 +4,17 @@ import 'package:food/pages/workout/presenters/workout_activity_presenter.dart';
 import 'package:food/pages/workout/presenters/workout_done_presenter.dart';
 import 'package:food/pages/workout/views/workout_done_view.dart';
 import 'package:food/pages/workout/models/workout_done_model.dart';
+import 'package:food/pages/fitnessPlans/model/fitness_plan_model.dart';
 
 class WorkoutActivityView extends StatefulWidget {
+  final FitnessPlan? fitnessPlan;
   final WorkoutActivityModel model;
   final String userId;
   final String workoutId;
 
   const WorkoutActivityView({
     Key? key, 
+    this.fitnessPlan,
     required this.model,
     required this.userId,
     required this.workoutId,
@@ -28,7 +31,14 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
   @override
   void initState() {
     super.initState();
-    _currentModel = widget.model;
+
+    // If a fitnessPlan is passed, convert it to WorkoutActivityModel
+    if (widget.fitnessPlan != null) {
+      _currentModel = convertFitnessPlanToWorkoutActivityModel(widget.fitnessPlan!);
+    } else {
+      _currentModel = widget.model!;
+    }
+
     _presenter = WorkoutActivityPresenter(this, _currentModel);
     _presenter.startTimer();
   }
@@ -101,6 +111,21 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
       navigateToWorkoutDone(_currentModel);
     }
   }
+
+  //converting fitness plan to workout model
+  WorkoutActivityModel convertFitnessPlanToWorkoutActivityModel(FitnessPlan plan) {
+    return WorkoutActivityModel(
+      activityTitle: plan.activities.isNotEmpty ? plan.activities[0] : '',
+      duration: plan.durations.isNotEmpty ? plan.durations[0] : 0,
+      remainingTimeInSeconds: plan.durations.isNotEmpty ? plan.durations[0] * 60 : 0,
+      activities: plan.activities,
+      durations: plan.durations,
+      activityIndex: 0,
+      startTime: DateTime.now(),
+      endTime: null,
+    );
+  }
+
 
 
   @override
