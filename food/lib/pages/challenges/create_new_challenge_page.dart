@@ -110,7 +110,15 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
                     });
                   }
                 },
-                child: Text('Pick Start Date'),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor:   Color(0xFFC8E0F4),
+                ),
+                child: Text(
+                  'Pick Start Date',
+                  style: TextStyle(
+                    color: Colors.black
+                  ),
+                ),
               ),
             ],
           ),
@@ -129,14 +137,28 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
                     });
                   }
                 },
-                child: Text('Pick End Date'),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor:   Color(0xFFC8E0F4),
+                ),
+                child: Text(
+                  'Pick End Date',
+                  style: TextStyle(
+                    color: Colors.black
+                  ),),
               ),
             ],
           ),
           SizedBox(height: 24), // Add some spacing
           Center(
             child: ElevatedButton(
-              child: Text('Next'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor:   Color(0xFFC8E0F4),
+              ),
+              child: Text(
+                'Next',
+                style: TextStyle(
+                  color: Colors.black
+                ),),
               onPressed: () {
                 setState(() {
                   isFirstPage = false;
@@ -144,7 +166,7 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
               },
             ),
           ),
-          SizedBox(height: 24), // Add some spacing
+          
         ],
       ),
     ),
@@ -168,7 +190,14 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
           ),
           Center(
             child: ElevatedButton(
-              child: Text('Add another activity'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor:   Color(0xFFC8E0F4),
+              ),
+              child: Text(
+                'Add another activity',
+                style: TextStyle(
+                  color: Colors.black
+                ),),
               onPressed: () {
                 setState(() {
                   activities.add(ChallengeActivity());
@@ -176,10 +205,17 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
               },
             ),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 10),
           Center(
             child: ElevatedButton(
-              child: Text('Create Challenge'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF031927),
+              ),
+              child: Text(
+                'Create Challenge',
+                style: TextStyle(
+                  color: Colors.white
+                ),),
               onPressed: () async {
                 String? challengeId = await _createChallenge();
                 if (challengeId != null) {
@@ -204,44 +240,6 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
       ),
     );
   }
-
-  // Widget _buildActivityInput(int index) {
-  //   return Card(
-  //     color: Colors.white,
-  //     margin: EdgeInsets.symmetric(vertical: 8),
-  //     child: Padding(
-  //       padding: EdgeInsets.all(16.0),
-  //       child: Row(
-  //         children: [
-  //           Expanded(
-  //             flex: 3,
-  //             child: TextField(
-  //               decoration: InputDecoration(labelText: 'Challenge Activity ${index + 1}'),
-  //               onChanged: (value) {
-  //                 setState(() {
-  //                   activities[index].activity = value;
-  //                 });
-  //               },
-  //             ),
-  //           ),
-  //           SizedBox(width: 16),
-  //           Expanded(
-  //             flex: 1,
-  //             child: TextField(
-  //               decoration: InputDecoration(labelText: 'Duration'),
-  //               keyboardType: TextInputType.number,
-  //               onChanged: (value) {
-  //                 setState(() {
-  //                   activities[index].duration = value;
-  //                 });
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildActivityInput(int index) {
   return Card(

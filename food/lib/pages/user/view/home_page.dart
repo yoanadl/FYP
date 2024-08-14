@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
             //profile icon
             if (user != null)
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.only(right: 35),
                 child: loadProfilePicture(context, user.uid),
               )
           ],

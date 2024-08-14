@@ -2,8 +2,9 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
 // import 'package:food/pages/challenges/challenge_owner_view_page.dart';
-// import 'package:food/pages/challenges/challenge_viewer_view_joined_page.dart'; // Updated import
+// import 'package:food/pages/challenges/challenge_viewer_view_joined_page.dart'; 
 // import 'package:food/services/challenge_service.dart';
+
 
 // class MyChallengePage extends StatefulWidget {
 //   @override
@@ -15,10 +16,27 @@
 //   String sortOption = 'All'; // Default filter option
 //   late String currentUserId;
 //   ChallengeService challengeService = ChallengeService();
+//   TextEditingController searchController = TextEditingController();
+//   String searchQuery = '';
+
 //   @override
 //   void initState() {
 //     super.initState();
 //     currentUserId = FirebaseAuth.instance.currentUser!.uid;
+//     searchController.addListener(_onSearchChanged);
+//   }
+
+//   @override
+//   void dispose() {
+//     searchController.removeListener(_onSearchChanged);
+//     searchController.dispose();
+//     super.dispose();
+//   }
+
+//   void _onSearchChanged() {
+//     setState(() {
+//       searchQuery = searchController.text.toLowerCase();
+//     });
 //   }
 
 //   @override
@@ -100,6 +118,7 @@
 //         children: [
 //           Expanded(
 //             child: TextField(
+//               controller: searchController,
 //               decoration: InputDecoration(
 //                 hintText: 'Search',
 //                 prefixIcon: Icon(Icons.search),
@@ -233,11 +252,21 @@
 //   }
 
 //   List<Map<String, dynamic>> _filterChallenges(List<Map<String, dynamic>> challenges) {
-//     if (sortOption == 'All') {
-//       return challenges;
-//     } else {
-//       return challenges.where((challenge) => challenge['type'] == sortOption).toList();
+//     List<Map<String, dynamic>> filteredChallenges = challenges;
+
+//     if (sortOption != 'All') {
+//       filteredChallenges =
+//           filteredChallenges.where((challenge) => challenge['type'] == sortOption).toList();
 //     }
+
+//     if (searchQuery.isNotEmpty) {
+//       filteredChallenges = filteredChallenges.where((challenge) {
+//         final title = challenge['title'].toString().toLowerCase();
+//         return title.contains(searchQuery);
+//       }).toList();
+//     }
+
+//     return filteredChallenges;
 //   }
 
 //   Widget _buildChallengeCard(Map<String, dynamic> challenge) {
@@ -292,9 +321,9 @@
 //             Text(
 //               type == 'own' ? 'Own ' : 'Joined ',
 //               style: TextStyle(
+//                 fontWeight: FontWeight.bold,
+//                 fontSize: 16,
 //                 color: type == 'own' ? Colors.blue : Colors.green,
-//                 fontSize: 14,
-//                 fontWeight: FontWeight.w500,
 //               ),
 //             ),
 //           ],
@@ -310,7 +339,6 @@ import 'package:flutter/material.dart';
 import 'package:food/pages/challenges/challenge_owner_view_page.dart';
 import 'package:food/pages/challenges/challenge_viewer_view_joined_page.dart'; 
 import 'package:food/services/challenge_service.dart';
-
 
 class MyChallengePage extends StatefulWidget {
   @override
@@ -499,6 +527,13 @@ class _MyChallengePageState extends State<MyChallengePage> {
           return Center(child: Text('User not found.'));
         }
 
+        // Cast userDoc.data() to Map<String, dynamic> and check if the 'challenges' field exists and is not null
+        final userData = userDoc.data() as Map<String, dynamic>?;
+
+        if (userData == null || !userData.containsKey('challenges') || userData['challenges'] == null) {
+          return Center(child: Text('No challenges created/joined.'));
+        }
+
         final challenges = userDoc['challenges'] as List<dynamic>? ?? [];
         if (challenges.isEmpty) {
           return Center(child: Text('No challenges found.'));
@@ -575,6 +610,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
     return filteredChallenges;
   }
 
+
   Widget _buildChallengeCard(Map<String, dynamic> challenge) {
     final challengeId = challenge['challengeId'] ?? '';
     final title = challenge['title'] ?? 'Challenge Title';
@@ -598,7 +634,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: Colors.grey[100],
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
@@ -637,5 +673,11 @@ class _MyChallengePageState extends State<MyChallengePage> {
       ),
     );
   }
+
+
+
+
+
+
 }
 

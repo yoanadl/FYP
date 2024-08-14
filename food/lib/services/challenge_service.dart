@@ -187,20 +187,66 @@ class ChallengeService {
   }
 
   Future<void> addOwnChallengeToUserDoc(String userId, String challengeId) async {
+    try {
+      await _firestore.collection('users').doc(userId).update({
+        'challenges': FieldValue.arrayUnion([
+          {
+            'challengeId': challengeId,
+            'type': 'own',
+          }
+        ]),
+      });
+    } catch (e) {
+      print("Error updating user challenges: $e");
+      rethrow;
+    }
+  }
+
+
+  Future<void> calculateAndStoreTotalRewardPoints(String userId) async {
   try {
-    await _firestore.collection('users').doc(userId).update({
-      'challenges': FieldValue.arrayUnion([
-        {
-          'challengeId': challengeId,
-          'type': 'own',
+    int totalPoints = 0;
+
+    print('Fetching challenges for user $userId...');
+
+    // Fetch all challenge documents where the user is a participant
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('challenges')
+        .get();
+
+    print('Total challenges fetched: ${querySnapshot.docs.length}');
+
+    for (var doc in querySnapshot.docs) {
+      print('Processing challenge: ${doc.id}');
+      final participants = List<Map<String, dynamic>>.from(doc['participants'] ?? []);
+      print('Participants in challenge ${doc.id}: $participants');
+      
+      for (var participant in participants) {
+        if (participant['userId'] == userId) {
+          int points = (participant['totalPoints'] ?? 0) as int;
+          totalPoints += points;
+          print('User $userId found in challenge ${doc.id} with ${points} points.');
+          break; // Break the loop since we found the user in this challenge
         }
-      ]),
-    });
+      }
+    }
+
+    print('Total points calculated for user $userId: $totalPoints');
+
+    // Store total points in the user's document
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .update({'totalRewardPoints': totalPoints});
+
+    print('Successfully updated totalRewardPoints for user $userId to $totalPoints.');
   } catch (e) {
-    print("Error updating user challenges: $e");
-    rethrow;
+    print('Error calculating total reward points for user $userId: $e');
   }
 }
+
+
+
 
 
 
