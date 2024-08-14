@@ -1,16 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/components/base_page.dart';
+import 'package:food/components/navbar.dart';
+import 'package:food/pages/challenges/challenge_activity_page.dart';
 import 'package:food/pages/challenges/leaderboard.dart';
 
 class ChallengeViewerViewJoinedPage extends StatelessWidget {
+  final String challengeId;
+
+  ChallengeViewerViewJoinedPage({required this.challengeId});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Challenge Title'),
+        title: FutureBuilder<DocumentSnapshot>(
+          future: FirebaseFirestore.instance.collection('challenges').doc(challengeId).get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text('Loading...');
+            }
+            if (snapshot.hasError) {
+              return Text('Error');
+            }
+            if (!snapshot.hasData || !snapshot.data!.exists) {
+              return Text('No Title');
+            }
+
+            final challengeData = snapshot.data!.data() as Map<String, dynamic>;
+            final title = challengeData['title'] ?? 'No Title';
+
+            return Text(title, style: TextStyle(
+              fontSize: 24, 
+              fontWeight: FontWeight.bold
+            ),);
+          },
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.emoji_events),
@@ -21,93 +52,110 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Challenge Title', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
-            Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
-            SizedBox(height: 16),
-            Text('Rewards: 00 pts'),
-            SizedBox(height: 16),
-            _buildActivityList(),
-            Spacer(),
-            Center(
-              child: ElevatedButton(
-                child: Text('Quit'),
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                onPressed: () => _showQuitDialog(context),
-              ),
+      body: FutureBuilder<DocumentSnapshot>(
+        future: FirebaseFirestore.instance.collection('challenges').doc(challengeId).get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            return Center(child: Text('Challenge not found.'));
+          }
+
+          final challengeData = snapshot.data!.data() as Map<String, dynamic>;
+          final creator = challengeData['creatorName'] ?? 'Unknown Creator';
+          final description = challengeData['description'] ?? 'No Description';
+          final rewards = challengeData['rewards'] ?? '00 pts';
+          final duration = challengeData['duration'] ?? 'Unknown Duration';
+          final activities = challengeData['activities'] as List<dynamic>? ?? [];
+
+          return Padding(
+            padding: EdgeInsets.all(35.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Created by: $creator', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 16),
+                Text(description),
+                SizedBox(height: 16),
+                Text('Rewards: $rewards'),
+                SizedBox(height: 16),
+                Text('Duration: $duration'),
+                SizedBox(height: 16),
+                Text('Activities', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 8),
+                _buildActivityList(activities),
+                
+                Center(
+                  child: ElevatedButton(
+                    child: Text(
+                      'Start Challenge',
+                      style: TextStyle(
+                        fontSize: 18
+                      ) ,),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF031927),
+                      foregroundColor: Colors.white),
+                    onPressed: () => Navigator.push(
+                      context, 
+                      MaterialPageRoute(
+                        builder: (context) => ChallengeActivityPage(challengeId: challengeId),
+                      ),
+                    )
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: Navbar(
+        currentIndex: 2,
+        onTap: (int index) {
+          if (index != 2) {
+            Navigator.pop(context);
+            switch (index) {
+              case 0:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0)));
+                break;
+              case 1:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1)));
+                break;
+              case 3:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3)));
+                break;
+            }
+          }
+        },
+      ),
     );
   }
 
-  Widget _buildActivityList() {
-    List<Map<String, String>> activities = [
-      {'name': 'Challenge Activity 1', 'duration': '000 reps'},
-      {'name': 'Challenge Activity 2', 'duration': '000 mins'},
-      {'name': 'Challenge Activity 3', 'duration': '000 reps'},
-      {'name': 'Challenge Activity 4', 'duration': '000 mins'},
-    ];
-
+  Widget _buildActivityList(List<dynamic> activities) {
     return Column(
-      children: activities.map((activity) => _buildActivityItem(activity)).toList(),
+      children: activities.map((activity) {
+        final activityName = activity['name'] ?? 'Unknown Activity';
+        final duration = activity['duration'] ?? 'Unknown Duration';
+        return _buildActivityItem(activityName, duration);
+      }).toList(),
     );
   }
 
-  Widget _buildActivityItem(Map<String, String> activity) {
+  Widget _buildActivityItem(String name, String duration) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(activity['name']!),
-          Text(activity['duration']!),
+          Text(name),
+          Text(duration),
         ],
       ),
     );
   }
 
-  void _showQuitDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Quit Challenge'),
-          content: Text('Are you sure you want to quit this challenge?'),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            TextButton(
-              child: Text('Quit', style: TextStyle(color: Colors.red)),
-              onPressed: () {
-                // TODO: Implement quit logic
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      currentIndex: 2,
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
-        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
-    );
-  }
+  
 }

@@ -4,12 +4,18 @@ class LeaderboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text('Leaderboard'),
+        title: Text('Leaderboard',
+          style: TextStyle(
+            fontSize: 23,
+            fontWeight: FontWeight.bold
+          ),),
         actions: [
           IconButton(
             icon: Icon(Icons.emoji_events),
@@ -21,7 +27,7 @@ class LeaderboardPage extends StatelessWidget {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text('Challenge Title', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Text('Challenge Title', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
             SizedBox(height: 16),
             Expanded(
               child: ListView.builder(

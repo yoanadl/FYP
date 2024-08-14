@@ -7,7 +7,7 @@ import 'package:food/components/navbar.dart';
 import 'package:food/pages/challenges/challenge_activity.dart';
 import 'package:food/pages/challenges/challenge_owner_view_page.dart';
 import 'package:food/services/challenge_service.dart';
-import 'package:flutter/services.dart'; // Import this for TextInputFormatter
+import 'package:flutter/services.dart'; 
 
 
 class CreateNewChallengePage extends StatefulWidget {
@@ -280,21 +280,60 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
   );
 }
 
+  // Future<String?> _createChallenge() async {
+  //   final challengeService = ChallengeService();
+  //   final user = FirebaseAuth.instance.currentUser;
+
+  //   if (user == null) return null;
+
+  //   final creatorUid = user.uid;
+  //   final participants = <String>[creatorUid]; 
+
+  //   final challengeId = await challengeService.createChallenge(
+  //     title: _titleController.text,
+  //     details: _detailsController.text,
+  //     activities: activities
+  //         .map((activity) => {'name': activity.activity, 'duration': activity.duration})
+  //         .toList(),
+  //     creatorUid: creatorUid,
+  //     participants: participants,
+  //     startDate: Timestamp.fromDate(_startDate ?? DateTime.now()),
+  //     endDate: Timestamp.fromDate(_endDate ?? DateTime.now()),
+  //     duration: _calculateDuration(), // Use calculated duration
+  //   );
+
+  //   // Add the challenge ID to the user's document with type 'own'
+  //   if (challengeId != null) {
+  //     await challengeService.addOwnChallengeToUserDoc(creatorUid, challengeId);
+  //   }
+
+  //   return challengeId;
+  // }
+
   Future<String?> _createChallenge() async {
-    final challengeService = ChallengeService();
-    final user = FirebaseAuth.instance.currentUser;
+  final challengeService = ChallengeService();
+  final user = FirebaseAuth.instance.currentUser;
 
-    if (user == null) return null;
+  if (user == null) return null;
 
-    final creatorUid = user.uid;
-    final participants = <String>[creatorUid]; 
+  final creatorUid = user.uid;
+  final participants = <String>[creatorUid]; 
 
+  // Filter out activities with empty names or durations and ensure the types match
+  final validActivities = activities.where((activity) =>
+    activity.activity != null && activity.activity!.isNotEmpty &&
+    activity.duration != null && activity.duration!.isNotEmpty
+  ).map((activity) => {
+    'name': activity.activity!,
+    'duration': activity.duration!, // Ensure duration is a string
+  }).toList();
+
+  // Proceed if there are valid activities
+  if (validActivities.isNotEmpty) {
     final challengeId = await challengeService.createChallenge(
       title: _titleController.text,
       details: _detailsController.text,
-      activities: activities
-          .map((activity) => {'name': activity.activity, 'duration': activity.duration})
-          .toList(),
+      activities: validActivities, // Pass the properly typed list
       creatorUid: creatorUid,
       participants: participants,
       startDate: Timestamp.fromDate(_startDate ?? DateTime.now()),
@@ -308,7 +347,17 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
     }
 
     return challengeId;
+  } else {
+    // Handle the case where no valid activities are entered
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Please enter at least one valid activity.'),
+      ),
+    );
+    return null;
   }
+}
+
 
   Future<DateTime?> _showIOSDatePicker(DateTime? initialDate, bool isStartDate) async {
     DateTime currentDate = DateTime.now();

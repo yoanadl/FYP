@@ -341,7 +341,7 @@ class _HomePageState extends State<HomePage> {
                         top: 15,
                         left: 15,
                         child: Text(
-                          'Workout Plan', 
+                          'Workouts', 
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,

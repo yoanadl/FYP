@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/challenges/challenge_activity.dart';
+import 'package:food/pages/challenges/leaderboard.dart';
 import 'package:food/services/challenge_service.dart';
 
 class ChallengeOwnerViewPage extends StatefulWidget {
@@ -100,6 +101,13 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
             : Text(titleController.text, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
+            icon: Icon(Icons.emoji_events),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LeaderboardPage()),
+            ),
+          ),
+          IconButton(
             icon: Icon(Icons.delete),
             onPressed: _showDeleteDialog,
           ),
@@ -155,6 +163,8 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
                 },
               ),
             ),
+            SizedBox(height: 25), // Space between the activities and the button
+
             if (isEditing)
               Center(
                 child: ElevatedButton(
@@ -170,13 +180,20 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
               )
             else
               Center(
-                child: ElevatedButton(
-                  child: Text('Start'),
-                  onPressed: () {
-                    // TODO: Implement start challenge logic
-                  },
+                  child: ElevatedButton(
+                    child: Text(
+                      'Start Challenge',
+                      style: TextStyle(
+                        fontSize: 18
+                      ) ,),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF031927),
+                      foregroundColor: Colors.white),
+                    onPressed: () => {
+                      
+                    },
+                  ),
                 ),
-              ),
           ],
         ),
       ),
