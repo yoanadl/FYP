@@ -144,6 +144,12 @@ class ChallengeViewerViewPage extends StatelessWidget {
                           ])
                         });
 
+                        // add the user to the challenge's participants field
+                        await FirebaseFirestore.instance.collection('challenges').doc(challengeId).update({
+                          'participants': FieldValue.arrayUnion([userId])
+                        });
+
+
                         // Show success SnackBar
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Challenge added')),
