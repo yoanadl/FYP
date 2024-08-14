@@ -20,7 +20,6 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
   bool isEditing = false;
   late TextEditingController titleController;
   late TextEditingController detailsController;
-  late TextEditingController pointsController;
   late TextEditingController durationController;
   List<ChallengeActivity> activities = [];
   bool isLoading = true;
@@ -31,7 +30,6 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
     super.initState();
     titleController = TextEditingController();
     detailsController = TextEditingController();
-    pointsController = TextEditingController();
     durationController = TextEditingController();
     _fetchChallengeData();
   }
@@ -45,7 +43,6 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
         setState(() {
           titleController.text = challengeData['title'] ?? '';
           detailsController.text = challengeData['description'] ?? '';
-          pointsController.text = challengeData['points']?.toString() ?? '0';
           durationController.text = challengeData['duration'] ?? '';
           activities = (challengeData['activities'] as List<dynamic>)
               .map((activity) => ChallengeActivity(
@@ -134,11 +131,10 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
             SizedBox(height: 25),
             isEditing
                 ? TextField(
-                    controller: pointsController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(labelText: 'Points'),
                   )
-                : Text('Rewards: ${pointsController.text} pts'),
+                : Text('Rewards: 100 pts per round'),
             SizedBox(height: 25),
             isEditing
                 ? TextField(
@@ -249,7 +245,6 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
         challengeId: widget.challengeId,
         title: titleController.text,
         details: detailsController.text,
-        points: int.parse(pointsController.text), // Convert pointsController text to int
         activities: activitiesData,
         startDate: Timestamp.fromDate(DateTime.now()), // Update as needed
         endDate: Timestamp.fromDate(DateTime.now().add(Duration(days: 7))), // Update as needed

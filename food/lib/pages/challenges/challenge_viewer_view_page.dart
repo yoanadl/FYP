@@ -78,7 +78,7 @@ class ChallengeViewerViewPage extends StatelessWidget {
                 ),
                 SizedBox(height: 25),
                 Text(
-                  'Rewards: ${challengeData['points'] ?? '0'}',
+                  'Rewards: 100 pts per round',
                   style: TextStyle(fontSize: 16),
                 ),
                 SizedBox(height: 16),
@@ -111,6 +111,7 @@ class ChallengeViewerViewPage extends StatelessWidget {
                       
 
                      String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
 
                       try {
                         // Update the user's challenges in Firestore

@@ -6,7 +6,6 @@ class ChallengeService {
   Future<String> createChallenge({
   required String title,
   required String details,
-  required int points,
   required List<Map<String, String>> activities,
   required String creatorUid,
   required List<String> participants,
@@ -36,7 +35,6 @@ class ChallengeService {
     DocumentReference docRef = await _firestore.collection('challenges').add({
       'title': title,
       'description': details,
-      'points': points,
       'activities': activities,
       'createdAt': Timestamp.now(),
       'creatorUid': creatorUid,
@@ -61,7 +59,6 @@ class ChallengeService {
     required String challengeId,
     required String title,
     required String details,
-    required int points,
     required List<Map<String, String>> activities,
     required Timestamp startDate,
     required Timestamp endDate,
@@ -71,7 +68,6 @@ class ChallengeService {
       await _firestore.collection('challenges').doc(challengeId).update({
         'title': title,
         'description': details,
-        'points': points,
         'activities': activities,
         'startDate': startDate,
         'endDate': endDate,
