@@ -97,13 +97,33 @@ class ChallengeViewerViewPage extends StatelessWidget {
                     itemCount: (challengeData['activities'] as List<dynamic>?)?.length ?? 0,
                     itemBuilder: (context, index) {
                       var activity = (challengeData['activities'] as List<dynamic>)[index];
-                      return ListTile(
-                        title: Text(activity['name'] ?? 'No activity name'),
-                        subtitle: Text('Duration: ${activity['duration'] ?? 'Not specified'}'),
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: Text(
+                                activity['name'] ?? 'No activity name',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                '${activity['duration'] ?? 'Not specified'} ',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),
                 ),
+
                 SizedBox(height: 16,),
                 Center(
                   child: ElevatedButton(
@@ -124,10 +144,6 @@ class ChallengeViewerViewPage extends StatelessWidget {
                           ])
                         });
 
-                      // show confirmation message
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Joined the challenge successfully!')),
-                      );
                     } catch (e) {
 
                       // Handle error

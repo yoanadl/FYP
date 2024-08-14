@@ -136,25 +136,7 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.white,
           centerTitle: false,
           actions: [
-          
-            // notification icon
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[300],
-                ),
-
-                child: IconButton(
-                  onPressed: () {}, 
-                  icon: Icon(Icons.notifications),
-                  iconSize: 25,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            
+      
             //profile icon
             if (user != null)
               Padding(

@@ -143,6 +143,10 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
                   )
                 : Text('Duration: ${durationController.text}'),
             SizedBox(height: 25),
+            Text( 
+              'Activities', // Added text "Activities" in the first row
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: activities.length,
@@ -227,6 +231,7 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
       ),
     );
   }
+  
 
   Future<void> _updateChallenge() async {
     final challengeService = ChallengeService();
