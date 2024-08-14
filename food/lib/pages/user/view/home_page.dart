@@ -6,17 +6,16 @@ import 'package:food/components/base_page.dart';
 import 'package:food/pages/data_analytics_page.dart';
 import 'package:food/pages/fitnessPlans/view/fitness_plan_show.dart';
 import 'package:food/pages/notification_page.dart';
-import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../discarded/mealPlan_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:food/pages/user/view/profile_page.dart';
 import 'package:food/applewatch/injector.dart' show healthFactory;
 import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
 import 'package:health/health.dart';
-
 
 
 class HomePage extends StatefulWidget {
@@ -169,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyProfilePage(), 
+                      builder: (context) => ProfilePage(), 
                     ),
                   );
                 },
@@ -252,7 +251,7 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: Container(
                       margin: EdgeInsets.only(right: 5),
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.white, 
                         borderRadius: BorderRadius.circular(10),
@@ -280,6 +279,8 @@ class _HomePageState extends State<HomePage> {
                   
                   Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
                           margin: EdgeInsets.only(bottom: 10),
@@ -301,7 +302,7 @@ class _HomePageState extends State<HomePage> {
                                     fontWeight: FontWeight.bold
                                   ),
                                 ),
-                                SizedBox(width: 5),
+                                SizedBox(width: 6),
                                 Icon(Icons.local_fire_department, color: Color(0xFF508AA8)),
                                 
                                 ],
@@ -330,16 +331,15 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 SizedBox(width: 5),
                                 FaIcon(FontAwesomeIcons.shoePrints, color: Color(0xFF508AA8)),
-                                
                                 ],
                               ),
                             ),
                         )
                       ],
                     ))
-                ],
-                  
-              )
+                  ],
+
+                )
               ),
             ),
   
@@ -388,9 +388,6 @@ class _HomePageState extends State<HomePage> {
                       ],
 
                   ),
-
-                  
-        
                   
                 ),
               ),

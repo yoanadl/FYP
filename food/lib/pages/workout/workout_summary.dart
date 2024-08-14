@@ -115,6 +115,7 @@ class WorkoutSummaryPage extends StatelessWidget {
                   workoutTitle: workoutTitle,
                   duration: duration,
                   activities: activities,
+                  isPremade: false,
                   ),
                 ),
               );
