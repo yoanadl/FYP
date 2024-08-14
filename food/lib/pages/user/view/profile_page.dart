@@ -1,8 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:food/pages/profileSetting/bmi_page.dart';
 import 'package:food/pages/profileSetting/goals_preferences.dart';
 import 'package:food/pages/profileSetting/help_center_page.dart';
@@ -113,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           content: Text(
             'Are you sure you want to log out?',
             style: TextStyle(fontSize: 15),
@@ -203,52 +200,52 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 20.0),
-            // profile image avatar
-            Stack(
-              children: [
-                _loadProfilePicture(),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UploadProfilePage(),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 20.0),
+              // profile image avatar
+              Stack(
+                children: [
+                  _loadProfilePicture(),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UploadProfilePage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF031927),
+                          shape: BoxShape.circle,
                         ),
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(5.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF031927),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: 20.0,
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 20.0,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 15.0),
-            Text(
-              name,
-              style: TextStyle(fontSize: 20),
-            ),
-            SizedBox(height: 25.0),
-            // settings
-            Expanded(
-              child: ListView.separated(
+                ],
+              ),
+              SizedBox(height: 15.0),
+              Text(
+                name,
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(height: 25.0),
+              // settings
+              ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: rowData.length,
@@ -256,8 +253,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     buildRowItem(context, rowData[index]),
                 separatorBuilder: (context, index) => SizedBox(height: 5.0),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
