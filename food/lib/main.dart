@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:food/firebase_options.dart';
 import 'pages/user/view/intro_page.dart';
-import 'package:food/applewatch/injector.dart' show initializeDependencies;
+// import 'package:food/applewatch/injector.dart' show initializeDependencies;
 import 'package:health/health.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:food/pages/notification_page.dart';
@@ -11,12 +11,12 @@ import 'package:food/services/notifi_service.dart';
 
 
 // initialize the HealthFactory globally
-final HealthFactory healthFactory = HealthFactory();
+// final HealthFactory healthFactory = HealthFactory();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  initializeDependencies();
+  // initializeDependencies();
   Stripe.publishableKey = "pk_test_51Pa6OlGwNxjo4qONIEwyIRRlgb2XX0QtOi1be81uw5s3UkWHqfx8q02QEhipq7Lo12dRFUdbxE2dXvMg5LXcRUi400ohnfhYtk";
   Stripe.instance.applySettings();
 
@@ -29,16 +29,16 @@ Future<void> main() async {
 }
 
 Future<void> requestHealthKitAuthorization() async {
-  final bool requested = await healthFactory.requestAuthorization(
-    [HealthDataType.STEPS],
-    permissions: [HealthDataAccess.READ],
-  );
+  // final bool requested = await healthFactory.requestAuthorization(
+  //   [HealthDataType.STEPS],
+  //   permissions: [HealthDataAccess.READ],
+  // );
   
-  if (!requested) {
-    print('HealthKit authorization failed.');
-  } else {
-    print('HealthKit authorization granted.');
-  }
+  // if (!requested) {
+  //   print('HealthKit authorization failed.');
+  // } else {
+  //   print('HealthKit authorization granted.');
+  // }
 
 
 }

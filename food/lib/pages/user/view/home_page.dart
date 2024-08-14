@@ -7,15 +7,15 @@ import 'package:food/pages/data_analytics_page.dart';
 import 'package:food/pages/fitnessPlans/view/fitness_plan_show.dart';
 import 'package:food/pages/notification_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
-import 'package:food/services/health_service.dart';
+// import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../discarded/mealPlan_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:food/pages/user/view/profile_page.dart';
-import 'package:food/applewatch/injector.dart' show healthFactory;
-import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
-import 'package:health/health.dart';
+// import 'package:food/applewatch/injector.dart' show healthFactory;
+// import 'package:food/applewatch/constants.dart' show currentDate, dataTypesIos, midNight, permissions;
+// import 'package:health/health.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   double? calories;
   String name = '';
   String? profilePictureUrl;
-  final HealthService healthService = HealthService();
+  // final HealthService healthService = HealthService();
   final SettingProfileService profileService = SettingProfileService();
 
 
@@ -94,18 +94,18 @@ class _HomePageState extends State<HomePage> {
 
     Future<void> fetchData() async {
 
-    int? fetchedSteps = await healthService.getSteps();
-    double? fetchedHeartRate = await healthService.getHeartRate();
-    double? fetchedCalories = await healthService.getCalories();
+    // int? fetchedSteps = await healthService.getSteps();
+    // double? fetchedHeartRate = await healthService.getHeartRate();
+    // double? fetchedCalories = await healthService.getCalories();
    
 
-    setState(() {
+    // setState(() {
       
-      steps = fetchedSteps ?? 0;
-      heartRate = fetchedHeartRate ?? 0.0;
-      calories = fetchedCalories ?? 0.0;
+    //   steps = fetchedSteps ?? 0;
+    //   heartRate = fetchedHeartRate ?? 0.0;
+    //   calories = fetchedCalories ?? 0.0;
 
-    });
+    // });
   }
 
   

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/components/navbar.dart';
-import 'package:food/components/base_page.dart';
-import 'package:food/pages/discarded/community_page.dart';
-import 'package:food/pages/workout/views/workout_page_view.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/pages/user/view/upload_profile_page.dart';
 
 class ProfileTextField extends StatelessWidget {
   final String label;
@@ -25,26 +22,38 @@ class ProfileTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Text(
             label,
             style: TextStyle(
+              fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
               fontSize: 18.0,
             ),
           ),
         ),
-        SizedBox(height: 5.0),
+        SizedBox(height: 8.0),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
           child: SizedBox(
-            height: 40.0,
+            height: 48.0,
             child: TextFormField(
               controller: controller,
               onChanged: onChanged,
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(left: 8.0),
                 border: OutlineInputBorder(),
                 hintText: 'Enter $label',
+                hintStyle: TextStyle(
+                  color: Colors.grey.shade400,
+                  fontFamily: 'Poppins',
+                  fontSize: 14.0,
+                ),
+              ),
+              style: const TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins',
+                fontSize: 16.0,
               ),
             ),
           ),
@@ -128,9 +137,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
         nameController.text = profileData['Name'] ?? '';
         emailController.text = profileData_1['Email'] ?? '';
         genderController.text = profileData['gender'] ?? '';
-        ageController.text = profileData['age'] ?? '';
-        heightController.text = profileData['height'] ?? '';
-        weightController.text = profileData['weight'] ?? '';
+        ageController.text = profileData['Age'] ?? '';
+        heightController.text = profileData['Height(cm)'] ?? '';
+        weightController.text = profileData['Weight(kg)'] ?? '';
       });
     } catch (e) {
       print('Error fetching profile data: $e');
@@ -151,21 +160,30 @@ class _MyProfilePageState extends State<MyProfilePage> {
     }
   }
 
+  Widget _loadUserProfilePicture() {
+    // Placeholder for a profile picture using a default icon
+    return CircleAvatar(
+      radius: 60,
+      backgroundColor: Colors.grey[100],
+      child: Icon(Icons.person, size: 60),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Profile',
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
+        centerTitle: true,
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Poppins',
+            fontSize: 25,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -173,12 +191,38 @@ class _MyProfilePageState extends State<MyProfilePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // profile image avatar
-              CircleAvatar(
-                backgroundColor: Colors.grey[100],
-                radius: 50.0,
+              Stack(
+                children: [
+                  _loadUserProfilePicture(),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        // Handle profile picture upload
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UploadProfilePage(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(5.0),
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF031927),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 20.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              // text fields
               SizedBox(height: 10.0),
               ProfileTextField(
                 label: 'Name',
@@ -239,10 +283,23 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   });
                 },
               ),
-              // update profile button
+              SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: updateProfileData,
-                child: Text('Update Profile'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, 
+                  backgroundColor: Color(0XFF031927), 
+                  minimumSize: Size(150, 50),
+                ),
+                child: const Text(
+                  'Update Profile',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
           ),
@@ -251,4 +308,3 @@ class _MyProfilePageState extends State<MyProfilePage> {
     );
   }
 }
-
