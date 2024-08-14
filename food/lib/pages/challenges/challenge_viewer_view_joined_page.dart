@@ -50,7 +50,7 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
             icon: Icon(Icons.emoji_events),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LeaderboardPage()),
+              MaterialPageRoute(builder: (context) => LeaderboardPage(challengeId: challengeId,)),
             ),
           ),
           IconButton(

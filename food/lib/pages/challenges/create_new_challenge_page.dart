@@ -8,6 +8,8 @@ import 'package:food/pages/challenges/challenge_activity.dart';
 import 'package:food/pages/challenges/challenge_owner_view_page.dart';
 import 'package:food/services/challenge_service.dart';
 import 'package:flutter/services.dart'; 
+import 'package:food/services/setting_user_profile_service.dart'; 
+
 
 
 class CreateNewChallengePage extends StatefulWidget {
@@ -280,46 +282,32 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
   );
 }
 
-  // Future<String?> _createChallenge() async {
-  //   final challengeService = ChallengeService();
-  //   final user = FirebaseAuth.instance.currentUser;
 
-  //   if (user == null) return null;
 
-  //   final creatorUid = user.uid;
-  //   final participants = <String>[creatorUid]; 
-
-  //   final challengeId = await challengeService.createChallenge(
-  //     title: _titleController.text,
-  //     details: _detailsController.text,
-  //     activities: activities
-  //         .map((activity) => {'name': activity.activity, 'duration': activity.duration})
-  //         .toList(),
-  //     creatorUid: creatorUid,
-  //     participants: participants,
-  //     startDate: Timestamp.fromDate(_startDate ?? DateTime.now()),
-  //     endDate: Timestamp.fromDate(_endDate ?? DateTime.now()),
-  //     duration: _calculateDuration(), // Use calculated duration
-  //   );
-
-  //   // Add the challenge ID to the user's document with type 'own'
-  //   if (challengeId != null) {
-  //     await challengeService.addOwnChallengeToUserDoc(creatorUid, challengeId);
-  //   }
-
-  //   return challengeId;
-  // }
-
-  Future<String?> _createChallenge() async {
+Future<String?> _createChallenge() async {
   final challengeService = ChallengeService();
   final user = FirebaseAuth.instance.currentUser;
 
   if (user == null) return null;
 
   final creatorUid = user.uid;
-  final participants = <String>[creatorUid]; 
 
-  // Filter out activities with empty names or durations and ensure the types match
+  // Fetch user data including displayName
+  final userProfileService = SettingProfileService();
+  final userData = await userProfileService.fetchUserData(creatorUid);
+
+  // Get displayName from fetched user data
+  final displayName = userData?['Name'] ?? 'Unknown User';
+
+  // Create a map with both userId and displayName for participants
+  final participants = <Map<String, String>>[
+    {
+      'userId': creatorUid,
+      'displayName': displayName,
+    }
+  ];
+
+  // Filter out activities with empty names or durations
   final validActivities = activities.where((activity) =>
     activity.activity != null && activity.activity!.isNotEmpty &&
     activity.duration != null && activity.duration!.isNotEmpty
@@ -335,7 +323,7 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
       details: _detailsController.text,
       activities: validActivities, // Pass the properly typed list
       creatorUid: creatorUid,
-      participants: participants,
+      participants: participants, // List<Map<String, String>> with userId and displayName
       startDate: Timestamp.fromDate(_startDate ?? DateTime.now()),
       endDate: Timestamp.fromDate(_endDate ?? DateTime.now()),
       duration: _calculateDuration(), // Use calculated duration
@@ -357,6 +345,8 @@ class _CreateNewChallengePageState extends State<CreateNewChallengePage> {
     return null;
   }
 }
+
+
 
 
   Future<DateTime?> _showIOSDatePicker(DateTime? initialDate, bool isStartDate) async {

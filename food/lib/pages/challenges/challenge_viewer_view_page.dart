@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/services/challenge_service.dart';
+import 'package:food/services/setting_user_profile_service.dart';
 
 class ChallengeViewerViewPage extends StatelessWidget {
   final String challengeId;
@@ -124,18 +125,27 @@ class ChallengeViewerViewPage extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 16,),
+                SizedBox(height: 16),
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
-                      
+                      final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-                     String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-
+                      if (userId.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('User not logged in')),
+                        );
+                        return;
+                      }
 
                       try {
+                        // Fetch user display name
+                        final userProfileService = SettingProfileService();
+                        final userData = await userProfileService.fetchUserData(userId);
+                        final displayName = userData?['Name'] ?? 'Unknown User';
+
                         // Update the user's challenges in Firestore
-                        FirebaseFirestore.instance.collection('users').doc(userId).update({
+                        await FirebaseFirestore.instance.collection('users').doc(userId).update({
                           'challenges': FieldValue.arrayUnion([
                             {
                               'challengeId': challengeId,
@@ -144,28 +154,32 @@ class ChallengeViewerViewPage extends StatelessWidget {
                           ])
                         });
 
-                        // add the user to the challenge's participants field
+                        // Add the user to the challenge's participants field
                         await FirebaseFirestore.instance.collection('challenges').doc(challengeId).update({
-                          'participants': FieldValue.arrayUnion([userId])
+                          'participants': FieldValue.arrayUnion([
+                            {
+                              'userId': userId,
+                              'displayName': displayName
+                            }
+                          ])
                         });
-
 
                         // Show success SnackBar
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Challenge added')),
                         );
 
-                    } catch (e) {
-
-                      // Handle error
+                      } catch (e) {
+                        // Handle error
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Failed to join the challenge')),
                         );
                       }
                     },
-                    child: Text('Join Challenge')
+                    child: Text('Join Challenge'),
                   ),
                 )
+
               ],
             ),
           );

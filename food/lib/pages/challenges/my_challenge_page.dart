@@ -308,7 +308,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/challenges/challenge_owner_view_page.dart';
-import 'package:food/pages/challenges/challenge_viewer_view_joined_page.dart'; // Updated import
+import 'package:food/pages/challenges/challenge_viewer_view_joined_page.dart'; 
 import 'package:food/services/challenge_service.dart';
 
 

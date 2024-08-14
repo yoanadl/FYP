@@ -8,7 +8,7 @@ class ChallengeService {
   required String details,
   required List<Map<String, String>> activities,
   required String creatorUid,
-  required List<String> participants,
+  required List<Map<String, String>> participants, 
   required Timestamp startDate,
   required Timestamp endDate,
   required String duration,

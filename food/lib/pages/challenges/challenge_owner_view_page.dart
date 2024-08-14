@@ -7,6 +7,7 @@ import 'package:food/pages/challenges/challenge_activity_page.dart';
 import 'package:food/pages/challenges/leaderboard.dart';
 import 'package:food/services/challenge_service.dart';
 
+
 class ChallengeOwnerViewPage extends StatefulWidget {
   final String challengeId;
 
@@ -105,7 +106,7 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
             icon: Icon(Icons.emoji_events),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => LeaderboardPage()),
+              MaterialPageRoute(builder: (context) => LeaderboardPage(challengeId: widget.challengeId)),
             ),
           ),
           IconButton(
