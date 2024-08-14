@@ -27,7 +27,6 @@ class WorkoutActivityPresenter {
       _model = _model.copyWith(
         remainingTimeInSeconds: _model.duration * 60, // Duration in seconds
         startTime: DateTime.now(), 
-        
       );
       print('Workout started at: ${_model.startTime}');
     }
@@ -75,6 +74,6 @@ class WorkoutActivityPresenter {
     _model = _model.copyWith(endTime: DateTime.now()); 
     print('Workout ended at: ${_model.endTime}');
     _view.navigateToWorkoutDone(_model);
-
   }
+
 }

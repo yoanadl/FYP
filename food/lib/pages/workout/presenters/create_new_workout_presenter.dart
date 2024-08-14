@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/pages/workout/views/create_new_workout_view.dart';
 import 'package:food/pages/workout/views/create_new_workout_view_interface.dart';
 import 'package:food/services/workout_service.dart';
 

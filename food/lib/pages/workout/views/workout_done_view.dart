@@ -37,7 +37,7 @@ class WorkoutDoneView extends StatefulWidget {
 
 class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDoneViewInterface {
   late WorkoutDoneModel _model;
-  final HealthService _healthService = HealthService();
+  // final HealthService _healthService = HealthService();
   final WorkoutService _workoutService = WorkoutService();
   final GlobalKey _globalKey = GlobalKey();
 
@@ -77,37 +77,37 @@ class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDon
     double averageHeartRate = 0.0;
     double maxHeartRate = 0.0;
 
-    // Fetch total calories burned for the entire workout period
-    print('Fetching calories burned from $workoutStartTime to $workoutEndTime');
-    double? caloriesBurned = await _healthService.getCaloriesBurnedForThatActivity(workoutStartTime, workoutEndTime);
-    if (caloriesBurned != null) {
-      totalCaloriesBurned = caloriesBurned;
-    }
+    // // Fetch total calories burned for the entire workout period
+    // print('Fetching calories burned from $workoutStartTime to $workoutEndTime');
+    // double? caloriesBurned = await _healthService.getCaloriesBurnedForThatActivity(workoutStartTime, workoutEndTime);
+    // if (caloriesBurned != null) {
+    //   totalCaloriesBurned = caloriesBurned;
+    // }
 
-    // Fetch total steps for the entire workout period
-    print('Fetching steps from $workoutStartTime to $workoutEndTime');
-    int? steps = await _healthService.getStepsForThatActivity(workoutStartTime, workoutEndTime);
-    if (steps != null) {
-      totalSteps = steps;
-    }
+    // // Fetch total steps for the entire workout period
+    // print('Fetching steps from $workoutStartTime to $workoutEndTime');
+    // int? steps = await _healthService.getStepsForThatActivity(workoutStartTime, workoutEndTime);
+    // if (steps != null) {
+    //   totalSteps = steps;
+    // }
 
-    // Fetch average heart rate for the entire workout period
-    print('Fetching average heart rate from $workoutStartTime to $workoutEndTime');
-    double? heartRate = await _healthService.getAverageHeartRateForThatActivity(workoutStartTime, workoutEndTime);
-    if (heartRate != null) {
-      averageHeartRate = heartRate;
-    }
+    // // Fetch average heart rate for the entire workout period
+    // print('Fetching average heart rate from $workoutStartTime to $workoutEndTime');
+    // double? heartRate = await _healthService.getAverageHeartRateForThatActivity(workoutStartTime, workoutEndTime);
+    // if (heartRate != null) {
+    //   averageHeartRate = heartRate;
+    // }
 
-    // Fetch maximum heart rate for the entire workout period
-    print('Fetching maximum heart rate from $workoutStartTime to $workoutEndTime');
-    double? maxHeartRateValue = await _healthService.getMaxHeartRateForThatActivity(workoutStartTime, workoutEndTime);
-    if (maxHeartRateValue != null) {
-      maxHeartRate = maxHeartRateValue;
-    }
+    // // Fetch maximum heart rate for the entire workout period
+    // print('Fetching maximum heart rate from $workoutStartTime to $workoutEndTime');
+    // double? maxHeartRateValue = await _healthService.getMaxHeartRateForThatActivity(workoutStartTime, workoutEndTime);
+    // if (maxHeartRateValue != null) {
+    //   maxHeartRate = maxHeartRateValue;
+    // }
 
-    print("Total Calories Burned: $totalCaloriesBurned");
-    print("Total Steps: $totalSteps");
-    print("Average Heart Rate: $averageHeartRate");
+    // print("Total Calories Burned: $totalCaloriesBurned");
+    // print("Total Steps: $totalSteps");
+    // print("Average Heart Rate: $averageHeartRate");
 
 
     setState(() {

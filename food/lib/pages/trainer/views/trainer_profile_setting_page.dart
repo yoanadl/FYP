@@ -102,7 +102,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
     heightController = TextEditingController(text: profileData['Height(cm)'] ?? '');
     weightController = TextEditingController(text: profileData['Weight(kg)'] ?? '');
 
-    fetchProfileData();
+    fetchTrainerProfileData();
   }
 
   @override
@@ -117,7 +117,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
     super.dispose();
   }
 
-  void fetchProfileData() async {
+  void fetchTrainerProfileData() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       print('User is not authenticated');
@@ -127,7 +127,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
-          .collection('UserProfile')
+          .collection('TrainerProfile')
           .get();
 
       Map<String, dynamic> data = {};
@@ -150,7 +150,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
     }
   }
 
-  void updateProfileData() async {
+  void updateTrainerProfileData() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       print('User is not authenticated');
@@ -164,7 +164,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
     }
   }
 
-  Widget _loadProfilePicture() {
+  Widget _loadTrainerProfilePicture() {
     return trainerProfile.profilePictureUrl != null
     ? CircleAvatar(
         radius: 60,
@@ -201,7 +201,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
             children: [
               Stack(
                 children: [
-                  _loadProfilePicture(),
+                  _loadTrainerProfilePicture(),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -294,7 +294,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
 
               SizedBox(height: 24.0),
               ElevatedButton(
-                onPressed: updateProfileData,
+                onPressed: updateTrainerProfileData,
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white, 
                     backgroundColor: Color(0XFF031927), 

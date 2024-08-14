@@ -4,8 +4,8 @@ import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/workout/presenters/create_new_workout_presenter.dart';
 import 'package:food/pages/workout/views/create_new_workout_view_interface.dart';
-import 'package:food/pages/workout/presenters/workout_summary_presenter.dart';
-import 'package:food/pages/workout/views/workout_summary_view.dart';
+import 'package:food/pages/workout/models/workout_activity_model.dart';
+import 'package:food/pages/workout/views/workout_activity_view.dart';
 
 class CreateNewWorkoutView extends StatefulWidget {
   const CreateNewWorkoutView({Key? key}) : super(key: key);
@@ -168,28 +168,32 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> implements 
       ),
     );
 
-    // Create the presenter for the WorkoutSummaryView
-    final workoutSummaryPresenter = WorkoutSummaryPresenter(
-      userId: FirebaseAuth.instance.currentUser!.uid,
-      workoutId: workoutId, 
-      workoutTitle: workoutTitleController.text,
-      duration: durationControllers.map((controller) => int.parse(controller.text)).toList(),
-      activities: activityControllers.map((controller) => controller.text).toList(),
+    // Create the WorkoutActivityModel based on the input data
+    final workoutModel = WorkoutActivityModel(
+      activityTitle: activityControllers.isNotEmpty ? activityControllers[0].text : '',
+      duration: durationControllers.isNotEmpty ? int.parse(durationControllers[0].text) : 0,
+      remainingTimeInSeconds: durationControllers.isNotEmpty ? int.parse(durationControllers[0].text) * 60 : 0,
+      activities: activityControllers.map((c) => c.text).toList(),
+      durations: durationControllers.map((c) => int.parse(c.text)).toList(),
+      activityIndex: 0,
+      startTime: DateTime.now(),
+      endTime: null,
     );
 
-    // Navigate to WorkoutSummaryView
+    // Navigate to WorkoutActivityView
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => WorkoutSummaryView(
-          presenter: workoutSummaryPresenter,
+        builder: (context) => WorkoutActivityView(
+          model: workoutModel,
           userId: FirebaseAuth.instance.currentUser!.uid,
           workoutId: workoutId,
           isPremade: false,
         ),
       ),
     );
-  }
+}
+
 
   @override
   void onError(String message) {

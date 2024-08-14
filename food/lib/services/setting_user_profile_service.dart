@@ -67,7 +67,7 @@ class SettingProfileService {
             .update(newData);
         print('Profile updated successfully!');
       } else {
-        print('No trainer profile found for uid: $uid');
+        print('No User profile found for uid: $uid');
         // Create a default profile if it doesn't exist
         await createProfile(
           uid,
@@ -116,4 +116,29 @@ class SettingProfileService {
       return null;
     }
   }
+
+  // Method to fetch the user's height and weight
+  Future<Map<String, int?>> getUserHeightAndWeight(String uid) async {
+    try {
+      Map<String, dynamic>? userData = await fetchUserData(uid);
+
+      if (userData != null) {
+        int? height = userData['height'] as int?;
+        int? weight = userData['weight'] as int?;
+
+        return {
+          'height': height,
+          'weight': weight,
+        };
+      } else {
+        print('No user data found for uid: $uid');
+        return {'height': null, 'weight': null};
+      }
+    } catch (e) {
+      print('Error fetching height and weight: $e');
+      throw Exception('Failed to fetch height and weight.');
+    }
+  }
 }
+
+

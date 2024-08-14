@@ -101,7 +101,7 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
                     ],
                   ),
                   ElevatedButton(
-                   onPressed: () {
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -145,8 +145,7 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  TrainerWorkoutPlanDetailPage(),
+                              builder: (context) => TrainerWorkoutPlanDetailPage(),
                             ),
                           );
                         } else if (result == 'Edit Workout Plan') {
@@ -178,6 +177,14 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
                         ),
                       ],
                     ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TrainerWorkoutPlanDetailPage(),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
@@ -203,7 +210,7 @@ class _TrainerWorkoutPlanPageState extends State<TrainerWorkoutPlanPage> {
               child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: () { //change this to handle the deleting on firebase later
+              onPressed: () {
                 setState(() {
                   _items.removeAt(index);
                 });

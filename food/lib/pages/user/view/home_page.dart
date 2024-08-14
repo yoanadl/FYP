@@ -163,11 +163,21 @@ class _HomePageState extends State<HomePage> {
             ),
             
             //profile icon
-            if (user != null)
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: loadProfilePicture(context, user.uid),
-              )
+            InkWell(
+                onTap: () {
+                  // Navigate to ProfilePage when the profile picture is tapped
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyProfilePage(), 
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: loadProfilePicture(context, user!.uid),
+                ),
+              ),
           ],
 
           title: Column(
@@ -390,7 +400,7 @@ class _HomePageState extends State<HomePage> {
                InkWell(
                 onTap: () => Navigator.push(
                   context, 
-                  MaterialPageRoute(builder: (context) => FitnessPlanShow()),
+                  MaterialPageRoute(builder: (context) => FitnessPlanPage()),
                 ),
                  child: Container(
                   width: 350,
@@ -406,7 +416,7 @@ class _HomePageState extends State<HomePage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.asset(
-                          'lib/images/workout.png',
+                          'lib/images/fitnessplan.jpg',
                           fit: BoxFit.cover,
                           width: double.infinity,
                           height: double.infinity,
