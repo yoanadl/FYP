@@ -710,32 +710,32 @@ endDateController.text = endDate.toLocal().toString().split(' ')[0];
 
 
   void _showDeleteDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Confirm Deletion'),
-          content: Text('Are you sure you want to delete this challenge?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await _deleteChallenge();
-                Navigator.of(context).pop();
-                Navigator.pop(context); // Go back to previous page after deletion
-              },
-              child: Text('Delete'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  showCupertinoDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return CupertinoAlertDialog(
+        title: Text('Confirm Deletion'),
+        content: Text('Are you sure you want to delete this challenge?'),
+        actions: [
+          CupertinoDialogAction(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text('Delete'),
+            onPressed: () async {
+              await _deleteChallenge();
+              Navigator.of(context).pop(); // Close the dialog
+              Navigator.pop(context); // Go back to previous page after deletion
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
   Future<void> _deleteChallenge() async {
 
