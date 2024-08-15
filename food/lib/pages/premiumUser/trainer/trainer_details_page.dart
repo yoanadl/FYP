@@ -9,6 +9,7 @@ class TrainerDetailsPage extends StatelessWidget {
   final String trainerDocId;
   final String userId; // Pass the user ID
   final String trainerName; // Pass the trainer's name
+  final String profilePictureUrl;
 
   final RequestService _requestService = RequestService(); // Instantiate the service
 
@@ -18,6 +19,7 @@ class TrainerDetailsPage extends StatelessWidget {
     required this.trainerDocId,
     required this.userId, // Initialize user ID
     required this.trainerName, // Initialize trainer name
+    required this.profilePictureUrl,
   });
 
   Future<void> _sendRequest(BuildContext context) async {
@@ -38,7 +40,7 @@ class TrainerDetailsPage extends StatelessWidget {
       }
 
       // Send the request
-      await _requestService.sendRequest(currentUserId, userId, trainerName); // Pass trainerName
+      await _requestService.sendRequest(currentUserId, userId, trainerName, profilePictureUrl); // Pass trainerName
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Request sent successfully!')),
       );

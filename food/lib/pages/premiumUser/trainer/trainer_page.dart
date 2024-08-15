@@ -139,8 +139,9 @@ class TrainersPage extends StatelessWidget {
 
                 // Trainer found, display "Your Trainer" section and the "Send a Message" button
                 final trainerData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
-                final trainerName = trainerData['Name'] ?? 'Unknown Trainer';
+                final trainerName = trainerData['name'] ?? 'Unknown Trainer';
                 final trainerId = trainerData['userId'] ?? '';
+                final profilePictureUrl = trainerData['profilePictureUrl'] ?? '';
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,7 +154,7 @@ class TrainersPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
-                    _buildTrainerDetail(trainerName),
+                    _buildTrainerDetail(trainerName, profilePictureUrl),
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
@@ -196,6 +197,7 @@ class TrainersPage extends StatelessWidget {
               trainerDocId: trainer['profileId'] ?? '',
               userId: trainer['userId'],
               trainerName: trainer['Name'] ?? 'No Name',
+              profilePictureUrl: trainer ['profilePictureUrl'] ?? ''
             ),
           ),
         );
@@ -223,10 +225,11 @@ class TrainersPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTrainerDetail(String trainerName) {
+  Widget _buildTrainerDetail(String trainerName, String profilePictureUrl) {
     return Row(
       children: [
         CircleAvatar(
+          backgroundImage: NetworkImage(profilePictureUrl),
           radius: 40,
           backgroundColor: Colors.grey[300],
         ),

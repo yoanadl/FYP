@@ -131,6 +131,7 @@ class _TrainersListPageState extends State<TrainersListPage> {
   String trainerDocId = trainerProfileData['profileId'] ?? ''; // Get the TrainerProfile document ID
   String userId = trainerProfileData['userId'] ?? ''; // Get the user document ID
   String trainerName = trainerProfileData['Name'] ?? ''; // Get the trainer's name
+  String profilePictureUrl = trainerProfileData['profilePictureUrl'] ?? 'No picture';
 
   return InkWell(
     onTap: () {
@@ -143,6 +144,7 @@ class _TrainersListPageState extends State<TrainersListPage> {
             trainerDocId: trainerDocId, // Pass the TrainerProfile document ID
             userId: userId, // Pass the user document ID
             trainerName: trainerName, // Pass the trainer's name
+            profilePictureUrl: profilePictureUrl
           ),
         ),
       );

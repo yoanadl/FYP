@@ -5,7 +5,7 @@ class RequestService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Send a request
-  Future<void> sendRequest(String userId, String trainerId, String trainerName) async {
+  Future<void> sendRequest(String userId, String trainerId, String trainerName, String profilePictureUrl) async {
     try {
       final requestRef = _firestore.collection('requests').doc();
       await requestRef.set({
@@ -14,6 +14,7 @@ class RequestService {
         'name': trainerName,
         'status': 'pending',
         'timestamp': FieldValue.serverTimestamp(),
+        'profilePictureUrl': profilePictureUrl,
       });
     } catch (e) {
       throw Exception("Failed to send request: $e");

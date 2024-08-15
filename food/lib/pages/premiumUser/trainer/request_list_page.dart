@@ -61,8 +61,9 @@ class RequestListPage extends StatelessWidget {
                       final trainerName = requestData['name'] ?? 'Unknown Trainer';
                       final status = requestData['status'] ?? 'Pending';
                       final color = _getStatusColor(status);
+                      final profilePictureUrl = requestData['profilePictureUrl'] ?? '';
 
-                      return _buildRequestItem(trainerName, status, color);
+                      return _buildRequestItem(trainerName, status, color, profilePictureUrl);
                     },
                   );
                 },
@@ -89,9 +90,10 @@ class RequestListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildRequestItem(String trainer, String status, Color color) {
+  Widget _buildRequestItem(String trainer, String status, Color color, String profilePictureUrl) {
     return ListTile(
       leading: CircleAvatar(
+        backgroundImage: NetworkImage(profilePictureUrl),
         backgroundColor: Colors.grey[300],
       ),
       title: Text(trainer),
