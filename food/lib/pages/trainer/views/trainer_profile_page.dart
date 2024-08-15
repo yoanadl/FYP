@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/pages/profileSetting/help_center_page.dart';
 import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
 import 'package:food/pages/profileSetting/privacy_policy_page.dart';
@@ -10,7 +9,6 @@ import 'package:food/pages/profileSetting/terms_conditions_page.dart';
 import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/services/auth/auth_service.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
-import 'package:food/services/setting_trainer_profile_service.dart';
 
 class RowData {
   final IconData icon;
@@ -34,8 +32,6 @@ class TrainerProfilePage extends StatefulWidget {
 class _TrainerProfilePageState extends State<TrainerProfilePage> {
   TrainerProfile trainerProfile = TrainerProfile();
 
-  final TrainerSettingProfileService _profileService = TrainerSettingProfileService();
-
   @override
   void initState() {
     super.initState();
@@ -43,19 +39,8 @@ class _TrainerProfilePageState extends State<TrainerProfilePage> {
   }
 
   Future<void> _fetchUserData() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      try {
-        Map<String, dynamic>? profileData = await _profileService.fetchUserData(user.uid);
-        if (profileData != null) {
-          setState(() {
-            trainerProfile = TrainerProfile.fromMap(profileData);
-          });
-        }
-      } catch (e) {
-        print('Error fetching profile data: $e');
-      }
-    }
+    await trainerProfile.fetchUserData();
+    setState(() {}); // Update UI after data is fetched
   }
 
 Widget _loadProfilePicture() {
@@ -215,9 +200,11 @@ Widget _loadProfilePicture() {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             const SizedBox(height: 20.0),
             _loadProfilePicture(),
             SizedBox(height: 10.0),
+
             Text(
               trainerProfile.name ?? 'No name',
               style: const TextStyle(
@@ -227,11 +214,13 @@ Widget _loadProfilePicture() {
               ),
             ),
             const SizedBox(height: 36.0),
+
             Expanded(
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: rowData.length,
-                itemBuilder: (context, index) => buildRowItem(context, rowData[index]),
+                itemBuilder: (context, index) =>
+                    buildRowItem(context, rowData[index]),
                 separatorBuilder: (context, index) => SizedBox(height: 5.0),
               ),
             ),
@@ -253,12 +242,14 @@ Widget _loadProfilePicture() {
           );
         }
       },
+
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 40.0),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(12.0), // Optional: adds rounded corners
         ),
+
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Row(
@@ -266,7 +257,7 @@ Widget _loadProfilePicture() {
               Icon(
                 data.icon,
                 color: Color(0XFF508AA8),
-              ),
+                ),
               Padding(
                 padding: EdgeInsets.only(left: 10.0),
                 child: Text(
@@ -282,7 +273,7 @@ Widget _loadProfilePicture() {
               const Icon(
                 Icons.arrow_right,
                 color: Color(0XFF508AA8),
-              ),
+                ),
             ],
           ),
         ),

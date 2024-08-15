@@ -124,7 +124,7 @@ class _TrainersListPageState extends State<TrainersListPage> {
   }
 
   Widget _buildTrainerItem(Map<String, dynamic> trainerProfileData) {
-  List<String> expertiseList = (trainerProfileData['Expertise'] as List<dynamic>?)
+  List<String> expertiseList = (trainerProfileData['expertise'] as List<dynamic>?)
       ?.map((e) => e.toString())
       .toList() ?? [];
 

@@ -32,10 +32,10 @@ class TrainerService {
           trainers.add({
             'userId': userDoc.id, // Document ID from the users collection
             'profilePictureUrl': profilePictureUrl,
-            'Name': name,
-            'Expertise': expertise,
-            'Age': age,
-            'Experience': experience,
+            'name': name,
+            'expertise': expertise,
+            'age': age,
+            'experience': experience,
             'profileId': trainerProfileDoc.id // Document ID from the TrainerProfile sub-collection
           });
         }

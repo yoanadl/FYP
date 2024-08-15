@@ -4,13 +4,13 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:food/firebase_options.dart';
 import 'package:food/services/notification_service.dart';
 import 'pages/user/view/intro_page.dart';
-// import 'package:food/applewatch/injector.dart' show initializeDependencies;
+import 'package:food/applewatch/injector.dart' show initializeDependencies;
 import 'package:health/health.dart';
 import 'package:timezone/data/latest.dart' as tz; 
 
 
 // initialize the HealthFactory globally
-// final HealthFactory healthFactory = HealthFactory();
+final HealthFactory healthFactory = HealthFactory();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,16 +34,16 @@ Future<void> main() async {
 
 
 Future<void> requestHealthKitAuthorization() async {
-  // final bool requested = await healthFactory.requestAuthorization(
-  //   [HealthDataType.STEPS],
-  //   permissions: [HealthDataAccess.READ],
-  // );
+  final bool requested = await healthFactory.requestAuthorization(
+    [HealthDataType.STEPS],
+    permissions: [HealthDataAccess.READ],
+  );
   
-  // if (!requested) {
-  //   print('HealthKit authorization failed.');
-  // } else {
-  //   print('HealthKit authorization granted.');
-  // }
+  if (!requested) {
+    print('HealthKit authorization failed.');
+  } else {
+    print('HealthKit authorization granted.');
+  }
 
 
 }

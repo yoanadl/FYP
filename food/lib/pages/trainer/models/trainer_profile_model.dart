@@ -4,6 +4,7 @@ import 'package:food/services/setting_trainer_profile_service.dart';
 
 class TrainerProfile {
   String? name;
+  String? gender;
   int? age;
   int? experience;
   List<String>? expertise;
@@ -11,6 +12,7 @@ class TrainerProfile {
 
   TrainerProfile({
     this.name,
+    this.gender,
     this.age,
     this.experience,
     this.expertise,
@@ -55,4 +57,3 @@ class TrainerProfile {
     }
   }
 }
-
