@@ -31,7 +31,7 @@ class TrainerAgePresenter {
 
     try {
       await TrainerSettingProfileService().updateSettingProfile(user.uid, {
-        'Age': _age,
+        'age': _age,
       });
 
       // Navigate to the next page

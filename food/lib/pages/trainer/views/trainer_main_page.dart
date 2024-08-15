@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/trainer/models/trainer_profile_model.dart';
 import 'package:food/pages/trainer/views/trainer_client_feedback_page.dart';
 import 'package:food/pages/trainer/views/trainer_pending_clients.dart';
-import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food/services/setting_trainer_profile_service.dart'; // Import service
 import 'package:intl/intl.dart';
 
-
 class TrainerMainPage extends StatefulWidget {
-  final Function(int) onTabSelected; 
+  final Function(int) onTabSelected;
 
   const TrainerMainPage({Key? key, required this.onTabSelected}) : super(key: key);
 
@@ -44,9 +43,13 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         toolbarHeight: 120,
+        automaticallyImplyLeading: false,
+        toolbarHeight: 120,
         title: Padding(
           padding: const EdgeInsets.fromLTRB(16, 36, 16, 0),
+          padding: const EdgeInsets.fromLTRB(16, 36, 16, 0),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -138,7 +141,6 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
 
   Widget _buildGridTile(BuildContext context, String title, Color color, VoidCallback onTap) {
     bool isSpecialItem = title == "Pending\nRequest";
-    bool isSpecialItems = title == "Pending\nRequest" || title == "Meal\nPlan";
 
     return GestureDetector(
       onTap: onTap,
@@ -153,7 +155,7 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
           child: Text(
             title,
             style: TextStyle(
-              color: isSpecialItems ? Color(0XFF031927) : Colors.white,
+              color: isSpecialItem ? Color(0XFF031927) : Colors.white,
               fontSize: 24,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w600,

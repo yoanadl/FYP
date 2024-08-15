@@ -95,155 +95,210 @@ class _FitnessPlanPageState extends State<FitnessPlanPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Fitness Plan'),
         backgroundColor: Colors.white,
         elevation: 0, // Remove default shadow from AppBar
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 30.0),
-            Text(
-              'My Fitness Plan',
-              style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              'Based on your BMI (${userBMI.toStringAsFixed(1)}), which is considered "$bmiStatus", here are your fitness plan goals recommendations:',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            SizedBox(height: 10.0),
-            Text(
-              recommendations.isNotEmpty
-                  ? recommendations.join(', ')
-                  : 'No recommendations available',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10.0),
-            Row(
+      body: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 30.0),
+              Text(
+                'My Fitness Plan',
+                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 20.0),
+              Text(
+                'Based on your BMI (${userBMI.toStringAsFixed(1)}), which is considered "$bmiStatus", here are your fitness plan goals recommendations:',
+                style: TextStyle(fontSize: 18.0),
+              ),
+              SizedBox(height: 10.0),
+              Text(
+                recommendations.isNotEmpty
+                    ? recommendations.join(', ')
+                    : 'No recommendations available',
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 24.0),
+             Row(
               children: [
                 // Goal Dropdown
                 Expanded(
-                  child: DropdownButton<String>(
-                    value: selectedGoal,
-                    hint: Text("Select Goal"),
-                    items: [
-                      'improve endurance',
-                      'weight gain',
-                      'weight loss',
-                      'muscle gain',
-                      'keep fit'
-                    ].map((goal) => DropdownMenuItem<String>(
-                          value: goal,
-                          child: Text(goal),
-                        )).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedGoal = value;
-                        print('Selected Goal: $selectedGoal');
-                        fitnessPlans = filterPlans(allFitnessPlans); // Re-filter plans
-                      });
-                    },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,  // Background color of the dropdown
+                      borderRadius: BorderRadius.circular(12.0),  // Border radius
+                      border: Border.all(
+                        color: Color(0XFF031927),  // Border color
+                        width: 1.0,  // Border width
+                      ),
+                    ),
+                    child: DropdownButton<String>(
+                      value: selectedGoal,
+                      hint: Text(
+                        "Select Goal",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      isExpanded: true,  // Ensures the dropdown takes up the full width
+                      underline: SizedBox(),  // Removes the default underline
+                      items: [
+                        'improve endurance',
+                        'weight gain',
+                        'weight loss',
+                        'muscle gain',
+                        'keep fit'
+                      ].map((goal) => DropdownMenuItem<String>(
+                            value: goal,
+                            child: Text(
+                              goal,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          )).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedGoal = value;
+                          print('Selected Goal: $selectedGoal');
+                          fitnessPlans = filterPlans(allFitnessPlans); // Re-filter plans
+                        });
+                      },
+                    ),
                   ),
                 ),
                 // SizedBox(width: 10),
                 // Level Dropdown
                 Expanded(
-                  child: DropdownButton<String>(
-                    value: selectedLevel,
-                    hint: Text("Select Level"),
-                    items: [
-                      'beginner',
-                      'advanced',
-                      'master'
-                    ].map((level) => DropdownMenuItem<String>(
-                          value: level,
-                          child: Text(level),
-                        )).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedLevel = value;
-                        print('Selected Level: $selectedLevel');
-                        fitnessPlans = filterPlans(allFitnessPlans); // Re-filter plans
-                      });
-                    },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,  // Background color of the dropdown
+                      borderRadius: BorderRadius.circular(12.0),  // Border radius
+                      border: Border.all(
+                        color: Color(0XFF031927),  // Border color
+                        width: 1.0,  // Border width
+                      ),
+                    ),
+                    child: DropdownButton<String>(
+                      value: selectedLevel,
+                      hint: Text(
+                        "Select Level",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      isExpanded: true,  // Ensures the dropdown takes up the full width
+                      underline: SizedBox(),  // Removes the default underline
+                      items: [
+                        'beginner',
+                        'advanced',
+                        'master'
+                      ].map((level) => DropdownMenuItem<String>(
+                            value: level,
+                            child: Text(
+                              level,
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          )).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedLevel = value;
+                          print('Selected Level: $selectedLevel');
+                          fitnessPlans = filterPlans(allFitnessPlans); // Re-filter plans
+                        });
+                      },
+                    ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 10.0),
 
-            // Tags Checkboxes
-            Wrap(
-              spacing: 10.0,
-              children: [
-                'cardio',
-                'equipments',
-                'weights',
-                'hiit',
-                'mats',
-              ].map((tag) {
-                return FilterChip(
-                  label: Text(tag),
-                  selected: selectedTags.contains(tag),
-                  onSelected: (isSelected) {
-                    toggleTagSelection(tag);
-                  },
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20.0),
-
-            // Display fitness plans or show a message if no plans match the filter
-            fitnessPlans.isEmpty
-                ? Center(
-                    child: Text(
-                      "No workout is available",
-                      style: TextStyle(fontSize: 18.0, color: Colors.red),
-                    ),
-                  )
-                : Column(
-                    children: fitnessPlans.map((plan) {
-                      return Container(
-                        width: double.infinity, // Make the container full width
-                        margin: EdgeInsets.symmetric(vertical: 8.0),
-                        child: SizedBox(
-                          height: 120.0,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Color(0XFF031927), // Button text color
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25), // Button border radius
-                              ),
-                              padding: EdgeInsets.symmetric(vertical: 15.0), // Button padding
-                              elevation: 5, // Elevation for the shadow
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FitnessPlanDetailPage(
-                                    fitnessPlan: plan,
-                                    userId: userId,
-                                  ),
+              SizedBox(height: 10.0),
+        
+              // Tags Checkboxes
+              Wrap(
+                spacing: 10.0,
+                children: [
+                  'cardio',
+                  'equipments',
+                  'weights',
+                  'hiit',
+                  'mats',
+                ].map((tag) {
+                  return FilterChip(
+                    label: Text(tag),
+                    selected: selectedTags.contains(tag),
+                    onSelected: (isSelected) {
+                      toggleTagSelection(tag);
+                    },
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: 20.0),
+        
+              // Display fitness plans or show a message if no plans match the filter
+              fitnessPlans.isEmpty
+                  ? Center(
+                      child: Text(
+                        "No workout is available",
+                        style: TextStyle(fontSize: 18.0, color: Colors.red),
+                      ),
+                    )
+                  : Column(
+                      children: fitnessPlans.map((plan) {
+                        return Container(
+                          width: double.infinity, // Make the container full width
+                          margin: EdgeInsets.symmetric(vertical: 8.0),
+                          child: SizedBox(
+                            height: 120.0,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Color(0XFF031927), // Button text color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25), // Button border radius
                                 ),
-                              );
-                            },
-                            child: Center(
-                              child: Text(
-                                plan.title,
-                                style: TextStyle(fontSize: 18.0, fontFamily: 'Poppins', fontWeight: FontWeight.w600),
-                                textAlign: TextAlign.center,
+                                padding: EdgeInsets.symmetric(vertical: 15.0), // Button padding
+                                elevation: 5, // Elevation for the shadow
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FitnessPlanDetailPage(
+                                      fitnessPlan: plan,
+                                      userId: userId,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Center(
+                                child: Text(
+                                  plan.title,
+                                  style: TextStyle(fontSize: 18.0, fontFamily: 'Poppins', fontWeight: FontWeight.w600),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-          ],
+                        );
+                      }).toList(),
+                    ),
+            ],
+          ),
         ),
       ),
     );

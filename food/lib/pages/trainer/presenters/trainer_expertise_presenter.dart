@@ -25,7 +25,7 @@ class TrainerExpertisePresenter {
 
     try {
       await TrainerSettingProfileService().updateSettingProfile(user.uid, {
-        'Expertise': expertise,
+        'expertise': expertise,
       });
       _view.onExpertiseSaved();
     } catch (e) {

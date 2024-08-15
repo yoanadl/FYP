@@ -24,6 +24,7 @@ class _TrainerExpertisePageState extends State<TrainerExpertisePage> implements 
     'Yoga',
     'Nutrition Counseling'
   ];
+  
   final Set<String> _selectedExpertise = {};
 
   @override

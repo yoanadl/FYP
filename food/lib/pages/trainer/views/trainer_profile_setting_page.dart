@@ -6,65 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:food/pages/user/view/upload_profile_page.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
-
-class ProfileTextField extends StatelessWidget {
-  final String label;
-  final TextEditingController controller;
-  final Function(String) onChanged;
-
-  const ProfileTextField({
-    Key? key,
-    required this.label,
-    required this.controller,
-    required this.onChanged,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.bold,
-              fontSize: 18.0,
-            ),
-          ),
-        ),
-        SizedBox(height: 8.0),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
-          child: SizedBox(
-            height: 48.0,
-            child: TextFormField(
-              controller: controller,
-              onChanged: onChanged,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 8.0),
-                border: OutlineInputBorder(),
-                hintText: 'Enter $label',
-                hintStyle: TextStyle(
-                  color: Colors.grey.shade400,
-                  fontFamily: 'Poppins',
-                  fontSize: 14.0,
-                ),
-              ),
-              style: const TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins',
-                fontSize: 16.0,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+import 'package:food/pages/user/view/upload_profile_page.dart';
 
 class TrainerProfileSetting extends StatefulWidget {
   @override
@@ -191,8 +133,9 @@ void fetchTrainerProfileData() async {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
+        centerTitle: true,
         title: const Text(
-          'Profile',
+          'Profile Settings',
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Poppins',
@@ -206,9 +149,10 @@ void fetchTrainerProfileData() async {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 10),
               Stack(
                 children: [
-                  _loadTrainerProfilePicture(),
+                  _loadUserProfilePicture(),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -243,7 +187,7 @@ void fetchTrainerProfileData() async {
                 controller: nameController,
                 onChanged: (value) {
                   setState(() {
-                    profileData['Name'] = value;
+                    trainerProfile.name = value;
                   });
                 },
               ),
@@ -253,12 +197,15 @@ void fetchTrainerProfileData() async {
                 controller: ageController,
                 onChanged: (value) {
                   setState(() {
-                    profileData['Age'] = value;
+                    trainerProfile.age = int.tryParse(value);
                   });
                 },
+                hintText: trainerProfile.age?.toString(),
               ),
               SizedBox(height: 10.0),
               ProfileTextField(
+                label: 'Experience',
+                controller: experienceController,
                 label: 'Experience',
                 controller: experienceController,
                 onChanged: (value) {
@@ -266,6 +213,7 @@ void fetchTrainerProfileData() async {
                     profileData['Experience'] = value;
                   });
                 },
+                hintText: trainerProfile.experience?.toString(),
               ),
               SizedBox(height: 10.0),
               ProfileTextField(

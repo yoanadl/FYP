@@ -17,7 +17,7 @@ class DataAnalyticsPage extends StatefulWidget {
 }
 
 class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
-  final HealthService healthService = HealthService();
+  // final HealthService healthService = HealthService();
   int steps = 0;
   double? heartRate;
   double? calories;
@@ -98,97 +98,97 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
         break;
     }
 
-    try {
-      int? fetchedSteps = await healthService.getSteps();
-      double? fetchedHeartRate = await healthService.getHeartRate();
-      double? fetchedCalories = await healthService.getCalories();
-      double? fetchedAverageHeartRate = await healthService.getAverageHeartRateForToday();
-      double? fetchedMaxHeartRate = await healthService.getMaximumHeartRateForToday();
+    // try {
+    //   int? fetchedSteps = await healthService.getSteps();
+    //   double? fetchedHeartRate = await healthService.getHeartRate();
+    //   double? fetchedCalories = await healthService.getCalories();
+    //   double? fetchedAverageHeartRate = await healthService.getAverageHeartRateForToday();
+    //   double? fetchedMaxHeartRate = await healthService.getMaximumHeartRateForToday();
 
 
-      setState(() {
-        steps = fetchedSteps ?? 0;
-        heartRate = fetchedHeartRate ?? 0.0;
-        calories = fetchedCalories ?? 0.0;
-        averageHeartRate = fetchedAverageHeartRate ?? 0.0;
-        maxHeartRate = fetchedMaxHeartRate ?? 0.0;
+    //   setState(() {
+    //     steps = fetchedSteps ?? 0;
+    //     heartRate = fetchedHeartRate ?? 0.0;
+    //     calories = fetchedCalories ?? 0.0;
+    //     averageHeartRate = fetchedAverageHeartRate ?? 0.0;
+    //     maxHeartRate = fetchedMaxHeartRate ?? 0.0;
     
-      });
-    } catch (e) {
-      print('Error fetching data: $e');
-    }
+    //   });
+    // } catch (e) {
+    //   print('Error fetching data: $e');
+    // }
   }
 
    Future<void> _fetchWeeklyData() async {
-    List<Map<String, dynamic>> data = [];
+    // List<Map<String, dynamic>> data = [];
 
-    double? averageHeartRatePerWeek = await healthService.getAverageWeeklyHeartRate();
-    double? averageCaloriesPerWeek = await healthService.getAverageWeeklyCalories();
-    int? averageStepsPerWeek = await healthService.getAverageWeeklySteps();
+    // double? averageHeartRatePerWeek = await healthService.getAverageWeeklyHeartRate();
+    // double? averageCaloriesPerWeek = await healthService.getAverageWeeklyCalories();
+    // int? averageStepsPerWeek = await healthService.getAverageWeeklySteps();
 
-    for (int i = 0; i < 7; i++) {
-      DateTime date = DateTime.now().subtract(Duration(days: i));
-      int steps = await healthService.getStepsForThatDay(date);
-      double heartRate = await healthService.getHeartRateForThatDay(date);
-      double calories = await healthService.getCaloriesForThatDay(date);
+    // for (int i = 0; i < 7; i++) {
+    //   DateTime date = DateTime.now().subtract(Duration(days: i));
+    //   int steps = await healthService.getStepsForThatDay(date);
+    //   double heartRate = await healthService.getHeartRateForThatDay(date);
+    //   double calories = await healthService.getCaloriesForThatDay(date);
     
 
-      print('Date: $date, Steps: $steps, Calories: $calories',); // Debugging line
+    //   print('Date: $date, Steps: $steps, Calories: $calories',); // Debugging line
 
     
-      data.add({
-        'date': date,
-        'steps': steps,
-        'heartRate': heartRate,
-        'calories': calories,
+    //   data.add({
+    //     'date': date,
+    //     'steps': steps,
+    //     'heartRate': heartRate,
+    //     'calories': calories,
       
-      });
-    }
+    //   });
+    // }
 
-    setState(() {
-      weeklyData = data;
-      averageWeeklyHeartRate = averageHeartRatePerWeek;
-      averageWeeklyCalories = averageCaloriesPerWeek;
-      averageWeeklySteps = averageStepsPerWeek;
+    // setState(() {
+    //   weeklyData = data;
+    //   averageWeeklyHeartRate = averageHeartRatePerWeek;
+    //   averageWeeklyCalories = averageCaloriesPerWeek;
+    //   averageWeeklySteps = averageStepsPerWeek;
 
-    });
+    // });
   }
 
   Future<void> _fetchMonthlyData(DateTime month) async {
   
-    final totalSteps = await healthService.getStepsForThatMonth(month);
-    final totalCalories = await healthService.getCaloriesForThatMonth(month);
-    final averageHeartRateInMonth = await healthService.getAverageMonthlyHeartRate(month);
-    final maxMonthlyHeartRate = await healthService.getMaximumHeartRateForMonth(month);
+    // final totalSteps = await healthService.getStepsForThatMonth(month);
+    // final totalCalories = await healthService.getCaloriesForThatMonth(month);
+    // final averageHeartRateInMonth = await healthService.getAverageMonthlyHeartRate(month);
+    // final maxMonthlyHeartRate = await healthService.getMaximumHeartRateForMonth(month);
 
-    setState(() {
-      totalStepsInMonth = totalSteps;
-      totalCaloriesInMonth = totalCalories;
-      averageMonthlyHeartRate = averageHeartRateInMonth;
-      maxHeartRateInMonth = maxMonthlyHeartRate;
+    // setState(() {
+    //   totalStepsInMonth = totalSteps;
+    //   totalCaloriesInMonth = totalCalories;
+    //   averageMonthlyHeartRate = averageHeartRateInMonth;
+    //   maxHeartRateInMonth = maxMonthlyHeartRate;
     
-    });
+    // });
 
   }
 
   void _fetchFilterData() async {
 
-    print('From Date: $_fromDate');
-    print('To Date: $_toDate');
+    // print('From Date: $_fromDate');
+    // print('To Date: $_toDate');
 
-    if (_fromDate != null && _toDate != null) {
-      var data = await healthService.getFilterHealthData(_fromDate!, _toDate!);
+    // if (_fromDate != null && _toDate != null) {
+    //   var data = await healthService.getFilterHealthData(_fromDate!, _toDate!);
 
-      setState(() {
-        filterSteps = data['totalSteps'];
-        filterCalories = data['totalCalories'];
-        filterAverageHeartRate = data['averageHeartRate'];
-        filterMaxHeartRate = data['maxHeartRate'];
-      });
-    }
-    else {
-      print('Please select both from and to dates.');
-    }
+    //   setState(() {
+    //     filterSteps = data['totalSteps'];
+    //     filterCalories = data['totalCalories'];
+    //     filterAverageHeartRate = data['averageHeartRate'];
+    //     filterMaxHeartRate = data['maxHeartRate'];
+    //   });
+    // }
+    // else {
+    //   print('Please select both from and to dates.');
+    // }
   }
 
   Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
