@@ -129,53 +129,7 @@ class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDon
 
   }
 
-  // Future<void> _shareWorkoutData() async {
-
-  //   try {
-  //     // delay to ensure the widget is fully rendered
-  //     await Future.delayed(Duration(milliseconds: 100));
-
-  //     RenderRepaintBoundary boundary = _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-  //     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-  //     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-
-  //     if (byteData != null) {
-  //       Uint8List pngBytes = byteData.buffer.asUint8List();
-
-  //       final directory = await getApplicationDocumentsDirectory();
-  //       final imagePath = '${directory.path}/screenshot.png';
-  //       final imageFile = File(imagePath);
-  //       await imageFile.writeAsBytes(pngBytes);
-
-  //       if (await imageFile.exists()) {
-  //         print('File exists at $imagePath');
-  //       } else {
-  //         print('File does not exist');
-  //       }
-
-  //       final result = await Share.shareXFiles(
-  //         [XFile(imagePath)], 
-  //         text: 'Check out my workout results!'
-  //       ).catchError((error) {
-  //         print('Error sharing: $error');
-  //       });
-
-  //       if (result.status == ShareResultStatus.success) {
-  //         print('Thank you for sharing the picture!');
-  //       } else if (result.status == ShareResultStatus.dismissed) {
-  //         print('Share was dismissed.');
-  //       }
-    
-  //     }
-      
-  //   }
-
-  //   catch (e) {
-  //     print('Error taking screenshot: $e');
-
-  //   }
-  // }
-
+  
   Future<void> _shareWorkoutData() async {
   try {
     // Delay to ensure the widget is fully rendered

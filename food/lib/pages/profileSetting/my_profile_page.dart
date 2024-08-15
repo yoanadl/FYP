@@ -341,7 +341,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 controller: ageController,
                 onChanged: (value) {
                   setState(() {
-                    profileData['Age'] = value;
+                    profileData['age'] = value;
                   });
                 },
               ),
@@ -351,7 +351,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 controller: heightController,
                 onChanged: (value) {
                   setState(() {
-                    profileData['Height(cm)'] = value;
+                    profileData['height'] = value;
                   });
                 },
               ),

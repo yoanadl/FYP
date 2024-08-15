@@ -30,8 +30,8 @@ class _TrainerBasePageState extends State<TrainerBasePage> {
       TrainerWorkoutPlanPage(),
       TrainerMyClientPage(),
       TrainerProfilePage(),
-      TrainerPendingClientsPage(),
-      TrainerProfileSetting()
+      //TrainerPendingClientsPage(),
+      //TrainerProfileSetting()
     ];
   }
 

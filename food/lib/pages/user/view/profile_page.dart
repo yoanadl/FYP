@@ -9,6 +9,7 @@ import 'package:food/pages/profileSetting/my_profile_page.dart';
 import 'package:food/pages/profileSetting/privacy_policy_page.dart';
 import 'package:food/pages/profileSetting/settings_page.dart';
 import 'package:food/pages/profileSetting/terms_conditions_page.dart';
+import 'package:food/pages/profileSetting/fitness_reminders_page.dart';
 import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/pages/user/view/upload_profile_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
@@ -110,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           content: Text(
             'Are you sure you want to log out?',
             style: TextStyle(fontSize: 15),
@@ -141,6 +142,17 @@ class _ProfilePageState extends State<ProfilePage> {
       icon: Icons.person,
       text: 'Your Profile',
       destination: MyProfilePage(),
+    ),
+    
+    RowData(
+      icon: Icons.flag,
+      text: 'My Fitness Goals',
+      destination: GoalsPreferences(),
+    ),
+    RowData(
+      icon: Icons.person,
+      text: 'Fitness Reminders',
+      destination: FitnessReminders(),
     ),
     RowData(
       icon: Icons.monitor_weight,
@@ -198,7 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

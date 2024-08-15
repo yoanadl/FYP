@@ -9,6 +9,7 @@ class WorkoutSummaryPresenter {
   final String userId;
   final String? workoutId;
   final VoidCallback? onDelete;
+  final VoidCallback? onMarkComplete;
 
   WorkoutSummaryPresenter({
     required this.workoutTitle,
@@ -17,6 +18,7 @@ class WorkoutSummaryPresenter {
     required this.userId,
     this.workoutId,
     this.onDelete,
+    this.onMarkComplete,
   });
 
   int get totalDuration => duration.reduce((a, b) => a + b);
@@ -78,4 +80,63 @@ class WorkoutSummaryPresenter {
       );
     }
   }
+
+  Future<void> confirmMarkComplete(BuildContext context) async {
+    showCupertinoDialog(
+      context: context, 
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          content: Text('Do you want to mark this workout as complete?'),
+          actions: <Widget> [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await markWorkoutComplete(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> markWorkoutComplete(BuildContext context) async {
+
+    if (workoutId != null && workoutId!.isNotEmpty) {
+      try {
+        await WorkoutService().markWorkoutAsComplete(userId, workoutId!);
+        onMarkComplete?.call(); // call the callback to refresh the workout list
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Workout marked as complete')),
+        );
+        Navigator.pop(context); // Go back to the previous screen
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to mark workout as complete')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid workout ID')),
+      );
+    }
+  }
+
+
+
+
 }

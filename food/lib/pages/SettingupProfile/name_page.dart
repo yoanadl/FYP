@@ -59,17 +59,10 @@ class NamePageState extends State<NamePage> {
     }
 
     try {
-      // Provide default values for other parameters
-      await SettingProfileService().createProfile(
-        user.uid,
-        name: _Name!,
-        age: 0,              // Provide default value or get from user input
-        height: 0,           // Provide default value or get from user input
-        weight: 0,           // Provide default value or get from user input
-        fitnessGoals: "Not set", // Provide default value or get from user input
-        gender: "Not set",  // Provide default value or get from user input
-      );
-
+      
+       await SettingProfileService().createProfile(user.uid,  {
+        'Name': _Name,
+      });
       // Navigate to Gender page
       Navigator.push(
         context,

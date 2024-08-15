@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'trainer_client_feedback_detail_page.dart';
+import 'package:food/components/trainer_navbar.dart';
+import 'package:food/pages/trainer/views/trainer_base_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TrainerClientFeedbackPage extends StatelessWidget {
   @override
@@ -64,29 +67,24 @@ class TrainerClientFeedbackPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label: 'Workout',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Client List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant),
-            label: 'Meal Plan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+       bottomNavigationBar: TrainerNavbar(
+        currentIndex: 2,
+        onTap: (int index) {
+          if (index != 2) {
+            Navigator.pop(context);
+            switch(index) {
+              case 0:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const TrainerBasePage(initialIndex: 0,)));
+                break;
+              case 1:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const TrainerBasePage(initialIndex: 1,)));
+                break;
+              case 3:
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const TrainerBasePage(initialIndex: 3,)));
+                break;
+            }
+          }
+        }
       ),
     );
   }

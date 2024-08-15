@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food/components/base_page.dart'; 
+import 'package:food/components/base_page.dart';
+import 'package:food/pages/user/view/register_page.dart'; 
 import 'package:food/services/auth/auth_service.dart';
 import '../../../components/my_button.dart';
 import '../../../components/my_textfield.dart';
@@ -18,21 +19,66 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  // void login(BuildContext context) async {
+  //   final _authService = AuthService();
+
+  //   try {
+  //     User? user = await _authService.signInWithEmailPassword(
+  //       context,
+  //       emailController.text,
+  //       passwordController.text,
+  //     );
+
+      
+  //   } catch (e) {
+      
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //         title: Text('Error'),
+  //         content: Text(e.toString()),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  // }
+
+  void navigateToRegisterPage() {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => RegisterPage(
+        onTap: () {
+          
+        },
+      )),
+    );
+  }
+
   void login(BuildContext context) async {
-    final _authService = AuthService();
+  final _authService = AuthService();
 
-    try {
-      User? user = await _authService.signInWithEmailPassword(
-        context,
-        emailController.text,
-        passwordController.text,
-      );
+  try {
+    User? user = await _authService.signInWithEmailPassword(
+      context,
+      emailController.text,
+      passwordController.text,
+    );
+    
+    // Navigate to the base page or home page if login is successful
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => BasePage()),
+    );
 
-      if (user != null) {
-        // Navigation is handled inside AuthService based on user's role
-        // No need for further navigation here
-      }
-    } catch (e) {
+  } catch (e) {
+    if (mounted) { // Check if the widget is still mounted
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -50,6 +96,8 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(width: 15),
 
                           GestureDetector(
-                            onTap: widget.onTap,
+                            onTap: navigateToRegisterPage,
                             child: Text(
                               "Sign up",
                               style: TextStyle(

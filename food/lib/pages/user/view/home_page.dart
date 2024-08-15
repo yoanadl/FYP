@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/pages/data_analytics_page.dart';
 import 'package:food/pages/fitnessPlans/view/fitness_plan_show.dart';
-import 'package:food/pages/notification_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 // import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
@@ -137,46 +136,13 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.white,
           centerTitle: false,
           actions: [
-          
-            // notification icon
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[300],
-                ),
-
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NotificationPage(title: 'Set Notification',)),
-                    );
-                  }, 
-                  icon: Icon(Icons.notifications),
-                  iconSize: 25,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            
+      
             //profile icon
-            InkWell(
-                onTap: () {
-                  // Navigate to ProfilePage when the profile picture is tapped
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfilePage(), 
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: loadProfilePicture(context, user!.uid),
-                ),
-              ),
+            if (user != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 35),
+                child: loadProfilePicture(context, user.uid),
+              )
           ],
 
           title: Column(
@@ -231,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               
-              InkWell(
+            InkWell(
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => DataAnalyticsPage(),
@@ -376,7 +342,7 @@ class _HomePageState extends State<HomePage> {
                         top: 15,
                         left: 15,
                         child: Text(
-                          'Workout Plan', 
+                          'Workouts', 
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20,
@@ -440,49 +406,7 @@ class _HomePageState extends State<HomePage> {
 
                SizedBox(height: 20),
       
-               InkWell(
-                onTap: () => Navigator.push(
-                  context, 
-                  MaterialPageRoute(builder: (context) => MealPlanPage()),
-                ),
-                 child: Container(
-                  width: 350,
-                  height: 120,
-                  padding: EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: Color(0x99C8E0F4),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                 
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.asset(
-                          'lib/images/food.png',
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                      ),
-                      Positioned(
-                        top: 15,
-                        left: 15,
-                        child: Text(
-                          'Challenges', 
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            backgroundColor: Color(0xFF508AA8),
-                          ),
-                        ),
-                      ),
-                      ],
-
-                  ),
-                 ),
-               ),
+               
             ],
           ),
         ),
@@ -492,3 +416,107 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+
+// import 'package:flutter/material.dart';
+// import 'package:food/services/notification_service.dart';
+
+
+
+
+// DateTime scheduleTime = DateTime.now();
+
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({super.key, required this.title});
+
+//   final String title;
+
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(widget.title),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: const [
+//             DatePickerTxt(),
+//             ScheduleBtn(),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class DatePickerTxt extends StatefulWidget {
+//   const DatePickerTxt({Key? key}) : super(key: key);
+
+//   @override
+//   State<DatePickerTxt> createState() => _DatePickerTxtState();
+// }
+
+// class _DatePickerTxtState extends State<DatePickerTxt> {
+//   Future<void> _selectDateTime(BuildContext context) async {
+//     final DateTime? pickedDate = await showDatePicker(
+//       context: context,
+//       initialDate: scheduleTime,
+//       firstDate: DateTime.now(),
+//       lastDate: DateTime(2101),
+//     );
+
+//     if (pickedDate != null) {
+//       final TimeOfDay? pickedTime = await showTimePicker(
+//         context: context,
+//         initialTime: TimeOfDay.fromDateTime(scheduleTime),
+//       );
+
+//       if (pickedTime != null) {
+//         setState(() {
+//           scheduleTime = DateTime(
+//             pickedDate.year,
+//             pickedDate.month,
+//             pickedDate.day,
+//             pickedTime.hour,
+//             pickedTime.minute,
+//           );
+//         });
+//       }
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextButton(
+//       onPressed: () => _selectDateTime(context),
+//       child: const Text(
+//         'Select Date Time',
+//         style: TextStyle(color: Colors.blue),
+//       ),
+//     );
+//   }
+// }
+
+// class ScheduleBtn extends StatelessWidget {
+//   const ScheduleBtn({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ElevatedButton(
+//       child: const Text('Schedule notifications'),
+//       onPressed: () {
+//         debugPrint('Notification Scheduled for $scheduleTime');
+//         NotificationService().scheduleNotification(
+//           title: 'Scheduled Notification',
+//           body: '$scheduleTime',
+//           scheduledNotificationDateTime: scheduleTime,
+//         );
+//       },
+//     );
+//   }
+// }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
+import 'package:food/pages/trainer/views/trainer_client_feedback_page.dart';
+import 'package:food/pages/trainer/views/trainer_pending_clients.dart';
 import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
 import 'package:intl/intl.dart';
 
@@ -120,15 +122,18 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                 _buildGridTile(context, 'Workout\nPlan', Color(0xFF508AA8), () {
                   widget.onTabSelected(1); 
                 }),
-                _buildGridTile(context, 'Feedbacks', Color(0xFF9DD1F1), () {
+                _buildGridTile(context, 'Send Advice', Color(0xFF9DD1F1), () {
                     Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TrainerProfileSetting()),
+                    MaterialPageRoute(builder: (context) => TrainerClientFeedbackPage()),
                   );
 
                 }),
                 _buildGridTile(context, 'Pending\nRequest', Colors.white, () {
-                  widget.onTabSelected(4);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TrainerPendingClientsPage()),
+                  );
                 }),
                 _buildGridTile(context, 'My\nClient', Color(0xFF000000), () {
                   widget.onTabSelected(2); 
