@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:food/pages/profileSetting/bmi_page.dart';
@@ -108,34 +109,39 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void showLogoutConfirmationDialog(BuildContext context) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return CupertinoAlertDialog(
           content: Text(
             'Are you sure you want to log out?',
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           ),
-          actions: <Widget>[
-            TextButton(
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: Text('Cancel'),
+              isDefaultAction: true,
             ),
-            TextButton(
+            CupertinoDialogAction(
               onPressed: () {
                 Navigator.of(context).pop();
                 logout(context);
               },
               child: Text('Logout'),
+              isDestructiveAction: true,
             ),
           ],
         );
       },
     );
   }
+
+
+  
 
   final List<RowData> rowData = [
     RowData(

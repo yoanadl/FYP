@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/profileSetting/help_center_page.dart';
 import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
@@ -78,35 +79,68 @@ Widget _loadProfilePicture() {
     }
   }
 
+  // void showLogoutConfirmationDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         content: const Text(
+  //           'Are you sure you want to log out?',
+  //           style: TextStyle(fontSize: 15),
+  //           textAlign: TextAlign.center,
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text('Cancel'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //               logout(context);
+  //             },
+  //             child: const Text('Logout'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
   void showLogoutConfirmationDialog(BuildContext context) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: const Text(
+        return CupertinoAlertDialog(
+          content: Text(
             'Are you sure you want to log out?',
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           ),
-          actions: <Widget>[
-            TextButton(
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: Text('Cancel'),
+              isDefaultAction: true,
             ),
-            TextButton(
+            CupertinoDialogAction(
               onPressed: () {
                 Navigator.of(context).pop();
                 logout(context);
               },
-              child: const Text('Logout'),
+              child: Text('Logout'),
+              isDestructiveAction: true,
             ),
           ],
         );
       },
     );
   }
+
 
   final List<RowData> rowData = [
     RowData(

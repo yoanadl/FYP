@@ -28,7 +28,6 @@ class _AdminBasePageState extends State<AdminBasePage> {
   final List<Widget> _pages = [
     AdminHomePage(),
     AdminViewAllUserAccounts(),
-    AdminViewUserProfilesView(),
     AdminProfileViewImpl(),
   ];
 

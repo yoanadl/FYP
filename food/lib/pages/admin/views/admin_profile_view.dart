@@ -125,6 +125,11 @@ class _AdminProfileViewImplState extends State<AdminProfileViewImpl> implements 
             CircleAvatar(
               backgroundColor: Colors.grey[100],
               radius: 50.0,
+              child: Icon(
+                Icons.person,
+                size: 50,
+                color: Colors.black,
+              ),
             ),
             // name
             SizedBox(height: 15.0),
