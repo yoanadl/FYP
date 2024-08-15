@@ -109,86 +109,122 @@ class _FitnessPlanDetailPageState extends State<FitnessPlanDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(plan.title),
+        title: Text(plan.title, style: TextStyle(fontFamily: 'Poppins')),
         backgroundColor: Colors.white,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Goals:',
-                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    plan.goals,
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Level:',
-                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    plan.level,
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Tags:',
-                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8.0),
-                  Text(
-                    plan.tags.join(', '),
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                  SizedBox(height: 16.0),
-                  Text(
-                    'Activities:',
-                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8.0),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: plan.activities.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(plan.activities[index]),
-                          subtitle: Text('Duration: ${plan.durations[index]} minutes'),
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          leading: Icon(Icons.fitness_center),
-                        );
-                      },
+      body: Container(
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Goals:',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 8.0),
+                    Text(
+                      plan.goals,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Level:',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      plan.level,
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Tags:',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      plan.tags.join(', '),
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    Text(
+                      'Activities:',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: plan.activities.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                              plan.activities[index],
+                              style: TextStyle(fontFamily: 'Poppins'),
+                            ),
+                            subtitle: Text(
+                              'Duration: ${plan.durations[index]} minutes',
+                              style: TextStyle(fontFamily: 'Poppins'),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                            leading: Icon(Icons.fitness_center),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: startWorkout,
-              child: Text(
-                'Start',
-                style: TextStyle(fontSize: 20.0),
-              ),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white, backgroundColor: Color(0XFF508AA8), 
-                padding: EdgeInsets.symmetric(vertical: 16.0), 
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: startWorkout,
+                child: Text(
+                  'Start',
+                  style: TextStyle(fontSize: 20.0, fontFamily: 'Poppins'),
+                ),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0XFF508AA8),
+                  padding: EdgeInsets.symmetric(vertical: 16.0), 
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

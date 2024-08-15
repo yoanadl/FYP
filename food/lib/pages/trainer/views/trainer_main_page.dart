@@ -124,7 +124,7 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                     MaterialPageRoute(builder: (context) => TrainerPendingClientsPage()),
                   );
                 }),
-                _buildGridTile(context, 'My\nClient', Color(0xFF508AA8), () {
+                _buildGridTile(context, 'My\nClients', Color(0xFF508AA8), () {
                   widget.onTabSelected(2);
                 }),
               ],

@@ -1,8 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/pages/profileSetting/bmi_page.dart';
-import 'package:food/pages/profileSetting/goals_preferences.dart';
 import 'package:food/pages/profileSetting/help_center_page.dart';
 import 'package:food/pages/profileSetting/membership_page.dart';
 import 'package:food/pages/profileSetting/my_profile_page.dart';
@@ -14,7 +14,6 @@ import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/pages/user/view/upload_profile_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:food/services/auth/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class RowData {
   final IconData icon;
@@ -45,6 +44,30 @@ class _ProfilePageState extends State<ProfilePage> {
     fetchUserData();
   }
 
+  Future<void> fetchUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      try {
+        Map<String, dynamic>? userData =
+            await SettingProfileService().fetchUserData(user.uid);
+
+        if (userData != null) {
+          setState(() {
+            name = userData['Name'] ?? 'No name';
+            profilePictureUrl = userData['profilePictureUrl'];
+          });
+        } else {
+          print('No user data found for uid: ${user.uid}');
+        }
+      } catch (e) {
+        print('Error fetching user data: $e');
+      }
+    } else {
+      print('No user is currently signed in.');
+    }
+  }
+
   Widget _loadProfilePicture() {
     final settingProfileService = SettingProfileService();
 
@@ -69,30 +92,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ); // Placeholder
       },
     );
-  }
-
-  Future<void> fetchUserData() async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      try {
-        Map<String, dynamic>? userData =
-            await SettingProfileService().fetchUserData(user.uid);
-
-        if (userData != null) {
-          setState(() {
-            name = userData['Name'] ?? 'No name';
-            profilePictureUrl = userData['profilePictureUrl'];
-          });
-        } else {
-          print('No user data found for uid: ${user.uid}');
-        }
-      } catch (e) {
-        print('Error fetching user data: $e');
-      }
-    } else {
-      print('No user is currently signed in.');
-    }
   }
 
   void logout(BuildContext context) async {
@@ -149,17 +148,6 @@ class _ProfilePageState extends State<ProfilePage> {
       text: 'Your Profile',
       destination: MyProfilePage(),
     ),
-    
-    RowData(
-      icon: Icons.flag,
-      text: 'My Fitness Goals',
-      destination: GoalsPreferences(),
-    ),
-    RowData(
-      icon: Icons.person,
-      text: 'Fitness Reminders',
-      destination: FitnessReminders(),
-    ),
     RowData(
       icon: Icons.monitor_weight,
       text: 'My BMI',
@@ -203,22 +191,24 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Profile',
-              style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
-            ),
-          ],
+        title: const Padding(
+          padding: EdgeInsets.only(top: 36),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Profile',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 20.0),
-            // profile image avatar
+            const SizedBox(height: 20.0),
             Stack(
               children: [
                 _loadProfilePicture(),
@@ -250,20 +240,24 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-            SizedBox(height: 15.0),
+            const SizedBox(height: 15.0),
             Text(
               name,
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(
+                fontSize: 20,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            SizedBox(height: 25.0),
-            // settings
-            ListView.separated(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: rowData.length,
-              itemBuilder: (context, index) =>
-                  buildRowItem(context, rowData[index]),
-              separatorBuilder: (context, index) => SizedBox(height: 5.0),
+            const SizedBox(height: 25.0),
+            Expanded(
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: rowData.length,
+                itemBuilder: (context, index) =>
+                    buildRowItem(context, rowData[index]),
+                separatorBuilder: (context, index) => SizedBox(height: 5.0),
+              ),
             ),
           ],
         ),
@@ -271,7 +265,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // function to build each row
   Widget buildRowItem(BuildContext context, RowData data) {
     return InkWell(
       onTap: () {
@@ -285,22 +278,35 @@ class _ProfilePageState extends State<ProfilePage> {
         }
       },
       child: Container(
-        color: Colors.grey[100],
         margin: const EdgeInsets.symmetric(horizontal: 40.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: Row(
             children: [
-              Icon(data.icon),
+              Icon(
+                data.icon,
+                color: Color(0XFF031927),
+              ),
               Padding(
                 padding: EdgeInsets.only(left: 10.0),
                 child: Text(
                   data.text,
-                  style: TextStyle(fontSize: 15.0),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               Spacer(),
-              Icon(Icons.arrow_right),
+              const Icon(
+                Icons.arrow_right,
+                color: Color(0XFF031927),
+              ),
             ],
           ),
         ),

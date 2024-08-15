@@ -63,7 +63,7 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> impl
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
@@ -76,44 +76,35 @@ class _AdminViewAllUserAccountsPage extends State<AdminViewAllUserAccounts> impl
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0), 
-              child: ListView.builder(
-                itemCount: _displayedUsers.length,
-                itemBuilder: (context, index) {
-                  var user = _displayedUsers[index];
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 10.0), // Space between items
-                    decoration: BoxDecoration(
-                      color: Color(0xFFC8E0F4).withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(8.0), 
-                    ),
-                    child: ListTile(
-                      title: Text(user['email'] ?? 'No email'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () {
-                          if (user['userId'] != null) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AdminUpdateAccount(
-                                  userId: user['userId'] as String,
-                                ),
-                              ),
-                            );
-                          } else {
-                            // Handle the case where userId is null
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('User ID is missing for this user.')),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
+            child: ListView.builder(
+              itemCount: _displayedUsers.length,
+              itemBuilder: (context, index) {
+                var user = _displayedUsers[index];
+                return ListTile(
+                  title: Text(user['email'] ?? 'No email'),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      print("User ID: ${user['userId']}"); // Debug print
+                      if (user['userId'] != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AdminUpdateAccount(
+                              userId: user['userId'] as String,
+                            ),
+                          ),
+                        );
+                      } else {
+                        // Handle the case where userId is null
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('User ID is missing for this user.')),
+                        );
+                      }
+                    },
+                  ),
+                );
+              },
             ),
           ),
         ],

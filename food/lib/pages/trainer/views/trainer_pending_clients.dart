@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food/components/trainer_navbar.dart';
 import 'package:food/pages/trainer/views/trainer_base_page.dart';
@@ -93,9 +94,9 @@ class _TrainerPendingClientsPageState extends State<TrainerPendingClientsPage> {
 
   Future<void> _confirmAction(
       String message, String requestId, void Function() action) async {
-    bool? confirm = await showDialog<bool>(
+    bool? confirm = await showCupertinoDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) => CupertinoAlertDialog(
         title: Text('Confirmation'),
         content: Text(message),
         actions: [

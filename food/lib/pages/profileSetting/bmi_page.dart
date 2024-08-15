@@ -122,7 +122,11 @@ class _BmiPageState extends State<BmiPage> {
               SizedBox(height: 30.0),
               Text(
                 'My BMI',
-                style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 25.0, 
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               SizedBox(height: 20.0),
               Row(
@@ -130,7 +134,7 @@ class _BmiPageState extends State<BmiPage> {
                 children: [
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
                         color: Colors.white,
@@ -141,28 +145,33 @@ class _BmiPageState extends State<BmiPage> {
                         children: [
                           Text(
                             'Height',
-                            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 18.0, 
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(height: 5.0),
                           TextField(
                             controller: heightController,
                             keyboardType: TextInputType.number,
                             enabled: editMode,
-                            decoration: editMode ?  // Apply border if editMode is true
-                              InputDecoration(
-                                hintText: 'Enter Height (cm)',
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue),
-                                ),
-                                isDense: true, // Reduce padding
-                              ) :
-                              InputDecoration(
-                                hintText: 'Enter Height (cm)',
-                                // No border when not editable
-                                border: InputBorder.none,
-                                isDense: true, // Reduce padding
-                              ),
+                            decoration: editMode 
+                                ? InputDecoration(
+                                    hintText: 'Enter Height (cm)',
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blue),
+                                    ),
+                                    isDense: true, // Reduce padding
+                                  ) 
+                                : InputDecoration(
+                                    hintText: 'Enter Height (cm)',
+                                    // No border when not editable
+                                    border: InputBorder.none,
+                                    isDense: true, // Reduce padding
+                                  ),
                             style: TextStyle(
+                              fontFamily: 'Poppins',
                               color: Colors.black,
                             ),
                             textAlign: TextAlign.center,
@@ -170,7 +179,10 @@ class _BmiPageState extends State<BmiPage> {
                           SizedBox(height: 5.0),
                           Text(
                             'cm',
-                            style: TextStyle(fontSize: 16.0),
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 16.0,
+                            ),
                           ),
                         ],
                       ),
@@ -179,7 +191,7 @@ class _BmiPageState extends State<BmiPage> {
                   SizedBox(width: 20.0),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(12.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
                         color: Colors.white,
@@ -190,28 +202,33 @@ class _BmiPageState extends State<BmiPage> {
                         children: [
                           Text(
                             'Weight',
-                            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 18.0, 
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           SizedBox(height: 5.0),
                           TextField(
                             controller: weightController,
                             keyboardType: TextInputType.number,
                             enabled: editMode,
-                            decoration: editMode ?  // Apply border if editMode is true
-                              InputDecoration(
-                                hintText: 'Enter Weight (kg)',
-                                border: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue),
-                                ),
-                                isDense: true, // Reduce padding
-                              ) :
-                              InputDecoration(
-                                hintText: 'Enter Weight (kg)',
-                                // No border when not editable
-                                border: InputBorder.none,
-                                isDense: true, // Reduce padding
-                              ),
+                            decoration: editMode 
+                                ? InputDecoration(
+                                    hintText: 'Enter Weight (kg)',
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blue),
+                                    ),
+                                    isDense: true, // Reduce padding
+                                  ) 
+                                : InputDecoration(
+                                    hintText: 'Enter Weight (kg)',
+                                    // No border when not editable
+                                    border: InputBorder.none,
+                                    isDense: true, // Reduce padding
+                                  ),
                             style: TextStyle(
+                              fontFamily: 'Poppins',
                               color: Colors.black,
                             ),
                             textAlign: TextAlign.center,
@@ -219,7 +236,10 @@ class _BmiPageState extends State<BmiPage> {
                           SizedBox(height: 5.0),
                           Text(
                             'kg',
-                            style: TextStyle(fontSize: 16.0),
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontSize: 16.0,
+                            ),
                           ),
                         ],
                       ),
@@ -229,29 +249,33 @@ class _BmiPageState extends State<BmiPage> {
               ),
               SizedBox(height: 20.0),
               Container(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(16.0),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
                   color: Colors.white,
                   border: Border.all(
                     style: BorderStyle.solid, 
-                    color: Colors.grey),
+                    color: Colors.grey,
+                  ),
                 ),
                 child: Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         'My Current BMI',
                         style: TextStyle(
+                          fontFamily: 'Poppins',
                           fontSize: 18.0, 
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       SizedBox(height: 5.0),
                       Text(
                         bmi.toStringAsFixed(2),
                         style: TextStyle(
+                          fontFamily: 'Poppins',
                           fontSize: 18.0, 
                           fontWeight: FontWeight.bold,
                         ),
@@ -260,6 +284,7 @@ class _BmiPageState extends State<BmiPage> {
                       Text(
                         bmiStatus,
                         style: TextStyle(
+                          fontFamily: 'Poppins',
                           fontSize: 16.0,
                           color: bmiColor,
                           fontWeight: FontWeight.bold,
@@ -271,26 +296,28 @@ class _BmiPageState extends State<BmiPage> {
               ),
               SizedBox(height: 20.0),
               Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      editMode = !editMode;
-                      if (!editMode) {
-                        _saveHeightAndWeight(); // Call the method to save height and weight
-                      }
-                    });
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xff031927),
-                    foregroundColor: Colors.white,
+                child: SizedBox(
+                  height: 45,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        editMode = !editMode;
+                        if (!editMode) {
+                          _saveHeightAndWeight(); // Call the method to save height and weight
+                        }
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xff031927),
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text(editMode ? 'Save Height and Weight' : 'Edit Height and Weight',
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 16.0),),
                   ),
-                  child: Text(editMode ? 'Save Height and Weight' : 'Edit Height and Weight'),
                 ),
-              
               ),
-              
+              SizedBox(height: 30.0)
             ],
-            
           ),
         ),
       ),

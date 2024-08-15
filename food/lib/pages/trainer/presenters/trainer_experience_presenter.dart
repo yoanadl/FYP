@@ -30,7 +30,7 @@ class TrainerExperiencePresenter {
 
     try {
       await TrainerSettingProfileService().updateSettingProfile(user.uid, {
-        'Experience': _experience,
+        'experience': _experience,
       });
 
       _view.navigateToNextPage();
