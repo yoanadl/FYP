@@ -8,6 +8,7 @@ import 'package:food/pages/profileSetting/my_profile_page.dart';
 import 'package:food/pages/profileSetting/privacy_policy_page.dart';
 import 'package:food/pages/profileSetting/settings_page.dart';
 import 'package:food/pages/profileSetting/terms_conditions_page.dart';
+import 'package:food/pages/profileSetting/fitness_reminders_page.dart';
 import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/pages/user/view/upload_profile_page.dart';
 import 'package:food/services/setting_user_profile_service.dart';
@@ -142,10 +143,16 @@ class _ProfilePageState extends State<ProfilePage> {
       text: 'Your Profile',
       destination: MyProfilePage(),
     ),
+    
     RowData(
       icon: Icons.flag,
-      text: 'My Goals & Dietary',
+      text: 'My Fitness Goals',
       destination: GoalsPreferences(),
+    ),
+    RowData(
+      icon: Icons.person,
+      text: 'Fitness Reminders',
+      destination: FitnessReminders(),
     ),
     RowData(
       icon: Icons.monitor_weight,
@@ -201,60 +208,58 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 20.0),
-              // profile image avatar
-              Stack(
-                children: [
-                  _loadProfilePicture(),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UploadProfilePage(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          color: Color(0xFF031927),
-                          shape: BoxShape.circle,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 20.0),
+            // profile image avatar
+            Stack(
+              children: [
+                _loadProfilePicture(),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UploadProfilePage(),
                         ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF031927),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                        size: 20.0,
                       ),
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 15.0),
-              Text(
-                name,
-                style: TextStyle(fontSize: 20),
-              ),
-              SizedBox(height: 25.0),
-              // settings
-              ListView.separated(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: rowData.length,
-                itemBuilder: (context, index) =>
-                    buildRowItem(context, rowData[index]),
-                separatorBuilder: (context, index) => SizedBox(height: 5.0),
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15.0),
+            Text(
+              name,
+              style: TextStyle(fontSize: 20),
+            ),
+            SizedBox(height: 25.0),
+            // settings
+            ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: rowData.length,
+              itemBuilder: (context, index) =>
+                  buildRowItem(context, rowData[index]),
+              separatorBuilder: (context, index) => SizedBox(height: 5.0),
+            ),
+          ],
         ),
       ),
     );

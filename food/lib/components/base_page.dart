@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/pages/challenge_and_reward_page.dart';
-import 'package:food/pages/premiumUser/trainer/trainer_page.dart';
+import 'package:food/components/navbar.dart';
+import 'package:food/pages/challenges/challenge_home_page.dart';
 import 'package:food/pages/workout/views/workout_page_view.dart';
 import '../pages/user/view/profile_page.dart';
 import '../pages/user/view/home_page.dart';
@@ -22,8 +20,7 @@ class _BasePageState extends State<BasePage> {
   final List<Widget> _pages = [
     HomePage(),
     WorkoutPage(),
-    ChallengePage(),
-    TrainersPage(),
+    ChallengeHomePage(),
     ProfilePage(),
   ];
 

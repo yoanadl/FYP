@@ -58,7 +58,8 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
         builder: (context) => WorkoutActivityView(
           model: model,
           userId: widget.userId,
-          workoutId: widget.workoutId,),
+          workoutId: widget.workoutId,
+        ),
       ),
     );
   }
@@ -225,6 +226,8 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
 class WorkoutDoneViewImplementation implements WorkoutDoneViewInterface {
   @override
   void updateView(WorkoutDoneModel model) {
-   
+    // Update view logic
   }
 }
+
+

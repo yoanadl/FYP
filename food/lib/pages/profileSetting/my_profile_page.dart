@@ -163,7 +163,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
           children: [
             Text(
               'Profile',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold),
             ),
           ],
         ),
