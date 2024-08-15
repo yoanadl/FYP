@@ -12,12 +12,17 @@ class TrainerService {
       List<Map<String, dynamic>> trainers = [];
 
       for (var userDoc in snapshot.docs) {
+        // Get the trainer profile documents
         var trainerProfilesSnapshot = await userDoc.reference.collection('TrainerProfile').get();
 
         for (var trainerProfileDoc in trainerProfilesSnapshot.docs) {
           var data = trainerProfileDoc.data() as Map<String, dynamic>;
 
-          String profilePictureUrl = data['profilePictureUrl'] ?? 'https://via.placeholder.com/150';
+          // Fetch the profile picture URL from the main `users` collection
+          String? profilePictureUrl = userDoc.data()['profilePictureUrl'] as String?;
+
+
+
           String name = data['Name'] ?? 'No Name';
           List<dynamic> expertise = data['Expertise'] ?? [];
           String age = data['Age'] ?? 'No Age';

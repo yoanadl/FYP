@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/services/setting_trainer_profile_service.dart';
 
@@ -25,13 +24,27 @@ class TrainerProfile {
 
     if (user != null) {
       try {
-        Map<String, dynamic>? userData =
-            await TrainerSettingProfileService().fetchUserData(user.uid);
+        // Fetch the profile picture URL
+        String? fetchedProfilePictureUrl = await TrainerSettingProfileService().fetchProfilePictureUrl(user.uid);
+
+        // Set the profile picture URL
+        if (fetchedProfilePictureUrl != null) {
+          profilePictureUrl = fetchedProfilePictureUrl;
+          print('Profile Picture URL: $profilePictureUrl');
+        } else {
+          print('Profile Picture URL is null.');
+        }
+
+        // Fetch the other user data
+        Map<String, dynamic>? userData = await TrainerSettingProfileService().fetchUserData(user.uid);
 
         if (userData != null) {
           name = userData['Name'] ?? 'No name';
           gender = userData['Gender'];
-          profilePictureUrl = userData['profilePictureUrl'];
+          age = userData['Age'];
+          experience = userData['Experience'];
+          expertise = List<String>.from(userData['Expertise'] ?? []);
+          
           // Update other fields if needed
         } else {
           log('No user data found for uid: ${user.uid}');

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
-import 'package:food/pages/premiumUser/trainer/Advice.dart';
+import 'package:food/pages/premiumUser/trainer/advice.dart'; // Correct import for the Advice page
 import 'package:food/pages/premiumUser/trainer/request_list_page.dart';
 import 'package:food/pages/premiumUser/trainer/trainer_list_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +9,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food/pages/premiumUser/trainer/service/trainer_service.dart';
 import 'trainer_details_page.dart';
-// Import the Navbar
 
 class TrainersPage extends StatelessWidget {
   final User? user = FirebaseAuth.instance.currentUser;
@@ -140,8 +139,8 @@ class TrainersPage extends StatelessWidget {
 
                 // Trainer found, display "Your Trainer" section and the "Send a Message" button
                 final trainerData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
-                final trainerName = trainerData['name'] ?? 'Unknown Trainer';
-                final trainerId = trainerData['trainerId'] ?? '';
+                final trainerName = trainerData['Name'] ?? 'Unknown Trainer';
+                final trainerId = trainerData['userId'] ?? '';
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +193,7 @@ class TrainersPage extends StatelessWidget {
             builder: (context) => TrainerDetailsPage(
               trainerData: trainer,
               currentUserId: user?.uid ?? '',
-              trainerDocId: trainer['trainerDocId'] ?? '',
+              trainerDocId: trainer['profileId'] ?? '',
               userId: trainer['userId'],
               trainerName: trainer['Name'] ?? 'No Name',
             ),
@@ -204,10 +203,13 @@ class TrainersPage extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
-            radius: 40,
-            backgroundImage: NetworkImage(trainer['profilePictureUrl']),
-            backgroundColor: Colors.grey[300],
-          ),
+  radius: 40,
+  backgroundImage: (trainer['profilePictureUrl'] != null && trainer['profilePictureUrl']!.isNotEmpty)
+      ? NetworkImage(trainer['profilePictureUrl']!)
+      : AssetImage('assets/images/no_profile_pic.png') as ImageProvider,
+  backgroundColor: Colors.grey[300],
+),
+
           SizedBox(height: 8),
           Text(
             trainer['Name'],

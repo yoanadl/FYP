@@ -55,7 +55,7 @@ Widget _loadProfilePicture() {
     child: trainerProfile.profilePictureUrl != null
         ? CircleAvatar(
             radius: 60,
-            backgroundImage: CachedNetworkImageProvider(trainerProfile.profilePictureUrl!),
+           backgroundImage: NetworkImage(trainerProfile.profilePictureUrl!),
           )
         : const CircleAvatar(
             radius: 60,

@@ -104,7 +104,6 @@ class _TrainersListPageState extends State<TrainersListPage> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(3),
     );
   }
 
@@ -160,19 +159,4 @@ class _TrainersListPageState extends State<TrainersListPage> {
     ),
   );
 }
-
-
-  Widget _buildBottomNavigationBar(int selectedIndex) {
-    return BottomNavigationBar(
-      currentIndex: selectedIndex,
-      onTap: (index) {},
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
-        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
-        BottomNavigationBarItem(icon: Icon(Icons.person_search), label: 'Trainers'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-      ],
-    );
-  }
 }

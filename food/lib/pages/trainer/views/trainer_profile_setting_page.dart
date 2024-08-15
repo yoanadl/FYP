@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food/services/setting_trainer_profile_service.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -75,8 +76,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
   late TextEditingController ageController;
   late TextEditingController experienceController;
   late TextEditingController expertiseController;
-
-  TrainerProfile trainerProfile = TrainerProfile();
+  late TextEditingController profilePictureUrlController; // Added this
 
   Map<String, dynamic> profileData = {
     'Name': '',
@@ -92,6 +92,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
     ageController = TextEditingController(text: profileData['Age'] ?? '');
     experienceController = TextEditingController(text: profileData['Experience'] ?? '');
     expertiseController = TextEditingController(text: (profileData['Expertise'] as List<dynamic>).join(', ') ?? '');
+    profilePictureUrlController = TextEditingController(); // Initialize here
 
     fetchTrainerProfileData();
   }
@@ -102,41 +103,53 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
     ageController.dispose();
     experienceController.dispose();
     expertiseController.dispose();
+    profilePictureUrlController.dispose(); // Dispose here
 
     super.dispose();
   }
-
-  void fetchTrainerProfileData() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      print('User is not authenticated');
-      return;
-    }
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('TrainerProfile')
-          .get();
-
-      Map<String, dynamic> data = {};
-      querySnapshot.docs.forEach((doc) {
-        Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
-        data.addAll(docData);
-      });
-
-      setState(() {
-        profileData = data;
-        nameController.text = profileData['Name'] ?? '';
-        ageController.text = profileData['Age'] ?? '';
-        experienceController.text = profileData['Experience'] ?? '';
-        expertiseController.text = (profileData['Expertise'] as List<dynamic>).join(', ') ?? '';
-      });
-    } catch (e) {
-      print('Error fetching profile data: $e');
-    }
+void fetchTrainerProfileData() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    print('User is not authenticated');
+    return;
   }
 
+  try {
+    // Fetch profile data from the TrainerProfile subcollection
+    QuerySnapshot profileSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('TrainerProfile')
+        .get();
+
+    Map<String, dynamic> profileData = {};
+    profileSnapshot.docs.forEach((doc) {
+      Map<String, dynamic> docData = doc.data() as Map<String, dynamic>;
+      profileData.addAll(docData);
+    });
+
+    // Fetch profile picture URL from the users collection
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>?;
+    String? profilePictureUrl = userData?['profilePictureUrl'];
+
+    // Update state with fetched data
+    setState(() {
+      this.profileData = profileData;
+      nameController.text = profileData['Name']?.toString() ?? '';
+      ageController.text = profileData['Age']?.toString() ?? '';
+      experienceController.text = profileData['Experience']?.toString() ?? '';
+      expertiseController.text = (profileData['Expertise'] as List<dynamic>?)?.join(', ') ?? '';
+      profilePictureUrlController.text = profilePictureUrl ?? '';
+    });
+  } catch (e) {
+    print('Error fetching profile data: $e');
+  }
+}
   void updateTrainerProfileData() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -152,7 +165,7 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
         'Expertise': expertiseList,
       };
 
-      await SettingProfileService().updateSettingProfile(user.uid, updatedProfileData);
+      await TrainerSettingProfileService().updateSettingProfile(user.uid, updatedProfileData);
       print('Profile updated successfully!');
     } catch (e) {
       print('Failed to update profile: $e');
@@ -160,10 +173,10 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
   }
 
   Widget _loadTrainerProfilePicture() {
-    return trainerProfile.profilePictureUrl != null
+    return profilePictureUrlController.text.isNotEmpty
         ? CircleAvatar(
             radius: 60,
-            backgroundImage: CachedNetworkImageProvider(trainerProfile.profilePictureUrl!),
+            backgroundImage: CachedNetworkImageProvider(profilePictureUrlController.text),
           )
         : const CircleAvatar(
             radius: 60,

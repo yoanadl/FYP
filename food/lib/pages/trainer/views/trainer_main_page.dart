@@ -17,18 +17,20 @@ class TrainerMainPage extends StatefulWidget {
 
 class _TrainerMainPageState extends State<TrainerMainPage> {
   String name = '';
+  String? profilePictureUrl;
 
   @override
   void initState() {
     super.initState();
-    _fetchTrainerName();
+    _fetchTrainerProfileData();
   }
 
-  Future<void> _fetchTrainerName() async {
+  Future<void> _fetchTrainerProfileData() async {
     TrainerProfile trainerProfile = TrainerProfile();
     await trainerProfile.fetchUserData();
     setState(() {
       name = trainerProfile.name ?? 'Trainer';
+      profilePictureUrl = trainerProfile.profilePictureUrl; // Update with Firebase URL
     });
   }
 
@@ -40,12 +42,12 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false, 
-        toolbarHeight: 120, 
+        automaticallyImplyLeading: false,
+        toolbarHeight: 120,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 36, 16, 0), 
+          padding: const EdgeInsets.fromLTRB(16, 36, 16, 0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
@@ -71,7 +73,6 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                   ),
                 ],
               ),
-          
               IconButton(
                 icon: Container(
                   width: 55,
@@ -79,23 +80,21 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                      image: AssetImage('lib/images/profile_picture.webp'),
+                      image: profilePictureUrl != null
+                          ? NetworkImage(profilePictureUrl!)
+                          : AssetImage('lib/images/profile_picture.webp') as ImageProvider,
                       fit: BoxFit.cover,
                     ),
-                    // border: Border.all(color: Colors.black,width: 1.0)
                   ),
                 ),
                 onPressed: () {
                   widget.onTabSelected(3);
                 },
               ),
-                
             ],
           ),
         ),
       ),
-
-        
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
         child: Column(
@@ -126,12 +125,11 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                   );
                 }),
                 _buildGridTile(context, 'My\nClient', Color(0xFF508AA8), () {
-                  widget.onTabSelected(2); 
+                  widget.onTabSelected(2);
                 }),
               ],
             ),
             const SizedBox(height: 30),
-            
           ],
         ),
       ),
