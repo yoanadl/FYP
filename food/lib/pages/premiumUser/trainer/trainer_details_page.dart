@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:food/components/base_page.dart';
 import 'package:food/pages/premiumUser/trainer/service/request_service.dart'; 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:food/pages/premiumUser/trainer/trainer_page.dart'; 
+
 class TrainerDetailsPage extends StatelessWidget {
   final Map<String, dynamic> trainerData;
   final String currentUserId;
@@ -41,12 +42,12 @@ class TrainerDetailsPage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Request sent successfully!')),
       );
-      Navigator.push(
-      context,
-      MaterialPageRoute(
-      builder: (context) => TrainersPage(),
-    ),
-  );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BasePage(initialIndex: 3), // Navigate to BasePage with TrainersPage selected
+        ),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to send request: $e')),
@@ -158,16 +159,6 @@ class TrainerDetailsPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 3,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Community'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Trainers'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
-        ],
       ),
     );
   }

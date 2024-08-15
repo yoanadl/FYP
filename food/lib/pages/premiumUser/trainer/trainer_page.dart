@@ -1,13 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:food/components/base_page.dart';
+import 'package:food/components/navbar.dart';
+import 'package:food/pages/premiumUser/trainer/Advice.dart';
 import 'package:food/pages/premiumUser/trainer/request_list_page.dart';
 import 'package:food/pages/premiumUser/trainer/trainer_list_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/pages/premiumUser/trainer/Advice.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/pages/premiumUser/trainer/service/trainer_service.dart';
+import 'trainer_details_page.dart';
+// Import the Navbar
 
 class TrainersPage extends StatelessWidget {
   final User? user = FirebaseAuth.instance.currentUser;
+  final TrainerService _trainerService = TrainerService();
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +65,6 @@ class TrainersPage extends StatelessWidget {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  // No accepted trainer found, display original UI
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -71,13 +76,27 @@ class TrainersPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildTrainerCard('Trainer #1'),
-                          _buildTrainerCard('Trainer #2'),
-                          _buildTrainerCard('Trainer #3'),
-                        ],
+                      StreamBuilder<List<Map<String, dynamic>>>(
+                        stream: _trainerService.getTrainers(),
+                        builder: (context, trainerSnapshot) {
+                          if (trainerSnapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (trainerSnapshot.hasError) {
+                            return Center(child: Text('Error: ${trainerSnapshot.error}'));
+                          }
+                          if (!trainerSnapshot.hasData || trainerSnapshot.data!.isEmpty) {
+                            return Center(child: Text('No trainers available.'));
+                          }
+
+                          // Display trainer cards
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: trainerSnapshot.data!.map((trainer) {
+                              return _buildTrainerCard(context, trainer);
+                            }).toList(),
+                          );
+                        },
                       ),
                       SizedBox(height: 16),
                       Row(
@@ -163,7 +182,42 @@ class TrainersPage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(3),
+    );
+  }
+
+  Widget _buildTrainerCard(BuildContext context, Map<String, dynamic> trainer) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TrainerDetailsPage(
+              trainerData: trainer,
+              currentUserId: user?.uid ?? '',
+              trainerDocId: trainer['trainerDocId'] ?? '',
+              userId: trainer['userId'],
+              trainerName: trainer['Name'] ?? 'No Name',
+            ),
+          ),
+        );
+      },
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 40,
+            backgroundImage: NetworkImage(trainer['profilePictureUrl']),
+            backgroundColor: Colors.grey[300],
+          ),
+          SizedBox(height: 8),
+          Text(
+            trainer['Name'],
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -182,33 +236,6 @@ class TrainersPage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildTrainerCard(String trainer) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 40,
-          backgroundColor: Colors.grey[300],
-        ),
-        SizedBox(height: 8),
-        Text(trainer),
-      ],
-    );
-  }
-
-  Widget _buildBottomNavigationBar(int selectedIndex) {
-    return BottomNavigationBar(
-      currentIndex: 3,
-      onTap: (index) {},
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
-        BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Community'),
-        BottomNavigationBarItem(icon: Icon(Icons.person_search), label: 'Trainers'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
       ],
     );
   }
