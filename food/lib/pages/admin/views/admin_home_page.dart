@@ -213,7 +213,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         _buildUserTypeContainer('Premium Users', premiumUsersCount),
-                        _buildUserTypeContainer('Trainer', trainerCount),
+                        _buildUserTypeContainer('Trainers', trainerCount),
                       ],
                     ),
                   ],

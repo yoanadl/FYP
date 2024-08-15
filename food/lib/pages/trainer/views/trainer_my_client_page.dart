@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food/pages/trainer/views/trainer_send_advice.dart';
-import 'trainer_client_analytics_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TrainerMyClientPage extends StatefulWidget {
@@ -159,29 +158,6 @@ class _TrainerMyClientPageState extends State<TrainerMyClientPage> {
                                         ),
                                       ),
                                       subtitle: Text('Goals: ${client['fitnessGoals'] ?? 'N/A'}'),
-                                      trailing: PopupMenuButton<String>(
-                                        onSelected: (String result) {
-                                          if (result == 'View Analytics') {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => TrainerClientAnalyticsPage(),
-                                              ),
-                                            );
-                                          }
-                                          // Handle menu selection
-                                        },
-                                        itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                                          const PopupMenuItem<String>(
-                                            value: 'View Analytics',
-                                            child: Text('View Analytics'),
-                                          ),
-                                          const PopupMenuItem<String>(
-                                            value: 'Delete Client',
-                                            child: Text('Delete Client'),
-                                          ),
-                                        ],
-                                      ),
                                     ),
                                   ),
                                 );

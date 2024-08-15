@@ -58,7 +58,9 @@ class _SendAdvicePageState extends State<SendAdvicePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('Chat with ${widget.userName}'),
       ),
       body: Column(
@@ -106,8 +108,9 @@ class _SendAdvicePageState extends State<SendAdvicePage> {
               },
             ),
           ),
+          
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(35.0),
             child: Row(
               children: [
                 Expanded(
