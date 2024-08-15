@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth; 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/challenges/challenge_activity.dart';
 import 'package:food/pages/challenges/challenge_activity_page.dart';
 import 'package:food/pages/challenges/leaderboard.dart';
+import 'package:food/pages/user/model/user_model.dart';
 import 'package:food/services/challenge_service.dart';
-
 
 class ChallengeOwnerViewPage extends StatefulWidget {
   final String challengeId;
@@ -27,6 +29,7 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
   List<ChallengeActivity> activities = [];
   bool isLoading = true;
   String? creatorNameText;
+  bool canStartChallenge = true;
 
   @override
   void initState() {
@@ -53,16 +56,26 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
                     duration: activity['duration'] ?? '',
                   ))
               .toList();
+          creatorNameText = 'Created by: ${challengeData['creatorName'] ?? 'Unknown'}';
           isLoading = false;
-        });
 
-        // Fetch the creator's name
-        final creatorName = await challengeService.fetchCreatorName(widget.challengeId);
-        setState(() {
-          creatorNameText = 'Created by: $creatorName';
-          isLoading = false;
-        });
+          // Check challenge dates
+          final startDate = (challengeData['startDate'] as Timestamp).toDate();
+          final endDate = (challengeData['endDate'] as Timestamp).toDate();
+          final now = DateTime.now();
 
+          if (now.isBefore(startDate)) {
+            canStartChallenge = false;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Challenge hasn\'t started yet')),
+            );
+          } else if (now.isAfter(endDate)) {
+            canStartChallenge = false;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Challenge has ended')),
+            );
+          }
+        });
       } else {
         print('Challenge data not found');
         setState(() {
@@ -153,7 +166,7 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
                   )
                 : Text('Duration: ${durationController.text}'),
             SizedBox(height: 25),
-            Text( 
+            Text(
               'Activities', // Added text "Activities" in the first row
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
             ),
@@ -182,21 +195,23 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
               )
             else
               Center(
-                  child: ElevatedButton(
-                    child: Text(
-                      'Start Challenge',
-                      style: TextStyle(
-                        fontSize: 18
-                      ) ,),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF031927),
-                      foregroundColor: Colors.white),
-                    onPressed: () => Navigator.push(
-                      context, 
-                      MaterialPageRoute(
-                        builder: (context) => ChallengeActivityPage(challengeId: widget.challengeId),
-                      ),
+                child: ElevatedButton(
+                  child: Text(
+                    'Start Challenge',
+                    style: TextStyle(fontSize: 18),
                   ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF031927),
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: canStartChallenge
+                      ? () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChallengeActivityPage(challengeId: widget.challengeId),
+                          ),
+                        )
+                      : null,
                 ),
               ),
           ],
@@ -253,7 +268,6 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
       ),
     );
   }
-  
 
   Future<void> _updateChallenge() async {
     final challengeService = ChallengeService();
@@ -282,40 +296,97 @@ class _ChallengeOwnerViewPageState extends State<ChallengeOwnerViewPage> {
     }
   }
 
+  // void _showDeleteDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text('Delete Challenge'),
+  //         content: Text('Are you sure you want to delete this challenge?'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () async {
+  //               Navigator.pop(context);
+  //               await _deleteChallenge();
+  //               Navigator.pop(context); // Go back to previous screen after deletion
+  //             },
+  //             child: Text('Yes'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //             },
+  //             child: Text('No'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
   void _showDeleteDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Delete Challenge'),
-          content: Text('Are you sure you want to delete this challenge?'),
-          actions: [
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Delete', style: TextStyle(color: Colors.red)),
-              onPressed: () async {
-                await _deleteChallenge();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  showCupertinoDialog(
+    context: context,
+    builder: (context) {
+      return CupertinoAlertDialog(
+        title: Text('Delete Challenge'),
+        content: Text('Are you sure you want to delete this challenge?'),
+        actions: [
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () async {
+              Navigator.pop(context);
+              await _deleteChallenge();
+              Navigator.pop(context); // Go back to previous screen after deletion
+            },
+            child: Text('Yes'),
+          ),
+          CupertinoDialogAction(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('No'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+  // Future<void> _deleteChallenge() async {
+
+    
+  //   final challengeService = ChallengeService();
+  //   try {
+  //     await challengeService.deleteChallenge(widget.challengeId);
+  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Challenge deleted')));
+  //   } catch (e) {
+  //     print("Error deleting challenge: $e");
+  //   }
+  // }
 
   Future<void> _deleteChallenge() async {
-    final challengeService = ChallengeService();
 
-    try {
-      await challengeService.deleteChallenge(widget.challengeId);
-    } catch (e) {
-      print("Error deleting challenge: $e");
-    }
+  final auth.User? user = auth.FirebaseAuth.instance.currentUser;
+  
+  if (user == null) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('No user is currently signed in.'))
+    );
+    return;
+  }
+
+  final String userId = user.uid;
+  final challengeService = ChallengeService();
+
+  try {
+    await challengeService.deleteChallenge(widget.challengeId, userId);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Challenge deleted'))
+    );
+  } catch (e) {
+    print("Error deleting challenge: $e");
   }
 }
+}
+

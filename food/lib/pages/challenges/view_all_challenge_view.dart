@@ -15,17 +15,16 @@ class _ViewAllChallengesState extends State<ViewAllChallenges> {
   List<Map<String, dynamic>> _filteredChallenges = [];
   String _searchQuery = '';
   String? currentUserId; // Current user ID for ownership check
-
+  bool _isLoading = true; // Track loading state
 
   @override
   void initState() {
     super.initState();
-    _challengesFuture = ChallengeService().getAllChallenges();
     _fetchChallenges();
     _getCurrentUserId();
   }
 
-   Future<void> _getCurrentUserId() async {
+  Future<void> _getCurrentUserId() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       setState(() {
@@ -40,10 +39,14 @@ class _ViewAllChallengesState extends State<ViewAllChallenges> {
       setState(() {
         _allChallenges = challenges;
         _filteredChallenges = challenges;
+        _isLoading = false; // Set loading state to false once data is fetched
       });
     } catch (e) {
       // Handle error
       print('Error fetching challenges: $e');
+      setState(() {
+        _isLoading = false; // Set loading state to false in case of an error
+      });
     }
   }
 
@@ -59,8 +62,6 @@ class _ViewAllChallengesState extends State<ViewAllChallenges> {
   }
 
   void _navigateToChallengePage(BuildContext context, String creatorId, String challengeId) async {
-
-  
     if (creatorId == currentUserId) {
       // Navigate to challenge owner view page
       Navigator.push(
@@ -120,41 +121,43 @@ class _ViewAllChallengesState extends State<ViewAllChallenges> {
             ),
             SizedBox(height: 20),
             Expanded(
-              child: _allChallenges.isEmpty
+              child: _isLoading
                   ? Center(child: CircularProgressIndicator())
-                  : GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 16,
-                        mainAxisSpacing: 16,
-                      ),
-                      itemCount: _filteredChallenges.length,
-                      itemBuilder: (context, index) {
-                        final challenge = _filteredChallenges[index];
-                        final creatorId = challenge['creatorUid']; 
-                        final challengeId = challenge['id']; 
+                  : _filteredChallenges.isEmpty
+                      ? Center(child: Text('No challenges created'))
+                      : GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                          ),
+                          itemCount: _filteredChallenges.length,
+                          itemBuilder: (context, index) {
+                            final challenge = _filteredChallenges[index];
+                            final creatorId = challenge['creatorUid']; 
+                            final challengeId = challenge['id']; 
 
-                        return InkWell(
-                          onTap: () => _navigateToChallengePage(context, creatorId, challengeId),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFFC8E0F4),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: Text(
-                                challenge['title'] ?? 'Challenge ${index + 1}',
-                                style: TextStyle(
-                                  color: Colors.grey[800],
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                            return InkWell(
+                              onTap: () => _navigateToChallengePage(context, creatorId, challengeId),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFC8E0F4),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    challenge['title'] ?? 'Challenge ${index + 1}',
+                                    style: TextStyle(
+                                      color: Colors.grey[800],
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                            );
+                          },
+                        ),
             ),
           ],
         ),
@@ -162,4 +165,3 @@ class _ViewAllChallengesState extends State<ViewAllChallenges> {
     );
   }
 }
-

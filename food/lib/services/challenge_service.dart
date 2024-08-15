@@ -79,14 +79,105 @@ class ChallengeService {
     }
   }
 
-  Future<void> deleteChallenge(String challengeId) async {
+  
+  Future<void> deleteChallenge(String challengeId, String userId) async {
+
     try {
-      await _firestore.collection('challenges').doc(challengeId).delete();
+     
+      // Start a Firestore batch write
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      // Delete the challenge document from the 'challenges' collection
+      DocumentReference challengeRef = FirebaseFirestore.instance.collection('challenges').doc(challengeId);
+      batch.delete(challengeRef);
+      
+      // Reference to the user's document
+      DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+
+      // Fetch the user's document to check if the challenges array contains the challengeId
+      DocumentSnapshot userDocSnapshot = await userRef.get();
+      if (userDocSnapshot.exists) {
+        List<dynamic> challenges = userDocSnapshot.get('challenges');
+        
+        // Find the specific challenge object with the matching challengeId
+        var challengeToRemove;
+        for (var challenge in challenges) {
+          if (challenge['challengeId'] == challengeId) {
+            challengeToRemove = challenge;
+            break;
+          }
+        }
+
+        if (challengeToRemove != null) {
+        
+          // Update the user's 'challenges' array to remove the specific challenge object
+          batch.update(userRef, {
+            'challenges': FieldValue.arrayRemove([challengeToRemove])
+          });
+          
+        } else {
+          print('Challenge ID $challengeId not found in user $userId\'s challenges array.');
+        }
+      } else {
+        print('User document does not exist for userId: $userId');
+      }
+
+      // Commit the batch
+      await batch.commit();
     } catch (e) {
-      print("Error deleting challenge: $e");
+      print("Error deleting challenge for user $userId: $e");
       rethrow;
     }
   }
+  Future<void> quitChallenge(String challengeId, String userId) async {
+    try {
+      
+      // Start a Firestore batch write
+      WriteBatch batch = _firestore.batch();
+
+      // Reference to the user's document
+      DocumentReference userRef = _firestore.collection('users').doc(userId);
+
+      // Fetch the user's document to check if the challenges array contains the challengeId
+      DocumentSnapshot userDocSnapshot = await userRef.get();
+      if (userDocSnapshot.exists) {
+        List<dynamic> challenges = userDocSnapshot.get('challenges');
+      
+        // Find the specific challenge object with the matching challengeId
+        Map<String, dynamic>? challengeToRemove;
+        for (var challenge in challenges) {
+          if (challenge['challengeId'] == challengeId) {
+            challengeToRemove = challenge as Map<String, dynamic>;
+            break;
+          }
+        }
+
+        if (challengeToRemove != null) {
+          
+          // Update the user's 'challenges' array to remove the specific challenge object
+          batch.update(userRef, {
+            'challenges': FieldValue.arrayRemove([challengeToRemove])
+          });
+          
+        } else {
+          print('Challenge ID $challengeId not found in user $userId\'s challenges array.');
+        }
+      } else {
+        print('User document does not exist for userId: $userId');
+      }
+
+      // Commit the batch
+      await batch.commit();
+  
+    } catch (e) {
+      print("Error quitting challenge for user $userId: $e");
+      rethrow;
+    }
+  }
+
+
+
+
 
   Future<List<Map<String, dynamic>>> getAllChallenges() async {
     try {
@@ -207,25 +298,21 @@ class ChallengeService {
   try {
     int totalPoints = 0;
 
-    print('Fetching challenges for user $userId...');
-
+  
     // Fetch all challenge documents where the user is a participant
     final querySnapshot = await FirebaseFirestore.instance
         .collection('challenges')
         .get();
 
-    print('Total challenges fetched: ${querySnapshot.docs.length}');
 
     for (var doc in querySnapshot.docs) {
-      print('Processing challenge: ${doc.id}');
+    
       final participants = List<Map<String, dynamic>>.from(doc['participants'] ?? []);
-      print('Participants in challenge ${doc.id}: $participants');
-      
+   
       for (var participant in participants) {
         if (participant['userId'] == userId) {
           int points = (participant['totalPoints'] ?? 0) as int;
           totalPoints += points;
-          print('User $userId found in challenge ${doc.id} with ${points} points.');
           break; // Break the loop since we found the user in this challenge
         }
       }
@@ -239,7 +326,7 @@ class ChallengeService {
         .doc(userId)
         .update({'totalRewardPoints': totalPoints});
 
-    print('Successfully updated totalRewardPoints for user $userId to $totalPoints.');
+  
   } catch (e) {
     print('Error calculating total reward points for user $userId: $e');
   }
