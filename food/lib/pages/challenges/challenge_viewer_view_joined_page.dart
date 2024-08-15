@@ -4,9 +4,10 @@
 // import 'package:food/components/base_page.dart';
 // import 'package:food/components/navbar.dart';
 // import 'package:food/pages/challenges/challenge_activity_page.dart';
+// import 'package:food/pages/challenges/challenge_results.dart';
 // import 'package:food/pages/challenges/leaderboard.dart';
 // import 'package:flutter/cupertino.dart';
-
+// import 'package:food/services/challenge_service.dart';
 
 // class ChallengeViewerViewJoinedPage extends StatelessWidget {
 //   final String challengeId;
@@ -46,12 +47,40 @@
 //           },
 //         ),
 //         actions: [
-//           IconButton(
-//             icon: Icon(Icons.emoji_events),
-//             onPressed: () => Navigator.push(
-//               context,
-//               MaterialPageRoute(builder: (context) => LeaderboardPage(challengeId: challengeId,)),
-//             ),
+//           FutureBuilder<DocumentSnapshot>(
+//             future: FirebaseFirestore.instance.collection('challenges').doc(challengeId).get(),
+//             builder: (context, snapshot) {
+//               if (snapshot.connectionState == ConnectionState.waiting) {
+//                 return CircularProgressIndicator();
+//               }
+//               if (snapshot.hasError) {
+//                 return Icon(Icons.error);
+//               }
+//               if (!snapshot.hasData || !snapshot.data!.exists) {
+//                 return Icon(Icons.error);
+//               }
+
+//               final challengeData = snapshot.data!.data() as Map<String, dynamic>;
+//               final endDate = (challengeData['endDate'] as Timestamp).toDate();
+//               final now = DateTime.now();
+
+//               return IconButton(
+//                 icon: Icon(Icons.emoji_events),
+//                 onPressed: () {
+//                   if (now.isAfter(endDate)) {
+//                     Navigator.push(
+//                       context,
+//                       MaterialPageRoute(builder: (context) => ChallengeResultsPage(challengeId: challengeId)),
+//                     );
+//                   } else {
+//                     Navigator.push(
+//                       context,
+//                       MaterialPageRoute(builder: (context) => LeaderboardPage(challengeId: challengeId)),
+//                     );
+//                   }
+//                 },
+//               );
+//             },
 //           ),
 //           IconButton(
 //             icon: Icon(Icons.exit_to_app),
@@ -78,26 +107,19 @@
 
 //               if (shouldQuit == true) {
 //                 String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+//                 final challengeService = ChallengeService();
 
 //                 try {
-//                   // Remove the challenge from the user's challenges in Firestore
-//                   await FirebaseFirestore.instance.collection('users').doc(userId).update({
-//                     'challenges': FieldValue.arrayRemove([
-//                       {
-//                         'challengeId': challengeId,
-//                         'type': 'joined'
-//                       }
-//                     ])
-//                   });
+//                   // Call quitChallenge from ChallengeService
+//                   await challengeService.quitChallenge(challengeId, userId);
 
 //                   // Show success SnackBar
 //                   ScaffoldMessenger.of(context).showSnackBar(
-//                     SnackBar(content: Text('Challenge removed')),
+//                     SnackBar(content: Text('You have quit the challenge')),
 //                   );
 
 //                   // Navigate back to previous screen or refresh the current page
 //                   Navigator.pop(context);
-
 //                 } catch (e) {
 //                   // Handle error
 //                   ScaffoldMessenger.of(context).showSnackBar(
@@ -213,8 +235,6 @@
 //       ),
 //     );
 //   }
-
-  
 // }
 
 
@@ -224,6 +244,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/pages/challenges/challenge_activity_page.dart';
+import 'package:food/pages/challenges/challenge_results.dart';
 import 'package:food/pages/challenges/leaderboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:food/services/challenge_service.dart';
@@ -262,16 +283,44 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
             return Text(title, style: TextStyle(
               fontSize: 24, 
               fontWeight: FontWeight.bold
-            ),);
+            ));
           },
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.emoji_events),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LeaderboardPage(challengeId: challengeId,)),
-            ),
+          FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance.collection('challenges').doc(challengeId).get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              }
+              if (snapshot.hasError) {
+                return Icon(Icons.error);
+              }
+              if (!snapshot.hasData || !snapshot.data!.exists) {
+                return Icon(Icons.error);
+              }
+
+              final challengeData = snapshot.data!.data() as Map<String, dynamic>;
+              final endDate = (challengeData['endDate'] as Timestamp).toDate();
+              final now = DateTime.now();
+
+              return IconButton(
+                icon: Icon(Icons.emoji_events),
+                onPressed: () {
+                  if (now.isAfter(endDate)) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChallengeResultsPage(challengeId: challengeId)),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LeaderboardPage(challengeId: challengeId)),
+                    );
+                  }
+                },
+              );
+            },
           ),
           IconButton(
             icon: Icon(Icons.exit_to_app),
@@ -341,6 +390,8 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
           final rewards = challengeData['rewards'] ?? '00 pts';
           final duration = challengeData['duration'] ?? 'Unknown Duration';
           final activities = challengeData['activities'] as List<dynamic>? ?? [];
+          final startDate = (challengeData['startDate'] as Timestamp).toDate();
+          final endDate = (challengeData['endDate'] as Timestamp).toDate();
 
           return Padding(
             padding: EdgeInsets.all(35.0),
@@ -355,6 +406,10 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
                 SizedBox(height: 16),
                 Text('Duration: $duration'),
                 SizedBox(height: 16),
+                Text('Start Date: ${startDate.toLocal().toString().split(' ')[0]}'),
+                SizedBox(height: 8),
+                Text('End Date: ${endDate.toLocal().toString().split(' ')[0]}'),
+                SizedBox(height: 16),
                 Text('Activities', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
                 _buildActivityList(activities),
@@ -365,7 +420,8 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
                       'Start Challenge',
                       style: TextStyle(
                         fontSize: 18
-                      ) ,),
+                      ),
+                    ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF031927),
                       foregroundColor: Colors.white),

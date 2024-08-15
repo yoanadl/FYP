@@ -318,8 +318,6 @@ class ChallengeService {
       }
     }
 
-    print('Total points calculated for user $userId: $totalPoints');
-
     // Store total points in the user's document
     await FirebaseFirestore.instance
         .collection('users')
