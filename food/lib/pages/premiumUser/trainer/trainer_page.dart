@@ -140,7 +140,7 @@ class TrainersPage extends StatelessWidget {
                 // Trainer found, display "Your Trainer" section and the "Send a Message" button
                 final trainerData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
                 final trainerName = trainerData['name'] ?? 'Unknown Trainer';
-                final trainerId = trainerData['userId'] ?? '';
+                final trainerId = trainerData['trainerId'] ?? '';
                 final profilePictureUrl = trainerData['profilePictureUrl'] ?? '';
 
                 return Column(
