@@ -266,7 +266,7 @@ class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  final HealthService healthService = HealthService();
+  // final HealthService healthService = HealthService();
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   bool _isBreakReminderEnabled = false;
@@ -367,28 +367,28 @@ class NotificationService {
 
   // Check if the daily step goal is met and send a notification if not
 Future<void> checkDailyStepGoal() async {
-  try {
-    // Fetch the daily step goal
-    final stepGoal = await _fetchStepGoalFromFirestore();
+  // try {
+  //   // Fetch the daily step goal
+  //   final stepGoal = await _fetchStepGoalFromFirestore();
 
-    // Fetch the current step count
-    final int? steps = await healthService.getSteps();
-    if (steps == null) {
-      print('Error fetching steps');
-      return;
-    }
+  //   // Fetch the current step count
+  //   final int? steps = await healthService.getSteps();
+  //   if (steps == null) {
+  //     print('Error fetching steps');
+  //     return;
+  //   }
 
-    // Check if the step goal is met
-    if (steps < stepGoal) {
-      await showNotification(
-        id: 1,
-        title: 'Step Goal Alert',
-        body: 'You have not reached your step goal for today. Keep moving!',
-      );
-    }
-  } catch (e) {
-    print('Error checking daily step goal: $e');
-  }
+  //   // Check if the step goal is met
+  //   if (steps < stepGoal) {
+  //     await showNotification(
+  //       id: 1,
+  //       title: 'Step Goal Alert',
+  //       body: 'You have not reached your step goal for today. Keep moving!',
+  //     );
+  //   }
+  // } catch (e) {
+  //   print('Error checking daily step goal: $e');
+  // }
 }
 
 // Check if the daily exercise duration goal is met and send a notification if not

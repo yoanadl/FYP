@@ -5,7 +5,7 @@ import 'package:food/firebase_options.dart';
 import 'package:food/services/notification_service.dart';
 import 'pages/user/view/intro_page.dart';
 // import 'package:food/applewatch/injector.dart' show initializeDependencies;
-import 'package:health/health.dart';
+// import 'package:health/health.dart';
 import 'package:timezone/data/latest.dart' as tz; 
 
 
@@ -17,7 +17,7 @@ Future<void> main() async {
   tz.initializeTimeZones();
   try {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-    initializeDependencies();
+    // initializeDependencies();
     Stripe.publishableKey = "pk_test_51Pa6OlGwNxjo4qONIEwyIRRlgb2XX0QtOi1be81uw5s3UkWHqfx8q02QEhipq7Lo12dRFUdbxE2dXvMg5LXcRUi400ohnfhYtk";
     Stripe.instance.applySettings();
     
