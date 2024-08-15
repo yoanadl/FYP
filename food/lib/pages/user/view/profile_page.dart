@@ -250,14 +250,21 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 25.0),
-            Expanded(
-              child: ListView.separated(
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.5,
+                  ),
+            child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: rowData.length,
                 itemBuilder: (context, index) =>
                     buildRowItem(context, rowData[index]),
                 separatorBuilder: (context, index) => SizedBox(height: 5.0),
-              ),
+                  ),
+                );
+              },
             ),
           ],
         ),
