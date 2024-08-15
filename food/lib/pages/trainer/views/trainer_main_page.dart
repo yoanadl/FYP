@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/trainer/models/trainer_profile_model.dart';
 import 'package:food/pages/trainer/views/trainer_client_feedback_page.dart';
 import 'package:food/pages/trainer/views/trainer_pending_clients.dart';
-import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/services/setting_trainer_profile_service.dart'; // Import service
 import 'package:intl/intl.dart';
 
