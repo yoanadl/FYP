@@ -19,18 +19,66 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void login(BuildContext context) async {
-    final _authService = AuthService();
+  // void login(BuildContext context) async {
+  //   final _authService = AuthService();
 
-    try {
-      User? user = await _authService.signInWithEmailPassword(
-        context,
-        emailController.text,
-        passwordController.text,
-      );
+  //   try {
+  //     User? user = await _authService.signInWithEmailPassword(
+  //       context,
+  //       emailController.text,
+  //       passwordController.text,
+  //     );
 
       
-    } catch (e) {
+  //   } catch (e) {
+      
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //         title: Text('Error'),
+  //         content: Text(e.toString()),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  // }
+
+  void navigateToRegisterPage() {
+    Navigator.push(
+      context, 
+      MaterialPageRoute(builder: (context) => RegisterPage(
+        onTap: () {
+          
+        },
+      )),
+    );
+  }
+
+  void login(BuildContext context) async {
+  final _authService = AuthService();
+
+  try {
+    User? user = await _authService.signInWithEmailPassword(
+      context,
+      emailController.text,
+      passwordController.text,
+    );
+    
+    // Navigate to the base page or home page if login is successful
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => BasePage()),
+    );
+
+  } catch (e) {
+    if (mounted) { // Check if the widget is still mounted
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -48,17 +96,8 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
   }
+}
 
-  void navigateToRegisterPage() {
-    Navigator.push(
-      context, 
-      MaterialPageRoute(builder: (context) => RegisterPage(
-        onTap: () {
-          
-        },
-      )),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {

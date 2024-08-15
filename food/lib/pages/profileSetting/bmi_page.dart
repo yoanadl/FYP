@@ -291,9 +291,10 @@ class _BmiPageState extends State<BmiPage> {
                   child: Text(editMode ? 'Save Height and Weight' : 'Edit Height and Weight'),
                 ),
               
-             
+              ),
               
             ],
+            
           ),
         ),
       ),
