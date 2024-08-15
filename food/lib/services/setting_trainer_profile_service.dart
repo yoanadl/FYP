@@ -4,23 +4,22 @@ class TrainerSettingProfileService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
+  // Method to create a profile with named parameters
   Future<void> createProfile(String uid, {
     required int age,
-    required int height,
-    required int weight,
+    required int experience,
+    required List<String> expertise,
     required String name,
-    required String fitnessGoals,
-    required String gender,
+    String? profilePictureUrl,
   }) async {
     try {
       // Prepare the profile data
       Map<String, dynamic> profileData = {
         'age': age,
-        'height': height,
+        'experience': experience,
+        'expertise': expertise,
         'name': name,
-        'weight': weight,
-        'fitnessGoals': fitnessGoals,
-        'gender': gender,
+        'profilePictureUrl': profilePictureUrl,
       };
 
       // Add profile document with the given data
@@ -32,7 +31,8 @@ class TrainerSettingProfileService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getUserProfile(String uid) async {
+  // Method to get user profiles
+  Future<List<Map<String, dynamic>>> getUserProfiles(String uid) async {
     try {
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
@@ -42,11 +42,12 @@ class TrainerSettingProfileService {
           .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
     } catch (e) {
-      print('Error retrieving user profile: $e');
-      throw Exception('Failed to retrieve user profile.');
+      print('Error retrieving user profiles: $e');
+      throw Exception('Failed to retrieve user profiles.');
     }
   }
 
+  // Method to update the profile or create a default profile if none exists
   Future<void> updateSettingProfile(String uid, Map<String, dynamic> newData) async {
     try {
       QuerySnapshot querySnapshot = await usersCollection
@@ -69,11 +70,10 @@ class TrainerSettingProfileService {
         await createProfile(
           uid,
           age: 0,
-          height: 0,
-          weight: 0,
+          experience: 0,
+          expertise: ['Default Expertise'],
           name: "Default Name",
-          fitnessGoals: "Default Goals",
-          gender: "Unspecified",
+          profilePictureUrl: null,
         );
         print('Profile created successfully with default values!');
       }
@@ -83,6 +83,7 @@ class TrainerSettingProfileService {
     }
   }
 
+  // Method to fetch user data
   Future<Map<String, dynamic>?> fetchUserData(String uid) async {
     try {
       QuerySnapshot querySnapshot = await usersCollection
@@ -101,6 +102,7 @@ class TrainerSettingProfileService {
     }
   }
 
+  // Method to fetch the user's profile picture URL
   Future<String?> fetchProfilePictureUrl(String uid) async {
     try {
       DocumentSnapshot userDoc = await usersCollection.doc(uid).get();
@@ -109,6 +111,24 @@ class TrainerSettingProfileService {
     } catch (e) {
       print('Error fetching profile picture URL: $e');
       return null;
+    }
+  }
+
+  // Method to fetch the trainer's experience
+  Future<int?> getTrainerExperience(String uid) async {
+    try {
+      Map<String, dynamic>? userData = await fetchUserData(uid);
+
+      if (userData != null) {
+        int? experience = userData['experience'] as int?;
+        return experience;
+      } else {
+        print('No trainer data found for uid: $uid');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching experience: $e');
+      throw Exception('Failed to fetch experience.');
     }
   }
 }

@@ -100,7 +100,7 @@ class TrainerDetailsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    trainerData['Name'] ?? 'No Name',
+                    trainerData['name'] ?? 'No Name',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -119,17 +119,17 @@ class TrainerDetailsPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Expertise: ${trainerData['Expertise']?.join(', ') ?? 'No Expertise'}',
+                          'Expertise: ${trainerData['expertise']?.join(', ') ?? 'No Expertise'}',
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Age: ${trainerData['Age'] ?? 'Unknown'}',
+                          'Age: ${trainerData['age'] ?? 'Unknown'}',
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Experience: ${trainerData['Experience'] ?? 'Unknown'}',
+                          'Experience: ${trainerData['experience'] ?? 'Unknown'}',
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
                       ],
@@ -152,16 +152,6 @@ class TrainerDetailsPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 3,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.fitness_center), label: 'Workout'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Community'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Trainers'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle), label: 'Profile'),
-        ],
       ),
     );
   }

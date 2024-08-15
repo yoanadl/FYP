@@ -1,69 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/services/setting_user_profile_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:food/pages/user/view/upload_profile_page.dart';
+import 'package:food/pages/profileSetting/my_profile_page.dart';
+import 'package:food/services/setting_trainer_profile_service.dart';
 import 'package:food/pages/trainer/models/trainer_profile_model.dart';
-
-class ProfileTextField extends StatelessWidget {
-  final String label;
-  final TextEditingController controller;
-  final Function(String) onChanged;
-
-  const ProfileTextField({
-    Key? key,
-    required this.label,
-    required this.controller,
-    required this.onChanged,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.bold,
-              fontSize: 18.0,
-            ),
-          ),
-        ),
-        SizedBox(height: 8.0),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 5.0),
-          child: SizedBox(
-            height: 48.0,
-            child: TextFormField(
-              controller: controller,
-              onChanged: onChanged,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 8.0),
-                border: OutlineInputBorder(),
-                hintText: 'Enter $label',
-                hintStyle: TextStyle(
-                  color: Colors.grey.shade400,
-                  fontFamily: 'Poppins',
-                  fontSize: 14.0,
-                ),
-              ),
-              style: const TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins',
-                fontSize: 16.0,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+import 'package:food/pages/user/view/upload_profile_page.dart';
 
 class TrainerProfileSetting extends StatefulWidget {
   @override
@@ -72,35 +12,32 @@ class TrainerProfileSetting extends StatefulWidget {
 
 class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
   late TextEditingController nameController;
-  late TextEditingController emailController;
-  late TextEditingController genderController;
   late TextEditingController ageController;
-  late TextEditingController heightController;
-  late TextEditingController weightController;
+  late TextEditingController experienceController;
 
   TrainerProfile trainerProfile = TrainerProfile();
 
-  Map<String, dynamic> profileData = {
-    'Name': '',
-    'gender': '',
-    'Age': '',
-    'Height(cm)': '',
-    'Weight(kg)': '',
-  };
+  final List<String> _expertiseOptions = [
+    'Strength Training',
+    'Cardio Training',
+    'HIIT',
+    'Weight Loss',
+    'Muscle Gain',
+    'Sports Performance',
+    'Flexibility and Mobility',
+    'Injury Rehabilitation',
+    'Yoga',
+    'Nutrition Counseling'
+  ];
 
-  Map<String, dynamic> profileData_1 = {
-    'Email': '',
-  };
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController(text: profileData['Name'] ?? '');
-    emailController = TextEditingController(text: profileData_1['Email'] ?? '');
-    genderController = TextEditingController(text: profileData['gender'] ?? '');
-    ageController = TextEditingController(text: profileData['Age'] ?? '');
-    heightController = TextEditingController(text: profileData['Height(cm)'] ?? '');
-    weightController = TextEditingController(text: profileData['Weight(kg)'] ?? '');
+    nameController = TextEditingController();
+    ageController = TextEditingController();
+    experienceController = TextEditingController();
 
     fetchTrainerProfileData();
   }
@@ -108,12 +45,8 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
   @override
   void dispose() {
     nameController.dispose();
-    emailController.dispose();
-    genderController.dispose();
     ageController.dispose();
-    heightController.dispose();
-    weightController.dispose();
-
+    experienceController.dispose();
     super.dispose();
   }
 
@@ -124,29 +57,21 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
       return;
     }
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('TrainerProfile')
-          .get();
+      Map<String, dynamic>? profileData = await TrainerSettingProfileService().fetchUserData(user.uid);
 
-      Map<String, dynamic> data = {};
-      querySnapshot.docs.forEach((doc) {
-        data.addAll(doc.data() as Map<String, dynamic>);
-      });
+      if (profileData != null) {
+        setState(() {
+          trainerProfile = TrainerProfile.fromMap(profileData);
+          nameController.text = trainerProfile.name ?? '';
+          ageController.text = trainerProfile.age?.toString() ?? '';
+          experienceController.text = trainerProfile.experience?.toString() ?? '';
 
-      setState(() {
-        profileData = data;
-        profileData_1['Email'] = user.email ?? '';
-        nameController.text = profileData['Name'] ?? '';
-        emailController.text = profileData_1['Email'] ?? '';
-        genderController.text = profileData['gender'] ?? '';
-        ageController.text = profileData['Age'] ?? '';
-        heightController.text = profileData['Height(cm)'] ?? '';
-        weightController.text = profileData['Weight(kg)'] ?? '';
-      });
+          // Initialize selected expertise options based on fetched data
+          trainerProfile.expertise = trainerProfile.expertise ?? [];
+        });
+      }
     } catch (e) {
-      print('Error fetching profile data: $e');
+      print('Failed to fetch profile data: $e');
     }
   }
 
@@ -156,24 +81,68 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
       print('User is not authenticated');
       return;
     }
+    setState(() {
+      isLoading = true;
+    });
     try {
-      await SettingProfileService().updateSettingProfile(user.uid, profileData);
-      print('Profile updated successfully!');
+      Map<String, dynamic> profileData = trainerProfile.toMap();
+      profileData['name'] = nameController.text;
+      profileData['age'] = int.tryParse(ageController.text);
+      profileData['experience'] = int.tryParse(experienceController.text);
+      profileData['expertise'] = trainerProfile.expertise; // Save selected expertise options
+
+      await TrainerSettingProfileService().updateSettingProfile(user.uid, profileData);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Profile updated successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
     } catch (e) {
-      print('Failed to update profile: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to update profile.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
-  Widget _loadTrainerProfilePicture() {
-    return trainerProfile.profilePictureUrl != null
-    ? CircleAvatar(
-        radius: 60,
-        backgroundImage: CachedNetworkImageProvider(trainerProfile.profilePictureUrl!),
-      )
-    : const CircleAvatar(
-        radius: 60,
-        child: Icon(Icons.person),
-      );
+  Widget _buildExpertiseCheckboxList() {
+    return Column(
+      children: _expertiseOptions.map((option) {
+        return CheckboxListTile(
+          title: Text(option,
+          style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+          ),
+          value: trainerProfile.expertise?.contains(option) ?? false,
+          onChanged: (bool? selected) {
+            if (selected == true) {
+              setState(() {
+                trainerProfile.expertise?.add(option);
+              });
+            } else {
+              setState(() {
+                trainerProfile.expertise?.remove(option);
+              });
+            }
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _loadUserProfilePicture() {
+    return CircleAvatar(
+      radius: 60,
+      backgroundColor: Colors.grey[100],
+      child: Icon(Icons.person, size: 60),
+    );
   }
 
   @override
@@ -182,26 +151,26 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        centerTitle: true, 
+        centerTitle: true,
         title: const Text(
-          'Profile',
+          'Profile Settings',
           style: TextStyle(
             color: Colors.black,
             fontFamily: 'Poppins',
-            fontSize: 25,
-            fontWeight: FontWeight.w600
+            fontSize: 23,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
-
       body: SingleChildScrollView(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 10),
               Stack(
                 children: [
-                  _loadTrainerProfilePicture(),
+                  _loadUserProfilePicture(),
                   Positioned(
                     bottom: 0,
                     right: 0,
@@ -230,36 +199,16 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
                   ),
                 ],
               ),
-
-              SizedBox(height: 10.0),
+              SizedBox(height: 16.0),
               ProfileTextField(
                 label: 'Name',
                 controller: nameController,
                 onChanged: (value) {
                   setState(() {
-                    profileData['Name'] = value;
+                    trainerProfile.name = value;
                   });
                 },
-              ),
-              SizedBox(height: 10.0),
-              ProfileTextField(
-                label: 'Email',
-                controller: emailController,
-                onChanged: (value) {
-                  setState(() {
-                    profileData_1['Email'] = value;
-                  });
-                },
-              ),
-              SizedBox(height: 10.0),
-              ProfileTextField(
-                label: 'Gender',
-                controller: genderController,
-                onChanged: (value) {
-                  setState(() {
-                    profileData['gender'] = value;
-                  });
-                },
+                hintText: trainerProfile.name,
               ),
               SizedBox(height: 10.0),
               ProfileTextField(
@@ -267,48 +216,62 @@ class _TrainerProfileSettingState extends State<TrainerProfileSetting> {
                 controller: ageController,
                 onChanged: (value) {
                   setState(() {
-                    profileData['Age'] = value;
+                    trainerProfile.age = int.tryParse(value);
                   });
                 },
+                hintText: trainerProfile.age?.toString(),
               ),
               SizedBox(height: 10.0),
               ProfileTextField(
-                label: 'Height(cm)',
-                controller: heightController,
+                label: 'Experience',
+                controller: experienceController,
                 onChanged: (value) {
                   setState(() {
-                    profileData['Height(cm)'] = value;
+                    trainerProfile.experience = int.tryParse(value);
                   });
                 },
+                hintText: trainerProfile.experience?.toString(),
               ),
               SizedBox(height: 10.0),
-              ProfileTextField(
-                label: 'Weight(kg)',
-                controller: weightController,
-                onChanged: (value) {
-                  setState(() {
-                    profileData['Weight(kg)'] = value;
-                  });
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Expertise',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    _buildExpertiseCheckboxList(),
+                  ],
+                ),
               ),
-
-              SizedBox(height: 24.0),
-              ElevatedButton(
-                onPressed: updateTrainerProfileData,
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, 
-                    backgroundColor: Color(0XFF031927), 
-                    minimumSize: Size(150, 50)
-                  ),
-                  child: const Text(
-                    'Update Profile',
-                    style: TextStyle(
-                      fontSize: 18, 
-                      fontWeight: FontWeight.bold, 
-                      fontFamily: 'Poppins', 
-                      color: Colors.white),
-                  ),
-              ),
+              SizedBox(height: 36.0),
+              isLoading
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: updateTrainerProfileData,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color(0XFF031927),
+                        minimumSize: Size(150, 50),
+                      ),
+                      child: const Text(
+                        'Update Profile',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+              SizedBox(height: 64.0),
             ],
           ),
         ),

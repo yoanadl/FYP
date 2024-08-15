@@ -9,13 +9,17 @@ class ProfileTextField extends StatelessWidget {
   final TextEditingController controller;
   final Function(String) onChanged;
   final bool isEnabled;
+  final String? hintText;
+
 
   const ProfileTextField({
     Key? key,
     required this.label,
     required this.controller,
     required this.onChanged,
-    this.isEnabled = true, // Added parameter to control field enablement
+    this.isEnabled = true, 
+    this.hintText,
+    
   }) : super(key: key);
 
   @override

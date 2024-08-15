@@ -18,19 +18,19 @@ class TrainerService {
           var data = trainerProfileDoc.data() as Map<String, dynamic>;
 
           String profilePictureUrl = data['profilePictureUrl'] ?? 'https://via.placeholder.com/150';
-          String name = data['Name'] ?? 'No Name';
-          List<dynamic> expertise = data['Expertise'] ?? [];
-          String age = data['Age'] ?? 'No Age';
-          String experience = data['Experience'] ?? 'No Experience';
+          String name = data['name'] ?? 'No Name';
+          List<dynamic> expertise = data['expertise'] ?? [];
+          String age = data['age'] ?? 'No Age';
+          String experience = data['experience'] ?? 'No Experience';
 
           // Add user document ID and TrainerProfile document ID
           trainers.add({
             'userId': userDoc.id, // Document ID from the users collection
             'profilePictureUrl': profilePictureUrl,
-            'Name': name,
-            'Expertise': expertise,
-            'Age': age,
-            'Experience': experience,
+            'name': name,
+            'expertise': expertise,
+            'age': age,
+            'experience': experience,
             'profileId': trainerProfileDoc.id // Document ID from the TrainerProfile sub-collection
           });
         }

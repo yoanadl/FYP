@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food/components/navbar.dart';
-import 'package:food/components/base_page.dart';
+
 
 class PrivacyPolicyPage extends StatelessWidget {
   @override

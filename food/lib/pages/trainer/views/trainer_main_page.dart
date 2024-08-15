@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/trainer/models/trainer_profile_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food/pages/trainer/views/trainer_profile_setting_page.dart';
+import 'package:food/services/setting_trainer_profile_service.dart'; // Import service
 import 'package:intl/intl.dart';
 
-
 class TrainerMainPage extends StatefulWidget {
-  final Function(int) onTabSelected; 
+  final Function(int) onTabSelected;
 
   const TrainerMainPage({Key? key, required this.onTabSelected}) : super(key: key);
 
@@ -15,19 +15,31 @@ class TrainerMainPage extends StatefulWidget {
 
 class _TrainerMainPageState extends State<TrainerMainPage> {
   String name = '';
+  String profilePictureUrl = '';
+
+  final TrainerSettingProfileService _profileService = TrainerSettingProfileService();
 
   @override
   void initState() {
     super.initState();
-    _fetchTrainerName();
+    _fetchTrainerData();
   }
 
-  Future<void> _fetchTrainerName() async {
-    TrainerProfile trainerProfile = TrainerProfile();
-    await trainerProfile.fetchUserData();
-    setState(() {
-      name = trainerProfile.name ?? 'Trainer';
-    });
+  Future<void> _fetchTrainerData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        final profileData = await _profileService.fetchUserData(user.uid);
+        if (profileData != null) {
+          setState(() {
+            name = profileData['name'] ?? 'Trainer';
+            profilePictureUrl = profileData['profilePictureUrl'] ?? '';
+          });
+        }
+      } catch (e) {
+        print('Error fetching trainer data: $e');
+      }
+    }
   }
 
   @override
@@ -38,12 +50,12 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false, 
-        toolbarHeight: 120, 
+        automaticallyImplyLeading: false,
+        toolbarHeight: 120,
         title: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 36, 16, 0), 
+          padding: const EdgeInsets.fromLTRB(16, 36, 16, 0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Column(
@@ -69,31 +81,24 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                   ),
                 ],
               ),
-          
               IconButton(
-                icon: Container(
-                  width: 61,
-                  height: 61,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage('lib/images/profile_picture.webp'),
-                      fit: BoxFit.cover,
-                    ),
-                    // border: Border.all(color: Colors.black,width: 1.0)
-                  ),
-                ),
+                icon: profilePictureUrl.isNotEmpty
+                    ? CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(profilePictureUrl),
+                      )
+                    : CircleAvatar(
+                        radius: 30,
+                        child: Icon(Icons.person),
+                      ),
                 onPressed: () {
                   widget.onTabSelected(3);
                 },
               ),
-                
             ],
           ),
         ),
       ),
-
-        
       body: Padding(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
         child: Column(
@@ -118,20 +123,19 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
               crossAxisCount: 2,
               children: [
                 _buildGridTile(context, 'Workout\nPlan', Color(0xFF508AA8), () {
-                  widget.onTabSelected(1); 
+                  widget.onTabSelected(1);
                 }),
                 _buildGridTile(context, 'Feedbacks', Color(0xFF9DD1F1), () {
-                    Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TrainerProfileSetting()),
                   );
-
                 }),
                 _buildGridTile(context, 'Pending\nRequest', Colors.white, () {
                   widget.onTabSelected(4);
                 }),
                 _buildGridTile(context, 'My\nClient', Color(0xFF000000), () {
-                  widget.onTabSelected(2); 
+                  widget.onTabSelected(2);
                 }),
               ],
             ),
@@ -153,7 +157,6 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
 
   Widget _buildGridTile(BuildContext context, String title, Color color, VoidCallback onTap) {
     bool isSpecialItem = title == "Pending\nRequest";
-    bool isSpecialItems = title == "Pending\nRequest" || title == "Meal\nPlan";
 
     return GestureDetector(
       onTap: onTap,
@@ -168,7 +171,7 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
           child: Text(
             title,
             style: TextStyle(
-              color: isSpecialItems ? Color(0XFF031927) : Colors.white,
+              color: isSpecialItem ? Color(0XFF031927) : Colors.white,
               fontSize: 24,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w600,

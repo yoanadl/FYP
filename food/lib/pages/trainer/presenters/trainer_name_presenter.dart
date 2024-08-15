@@ -32,7 +32,7 @@ class TrainerNamePresenter {
 
     try {
       await TrainerSettingProfileService().updateSettingProfile(user.uid, {
-        'Name': name,
+        'name': name,
       });
       print('Profile saved successfully!'); // Add this line to log success
       _view.navigateToNextPage();
