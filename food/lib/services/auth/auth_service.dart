@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:food/pages/admin/admin_base_page.dart';
+import 'package:food/pages/admin/views/admin_base_page.dart';
 import 'package:food/components/base_page.dart';
 import 'package:food/pages/trainer/views/trainer_base_page.dart';
 import 'package:food/services/auth/firestore_service.dart';

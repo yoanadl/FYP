@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/admin/presenters/admin_profile_presenter.dart';
 import 'package:food/pages/admin/models/admin_profile_model.dart';
@@ -50,29 +51,32 @@ class _AdminProfileViewImplState extends State<AdminProfileViewImpl> implements 
     });
   }
 
+  
   void showLogoutConfirmationDialog(BuildContext context) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
+        return CupertinoAlertDialog(
           content: Text(
             'Are you sure you want to log out?',
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           ),
-          actions: <Widget>[
-            TextButton(
+          actions: <CupertinoDialogAction>[
+            CupertinoDialogAction(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: Text('Cancel'),
+              isDefaultAction: true,
             ),
-            TextButton(
+            CupertinoDialogAction(
               onPressed: () {
                 Navigator.of(context).pop();
                 presenter.logout(context);
               },
               child: Text('Logout'),
+              isDestructiveAction: true,
             ),
           ],
         );
@@ -125,6 +129,11 @@ class _AdminProfileViewImplState extends State<AdminProfileViewImpl> implements 
             CircleAvatar(
               backgroundColor: Colors.grey[100],
               radius: 50.0,
+              child: Icon(
+                Icons.person,
+                size: 50,
+                color: Colors.black,
+              ),
             ),
             // name
             SizedBox(height: 15.0),

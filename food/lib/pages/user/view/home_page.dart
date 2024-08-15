@@ -85,10 +85,12 @@ class _HomePageState extends State<HomePage> {
         return CircleAvatar(
           radius: 30, 
           child: Icon(Icons.person),
-        ); // Placeholder
+        ); 
       },
     );
   }
+
+
 
     Future<void> fetchData() async {
 
@@ -136,12 +138,25 @@ class _HomePageState extends State<HomePage> {
           centerTitle: false,
           actions: [
       
-            //profile icon
-            if (user != null)
-              Padding(
-                padding: const EdgeInsets.only(right: 35),
+          //profile icon
+          if (user != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 35),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BasePage(initialIndex: 4,), 
+                    ),
+                  );
+                },
                 child: loadProfilePicture(context, user.uid),
-              )
+              ),
+            ),
+     
+
+
           ],
 
           title: Column(

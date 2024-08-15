@@ -22,12 +22,8 @@ class AdminNavbar extends StatelessWidget {
             label : 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.fitness_center),
-            label : 'User Accounts',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.group),
-            label : 'User Profile',
+            label : 'User Accounts',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
