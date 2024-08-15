@@ -8,12 +8,14 @@ class ProfileTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final Function(String) onChanged;
+  final bool isEnabled;
 
   const ProfileTextField({
     Key? key,
     required this.label,
     required this.controller,
     required this.onChanged,
+    this.isEnabled = true, // Added parameter to control field enablement
   }) : super(key: key);
 
   @override
@@ -40,6 +42,7 @@ class ProfileTextField extends StatelessWidget {
             child: TextFormField(
               controller: controller,
               onChanged: onChanged,
+              enabled: isEnabled, // Control whether the field is editable
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 8.0),
                 border: OutlineInputBorder(),
@@ -130,6 +133,7 @@ class ProfileDropdownField extends StatelessWidget {
     );
   }
 }
+
 class MyProfilePage extends StatefulWidget {
   @override
   _MyProfilePageState createState() => _MyProfilePageState();
@@ -148,9 +152,9 @@ class _MyProfilePageState extends State<MyProfilePage> {
   final List<String> fitnessGoals = [
     'Lose Weight',
     'Build Muscle',
-    'Improve Stamina',
-    'Increase Flexibility',
-    'Maintain Fitness'
+    'Improve Endurance',
+    'Gain Weight',
+    'Keep Fit'
   ];
 
   Map<String, dynamic> profileData = {
@@ -165,6 +169,8 @@ class _MyProfilePageState extends State<MyProfilePage> {
   Map<String, dynamic> profileData_1 = {
     'Email': '',
   };
+
+  bool isLoading = false; // Track loading state
 
   @override
   void initState() {
@@ -232,12 +238,32 @@ class _MyProfilePageState extends State<MyProfilePage> {
       print('User is not authenticated');
       return;
     }
+    setState(() {
+      isLoading = true; // Show loading indicator
+    });
     try {
       profileData['fitnessGoals'] = selectedGoal;
       await SettingProfileService().updateSettingProfile(user.uid, profileData);
-      print('Profile updated successfully!');
+      
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Profile updated successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
     } catch (e) {
-      print('Failed to update profile: $e');
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to update profile.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        isLoading = false; // Hide loading indicator
+      });
     }
   }
 
@@ -324,6 +350,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     profileData_1['Email'] = value;
                   });
                 },
+                isEnabled: false, // Email field is not changeable
               ),
               SizedBox(height: 10.0),
               ProfileTextField(
@@ -378,24 +405,25 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 },
               ),
               SizedBox(height: 36.0),
-              ElevatedButton(
-                onPressed: updateProfileData,
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, 
-                  backgroundColor: Color(0XFF031927), 
-                  minimumSize: Size(150, 50),
-                ),
-                child: const Text(
-                  'Update Profile',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Poppins',
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-
+              isLoading // Display loading indicator or button
+                  ? CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: updateProfileData,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color(0XFF031927),
+                        minimumSize: Size(150, 50),
+                      ),
+                      child: const Text(
+                        'Update Profile',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
               SizedBox(height: 64.0),
             ],
           ),
