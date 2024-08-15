@@ -143,12 +143,6 @@ class _ProfilePageState extends State<ProfilePage> {
       text: 'Your Profile',
       destination: MyProfilePage(),
     ),
-    
-    RowData(
-      icon: Icons.flag,
-      text: 'My Fitness Goals',
-      destination: GoalsPreferences(),
-    ),
     RowData(
       icon: Icons.person,
       text: 'Fitness Reminders',
