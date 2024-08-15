@@ -30,55 +30,37 @@
 
 //   }
 
-// //   Future<double?> getHeartRate() async {
-// //   final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
 
-// //   if (requested) {
-// //     try {
-// //       final healthData = await healthFactory.getHealthDataFromTypes(DateTime.now().subtract(Duration(hours: 1)), DateTime.now(), [HealthDataType.HEART_RATE]);
 
-// //       // Get the most recent heart rate data point with null checks
-// //       final heartRateValue = (healthData.last.value as NumericHealthValue).numericValue?.toDouble();
-// //       return heartRateValue;
-// //     } catch (e) {
-// //       print('Error fetching heart rate: $e');
-// //       return null;
-// //     }
-// //   } else {
-// //     print('Authorization not granted');
-// //     return null;
-// //   }
-// // }
+  Future<double?> getHeartRate() async {
+    final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
 
-// Future<double?> getHeartRate() async {
-//   final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+    if (requested) {
+      try {
+        final DateTime endTime = DateTime.now();
+        final DateTime startTime = endTime.subtract(Duration(minutes: 10));
+        final List<HealthDataPoint> healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.HEART_RATE]);
 
-//   if (requested) {
-//     try {
-//       final DateTime endTime = DateTime.now();
-//       final DateTime startTime = endTime.subtract(Duration(minutes: 10));
-//       final List<HealthDataPoint> healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.HEART_RATE]);
-
-//       // Check if health data is not empty
-//       if (healthData.isNotEmpty) {
-//         final heartRateValue = (healthData.last.value as NumericHealthValue).numericValue?.toDouble();
-//         print('Fetched heart rate: $heartRateValue bpm');
-//         return heartRateValue;
-//       } else {
-//         print('No heart rate data available');
-//         return null;
-//       }
-//     } catch (e) {
-//       print('Error fetching heart rate: $e');
-//       return null;
-//     }
-//   } else {
-//     print('Authorization not granted');
-//     return null;
-//   }
-// }
-//   Future<double?> getCalories() async {
-//     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+        // Check if health data is not empty
+        if (healthData.isNotEmpty) {
+          final heartRateValue = (healthData.last.value as NumericHealthValue).numericValue?.toDouble();
+          print('Fetched heart rate: $heartRateValue bpm');
+          return heartRateValue;
+        } else {
+          print('No heart rate data available');
+          return null;
+        }
+      } catch (e) {
+        print('Error fetching heart rate: $e');
+        return null;
+      }
+    } else {
+      print('Authorization not granted');
+      return null;
+    }
+  }
+  Future<double?> getCalories() async {
+    final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
 
 //     if (requested) {
 //       try {
@@ -232,42 +214,42 @@
 //     }
 //   }
 
-//   Future<double> getCaloriesForThatDay(DateTime date) async {
-//   final startDate = DateTime(date.year, date.month, date.day);
-//   final endDate = startDate.add(Duration(days: 1));
+  Future<double> getCaloriesForThatDay(DateTime date) async {
+    final startDate = DateTime(date.year, date.month, date.day);
+    final endDate = startDate.add(Duration(days: 1));
 
-//   final bool requested = await healthFactory.requestAuthorization([HealthDataType.ACTIVE_ENERGY_BURNED]);
+    final bool requested = await healthFactory.requestAuthorization([HealthDataType.ACTIVE_ENERGY_BURNED]);
 
-//   if (requested) {
-//     try {
-//       final healthData = await healthFactory.getHealthDataFromTypes(startDate, endDate, [HealthDataType.ACTIVE_ENERGY_BURNED]);
+    if (requested) {
+      try {
+        final healthData = await healthFactory.getHealthDataFromTypes(startDate, endDate, [HealthDataType.ACTIVE_ENERGY_BURNED]);
 
-//       if (healthData.isNotEmpty) {
-//         double totalCalories = 0.0;
+        if (healthData.isNotEmpty) {
+          double totalCalories = 0.0;
 
-//         for (var data in healthData) {
-//           if (data.value is NumericHealthValue) {
-//             final caloriesValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
-//             totalCalories += caloriesValue;
-//           } else {
-//             print('Unexpected value type for calories data: ${data.value.runtimeType}');
-//           }
-//         }
+          for (var data in healthData) {
+            if (data.value is NumericHealthValue) {
+              final caloriesValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
+              totalCalories += caloriesValue;
+            } else {
+              print('Unexpected value type for calories data: ${data.value.runtimeType}');
+            }
+          }
 
-//         return totalCalories.ceilToDouble();
-//       } else {
-//         print('No calories data available for the given date range');
-//         return 0.0; // Return 0.0 if no data is available
-//       }
-//     } catch (e) {
-//       print('Error fetching calories: $e'); // Detailed error message
-//       return 0.0;
-//     }
-//   } else {
-//     print('HealthKit authorization not granted');
-//     return 0.0;
-//   }
-// }
+          return totalCalories.ceilToDouble();
+        } else {
+          print('No calories data available for the given date range');
+          return 0.0; // Return 0.0 if no data is available
+        }
+      } catch (e) {
+        print('Error fetching calories: $e'); // Detailed error message
+        return 0.0;
+      }
+    } else {
+      print('HealthKit authorization not granted');
+      return 0.0;
+    }
+  }
 
 
 //   Future<void> getWeeklyStepsIncludingToday() async {
@@ -597,293 +579,171 @@
 //     }
 //   }
 
-//   // workout done
-//   // Future<int> getCaloriesBurned(DateTime startTime, DateTime endTime) async {
- 
-//   //   // Request permissions for these data types
-//   //   bool requested = await healthFactory.requestAuthorization([HealthDataType.ACTIVE_ENERGY_BURNED]);
+  // workout done 
+  Future<double?> getCaloriesBurnedForThatActivity(DateTime startTime, DateTime endTime) async {
+  final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+
+  if (requested) {
+    try {
+      final healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.ACTIVE_ENERGY_BURNED]);
+      print('Fetching calories data from $startTime to $endTime');
+
+      if (healthData.isNotEmpty) {
+        double totalCalories = 0.0;
+
+        // Sum up all the calorie values
+        for (var data in healthData) {
+          if (data.value is NumericHealthValue) {
+            final caloriesValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
+            print('Fetched Calories Data Point: $caloriesValue');
+            totalCalories += caloriesValue;
+          } else {
+            print('Unexpected value type for calories data: ${data.value.runtimeType}');
+          }
+        }
+        print('Total Calories Fetched: $totalCalories');
+        return totalCalories.ceilToDouble();
+      } else {
+        print('No calories data available for the given date range');
+        return 0.0; // Return 0.0 if no data is available
+      }
+    } catch (e) {
+      print('Error fetching calories: $e');
+      return null;
+    }
+  } else {
+    print('HealthKit authorization not granted');
+    return null;
+  }
+}
+
+Future<int?> getStepsForThatActivity(DateTime startTime, DateTime endTime) async {
+  final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+
+  if (requested) {
+    try {
+      final totalSteps = await healthFactory.getTotalStepsInInterval(startTime, endTime);
+      print('Fetching steps from $startTime to $endTime');
+      print('Total steps fetched: $totalSteps');
+      return totalSteps;
+    } catch (e) {
+      print('Error fetching steps: $e');
+      return null;
+    }
+  } else {
+    print('HealthKit authorization not granted');
+    return null;
+  }
+}
+
+Future<int?> getHeartRateForThatActivity(DateTime startTime, DateTime endTime) async {
+  final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+
+  if (requested) {
+    try {
+      final totalSteps = await healthFactory.getTotalStepsInInterval(startTime, endTime);
+      print('Fetching steps from $startTime to $endTime');
+      print('Total steps fetched: $totalSteps');
+      return totalSteps;
+    } catch (e) {
+      print('Error fetching steps: $e');
+      return null;
+    }
+  } else {
+    print('HealthKit authorization not granted');
+    return null;
+  }
+}
+
+Future<double?> getAverageHeartRateForThatActivity(DateTime startTime, DateTime endTime) async {
+    final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+
+    if (requested) {
+      try {
+        // Fetch the heart rate data for the specified time interval
+        final healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.HEART_RATE]);
+        print('Fetching heart rate data from $startTime to $endTime');
+
+        if (healthData.isNotEmpty) {
+          double totalHeartRate = 0.0;
+          int count = 0;
+
+          // Iterate over the health data to sum up all the heart rate values
+          for (var data in healthData) {
+            if (data.value is NumericHealthValue) {
+              final heartRateValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
+              print('Fetched Heart Rate Data Point: $heartRateValue');
+              totalHeartRate += heartRateValue;
+              count++;
+            } else {
+              print('Unexpected value type for heart rate data: ${data.value.runtimeType}');
+            }
+          }
+
+          if (count > 0) {
+            double averageHeartRate = totalHeartRate / count;
+            print('Average Heart Rate: $averageHeartRate');
+            return averageHeartRate.ceilToDouble();
+          } else {
+            print('No heart rate data available for the given date range');
+            return 0.0; // Return 0.0 if no data is available
+          }
+        } else {
+          print('No heart rate data available for the given date range');
+          return 0.0; // Return 0.0 if no data is available
+        }
+      } catch (e) {
+        print('Error fetching heart rate: $e');
+        return null;
+      }
+    } else {
+      print('HealthKit authorization not granted');
+      return null;
+    }
+  }
+  Future<double?> getMaxHeartRateForThatActivity(DateTime startTime, DateTime endTime) async {
     
-//   //   if (requested) {
-//   //     // Fetch health data
-//   //     List<HealthDataPoint> healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.ACTIVE_ENERGY_BURNED]);
-//   //     print('Health data fetched: ${healthData.length} data points');
+    final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
 
-//   //     // Filter and sum the calories burned data
-//   //     int totalCaloriesBurned = healthData
-//   //         .where((dataPoint) => dataPoint.type == HealthDataType.ACTIVE_ENERGY_BURNED)
-//   //         .fold(0, (sum, dataPoint) => sum + (dataPoint.value as num).toInt());
+    if (requested) {
+      try {
+        final healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.HEART_RATE]);
+        print('Fetching heart rate data from $startTime to $endTime');
 
-//   //     print('Total calories burned: $totalCaloriesBurned');
-//   //     return totalCaloriesBurned;
-//   //   } else {
-//   //     print('Authorization not granted');
-//   //     return 0;
-//   //   }
-//   // }
+        if (healthData.isNotEmpty) {
+          double maxHeartRate = 0.0;
 
-//   // Future<int> getCaloriesBurnedForThatWorkout(DateTime startTime, DateTime endTime) async {
+          // Iterate over the health data to find the maximum heart rate value
+          for (var data in healthData) {
+            if (data.value is NumericHealthValue) {
+              final heartRateValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
+              if (heartRateValue > maxHeartRate) {
+                maxHeartRate = heartRateValue;
+              }
+            } else {
+              print('Unexpected value type for heart rate data: ${data.value.runtimeType}');
+            }
+          }
 
-//   //   final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
+          print('Max Heart Rate Fetched: $maxHeartRate');
+          return maxHeartRate.ceilToDouble();
+        } else {
+          print('No heart rate data available for the given date range');
+          return null; // Return null if no data is available
+        }
+      } catch (e) {
+        print('Error fetching max heart rate: $e');
+        return null;
+      }
+    } else {
+      print('HealthKit authorization not granted');
+      return null;
+    }
+  }
 
-//   //   if (!requested) {
-//   //     print('Authorization not granted');
-//   //     return 0;
-//   //   }
+  // filter - select any time period
 
-//   //   print('Authorization granted, fetching data...');
-
-//   //   final types = [HealthDataType.ACTIVE_ENERGY_BURNED];
-    
-//   //   List<HealthDataPoint> healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, types);
-
-//   //   if (healthData.isEmpty) {
-//   //     print('Health data fetched: 0 data points');
-//   //     return 0;
-//   //   }
-
-//   //   int totalCalories = 0;
-//   //   for (var dataPoint in healthData) {
-//   //     if (dataPoint.type == HealthDataType.ACTIVE_ENERGY_BURNED) {
-//   //       totalCalories += (dataPoint.value as NumericHealthValue).numericValue.toInt();
-//   //     }
-//   //   }
-
-//   //   print('Total calories burned: $totalCalories');
-//   //   return totalCalories;
-//   // }
-
-// //   Future<double?> getCaloriesBurnedForThatActivity(DateTime startTime, DateTime endTime) async {
-
-// //     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-
-// //     if (requested) {
-
-// //       try {
-// //         final healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.ACTIVE_ENERGY_BURNED]);
-// //         print('Fetching calories data from $startTime to $endTime');
-
-// //         if (healthData.isNotEmpty) {
-// //           double totalCalories = 0.0;
-
-// //           // iterate over the health data to sum up all the calorie values
-// //           for (var data in healthData) {
-// //             if (data.value is NumericHealthValue) {
-// //               final caloriesValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
-// //               print('Fetched Calories Data Point: $caloriesValue');
-// //               (totalCalories += caloriesValue).ceilToDouble();
-// //             }
-// //             else {
-// //               print('Unexpected value type for calories data: ${data.value.runtimeType}');
-// //             }
-// //           }
-// //           print('Total Calories Fetched: $totalCalories');
-// //           return totalCalories;
-// //         }
-
-// //         else {
-// //           print('No calories data available for the given date range');
-// //           return 0.0; // Return 0.0 if no data is available
-// //         }
-// //       }
-// //       catch (e) {
-// //         print('Error fetching calories: $e'); 
-// //         return null;
-// //       }
-// //     }
-    
-// //     else {
-// //       print('HealthKit authorization not granted');
-// //     }
-// //     return null;
-// //   }
-
-// //   Future<int?> getStepsForThatActivity(DateTime startTime, DateTime endTime) async {
-
-// //     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-    
-// //     if (requested) {
-
-// //       try {
-// //         final totalSteps = await healthFactory.getTotalStepsInInterval(startTime, endTime);
-// //         print('Fetching steps from $startTime to $endTime');
-// //         print('Total steps fetched: $totalSteps');
-// //         return totalSteps;
-// //       }
-// //       catch (e) {
-// //         print('Error fetching steps: $e');
-// //         return -1;
-// //       } 
-// //     } else {
-// //       print('HealthKit authorization not granted');
-// //       return -1;
-// //     }
-
-// //   }
-
-//   Future<double?> getCaloriesBurnedForThatActivity(DateTime startTime, DateTime endTime) async {
-//   final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-
-//   if (requested) {
-//     try {
-//       final healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.ACTIVE_ENERGY_BURNED]);
-//       print('Fetching calories data from $startTime to $endTime');
-
-//       if (healthData.isNotEmpty) {
-//         double totalCalories = 0.0;
-
-//         // Sum up all the calorie values
-//         for (var data in healthData) {
-//           if (data.value is NumericHealthValue) {
-//             final caloriesValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
-//             print('Fetched Calories Data Point: $caloriesValue');
-//             totalCalories += caloriesValue;
-//           } else {
-//             print('Unexpected value type for calories data: ${data.value.runtimeType}');
-//           }
-//         }
-//         print('Total Calories Fetched: $totalCalories');
-//         return totalCalories.ceilToDouble();
-//       } else {
-//         print('No calories data available for the given date range');
-//         return 0.0; // Return 0.0 if no data is available
-//       }
-//     } catch (e) {
-//       print('Error fetching calories: $e');
-//       return null;
-//     }
-//   } else {
-//     print('HealthKit authorization not granted');
-//     return null;
-//   }
-// }
-
-// Future<int?> getStepsForThatActivity(DateTime startTime, DateTime endTime) async {
-//   final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-
-//   if (requested) {
-//     try {
-//       final totalSteps = await healthFactory.getTotalStepsInInterval(startTime, endTime);
-//       print('Fetching steps from $startTime to $endTime');
-//       print('Total steps fetched: $totalSteps');
-//       return totalSteps;
-//     } catch (e) {
-//       print('Error fetching steps: $e');
-//       return null;
-//     }
-//   } else {
-//     print('HealthKit authorization not granted');
-//     return null;
-//   }
-// }
-
-// Future<int?> getHeartRateForThatActivity(DateTime startTime, DateTime endTime) async {
-//   final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-
-//   if (requested) {
-//     try {
-//       final totalSteps = await healthFactory.getTotalStepsInInterval(startTime, endTime);
-//       print('Fetching steps from $startTime to $endTime');
-//       print('Total steps fetched: $totalSteps');
-//       return totalSteps;
-//     } catch (e) {
-//       print('Error fetching steps: $e');
-//       return null;
-//     }
-//   } else {
-//     print('HealthKit authorization not granted');
-//     return null;
-//   }
-// }
-
-// Future<double?> getAverageHeartRateForThatActivity(DateTime startTime, DateTime endTime) async {
-//     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-
-//     if (requested) {
-//       try {
-//         // Fetch the heart rate data for the specified time interval
-//         final healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.HEART_RATE]);
-//         print('Fetching heart rate data from $startTime to $endTime');
-
-//         if (healthData.isNotEmpty) {
-//           double totalHeartRate = 0.0;
-//           int count = 0;
-
-//           // Iterate over the health data to sum up all the heart rate values
-//           for (var data in healthData) {
-//             if (data.value is NumericHealthValue) {
-//               final heartRateValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
-//               print('Fetched Heart Rate Data Point: $heartRateValue');
-//               totalHeartRate += heartRateValue;
-//               count++;
-//             } else {
-//               print('Unexpected value type for heart rate data: ${data.value.runtimeType}');
-//             }
-//           }
-
-//           if (count > 0) {
-//             double averageHeartRate = totalHeartRate / count;
-//             print('Average Heart Rate: $averageHeartRate');
-//             return averageHeartRate.ceilToDouble();
-//           } else {
-//             print('No heart rate data available for the given date range');
-//             return 0.0; // Return 0.0 if no data is available
-//           }
-//         } else {
-//           print('No heart rate data available for the given date range');
-//           return 0.0; // Return 0.0 if no data is available
-//         }
-//       } catch (e) {
-//         print('Error fetching heart rate: $e');
-//         return null;
-//       }
-//     } else {
-//       print('HealthKit authorization not granted');
-//       return null;
-//     }
-//   }
-//   Future<double?> getMaxHeartRateForThatActivity(DateTime startTime, DateTime endTime) async {
-    
-//     final bool requested = await healthFactory.requestAuthorization(dataTypesIos, permissions: permissions);
-
-//     if (requested) {
-//       try {
-//         final healthData = await healthFactory.getHealthDataFromTypes(startTime, endTime, [HealthDataType.HEART_RATE]);
-//         print('Fetching heart rate data from $startTime to $endTime');
-
-//         if (healthData.isNotEmpty) {
-//           double maxHeartRate = 0.0;
-
-//           // Iterate over the health data to find the maximum heart rate value
-//           for (var data in healthData) {
-//             if (data.value is NumericHealthValue) {
-//               final heartRateValue = (data.value as NumericHealthValue).numericValue?.toDouble() ?? 0.0;
-//               if (heartRateValue > maxHeartRate) {
-//                 maxHeartRate = heartRateValue;
-//               }
-//             } else {
-//               print('Unexpected value type for heart rate data: ${data.value.runtimeType}');
-//             }
-//           }
-
-//           print('Max Heart Rate Fetched: $maxHeartRate');
-//           return maxHeartRate.ceilToDouble();
-//         } else {
-//           print('No heart rate data available for the given date range');
-//           return null; // Return null if no data is available
-//         }
-//       } catch (e) {
-//         print('Error fetching max heart rate: $e');
-//         return null;
-//       }
-//     } else {
-//       print('HealthKit authorization not granted');
-//       return null;
-//     }
-//   }
-
-//   // filter - select any time period
-
-//   Future<Map<String, dynamic>> getFilterHealthData(DateTime fromDate, DateTime toDate) async {
+  Future<Map<String, dynamic>> getFilterHealthData(DateTime fromDate, DateTime toDate) async {
     
 //     try {
       

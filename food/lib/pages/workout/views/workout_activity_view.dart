@@ -43,6 +43,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
     _presenter.startTimer();
   }
 
+
   @override
   void updateTimer(int remainingTime) {
     setState(() {
@@ -58,7 +59,8 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
         builder: (context) => WorkoutActivityView(
           model: model,
           userId: widget.userId,
-          workoutId: widget.workoutId,),
+          workoutId: widget.workoutId,
+        ),
       ),
     );
   }
@@ -85,6 +87,17 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
       ),
     );
   }
+
+  @override
+void showNotification(String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(message),
+      duration: Duration(seconds: 2),
+    ),
+  );
+}
+
 
   Future<void> _confirmStopWorkout() async {
     bool? confirm = await showDialog<bool>(
@@ -225,6 +238,9 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView> implements Wo
 class WorkoutDoneViewImplementation implements WorkoutDoneViewInterface {
   @override
   void updateView(WorkoutDoneModel model) {
-   
+    // Update view logic
   }
 }
+
+
+

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/premiumUser/trainer/service/request_service.dart'; // Import the request service
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
-
+import 'package:food/pages/premiumUser/trainer/service/request_service.dart'; 
+import 'package:cloud_firestore/cloud_firestore.dart'; 
 class TrainerDetailsPage extends StatelessWidget {
   final Map<String, dynamic> trainerData;
   final String currentUserId;
@@ -25,7 +24,7 @@ class TrainerDetailsPage extends StatelessWidget {
       final requestQuery = await FirebaseFirestore.instance
           .collection('requests')
           .where('userId', isEqualTo: currentUserId)
-          .where('trainerId', isEqualTo: trainerDocId)
+          .where('trainerId', isEqualTo: userId)
           .get();
 
       if (requestQuery.docs.isNotEmpty) {
@@ -37,7 +36,7 @@ class TrainerDetailsPage extends StatelessWidget {
       }
 
       // Send the request
-      await _requestService.sendRequest(currentUserId, trainerDocId, trainerName); // Pass trainerName
+      await _requestService.sendRequest(currentUserId, userId, trainerName); // Pass trainerName
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Request sent successfully!')),
       );
