@@ -1,11 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:food/components/navbar.dart';
 import 'package:food/components/base_page.dart';
-import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/premiumUser/premiumplan_page.dart';
-import 'package:food/pages/workout/views/workout_page_view.dart';
-import 'package:food/pages/user/view/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;

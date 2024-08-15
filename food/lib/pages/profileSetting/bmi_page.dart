@@ -1,10 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food/components/navbar.dart';
-import 'package:food/components/base_page.dart';
-import 'package:food/pages/discarded/community_page.dart';
-import '/pages/workout/views/workout_page_view.dart';
 import 'package:food/services/setting_user_profile_service.dart';
 import '../profileSetting/bmi_controller.dart';
 
@@ -297,28 +293,6 @@ class _BmiPageState extends State<BmiPage> {
             
           ),
         ),
-      ),
-      bottomNavigationBar: Navbar(
-        currentIndex: 4,
-        onTap: (int index) {
-          if (index != 4) {
-            Navigator.pop(context);
-            switch(index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
-                break;
-              case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
-                break;
-              case 3:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3,)));
-                break;
-            }
-          }
-        }
       ),
     );
   }

@@ -9,7 +9,6 @@ import 'package:food/services/setting_user_profile_service.dart';
 import 'package:food/services/health_service.dart';
 import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../../discarded/mealPlan_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:food/pages/user/view/profile_page.dart';
 import 'package:food/applewatch/injector.dart' show healthFactory;
@@ -234,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(width: 5),
+                            SizedBox(width: 2),
                             Icon(Icons.favorite, color: Color(0xFF508AA8)),
                           ],
                         

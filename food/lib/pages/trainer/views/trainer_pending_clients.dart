@@ -219,43 +219,43 @@ class _TrainerPendingClientsPageState extends State<TrainerPendingClientsPage> {
                     ],
                   ),
                 ),
-      bottomNavigationBar: TrainerNavbar(
-        currentIndex: 2,
-        onTap: (int index) {
-          if (index != 2) {
-            Navigator.pop(context);
-            switch (index) {
-              case 0:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const TrainerBasePage(initialIndex: 0),
-                  ),
-                );
-                break;
-              case 1:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const TrainerBasePage(initialIndex: 1),
-                  ),
-                );
-                break;
-              case 3:
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        const TrainerBasePage(initialIndex: 3),
-                  ),
-                );
-                break;
-            }
-          }
-        },
-      ),
+      // bottomNavigationBar: TrainerNavbar(
+      //   currentIndex: 2,
+      //   onTap: (int index) {
+      //     if (index != 2) {
+      //       Navigator.pop(context);
+      //       switch (index) {
+      //         case 0:
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) =>
+      //                   const TrainerBasePage(initialIndex: 0),
+      //             ),
+      //           );
+      //           break;
+      //         case 1:
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) =>
+      //                   const TrainerBasePage(initialIndex: 1),
+      //             ),
+      //           );
+      //           break;
+      //         case 3:
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) =>
+      //                   const TrainerBasePage(initialIndex: 3),
+      //             ),
+      //           );
+      //           break;
+      //       }
+      //     }
+      //   },
+      // ),
     );
   }
 

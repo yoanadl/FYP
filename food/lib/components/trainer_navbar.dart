@@ -25,7 +25,7 @@ class TrainerNavbar extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.fitness_center),
-            label: 'Workout',
+            label: 'Requests',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),

@@ -74,8 +74,8 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
           
               IconButton(
                 icon: Container(
-                  width: 61,
-                  height: 61,
+                  width: 55,
+                  height: 55,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
@@ -119,37 +119,19 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
               shrinkWrap: true,
               crossAxisCount: 2,
               children: [
-                _buildGridTile(context, 'Workout\nPlan', Color(0xFF508AA8), () {
-                  widget.onTabSelected(1); 
-                }),
-                _buildGridTile(context, 'Send Advice', Color(0xFF9DD1F1), () {
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TrainerClientFeedbackPage()),
-                  );
-
-                }),
                 _buildGridTile(context, 'Pending\nRequest', Colors.white, () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TrainerPendingClientsPage()),
                   );
                 }),
-                _buildGridTile(context, 'My\nClient', Color(0xFF000000), () {
+                _buildGridTile(context, 'My\nClient', Color(0xFF508AA8), () {
                   widget.onTabSelected(2); 
                 }),
               ],
             ),
             const SizedBox(height: 30),
-            const Text(
-              'More features are coming soon :)',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-            ),
+            
           ],
         ),
       ),

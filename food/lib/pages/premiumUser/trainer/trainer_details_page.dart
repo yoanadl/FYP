@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food/pages/premiumUser/trainer/service/request_service.dart'; 
-import 'package:cloud_firestore/cloud_firestore.dart'; 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/pages/premiumUser/trainer/trainer_page.dart'; 
 class TrainerDetailsPage extends StatelessWidget {
   final Map<String, dynamic> trainerData;
   final String currentUserId;
@@ -40,6 +41,12 @@ class TrainerDetailsPage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Request sent successfully!')),
       );
+      Navigator.push(
+      context,
+      MaterialPageRoute(
+      builder: (context) => TrainersPage(),
+    ),
+  );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to send request: $e')),

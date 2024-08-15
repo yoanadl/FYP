@@ -6,8 +6,6 @@ import 'package:food/pages/profileSetting/delete_account.dart';
 import 'package:food/pages/profileSetting/notification_settings.dart';
 import 'package:food/pages/profileSetting/password_manager.dart';
 import 'package:food/components/base_page.dart';
-import 'package:food/pages/discarded/community_page.dart';
-import 'package:food/pages/workout/views/workout_page_view.dart';
 
 class RowData{
   final IconData icon;
@@ -89,25 +87,7 @@ class SettingsPage extends StatelessWidget {
       
 
 
-      bottomNavigationBar: Navbar(
-        currentIndex: 3,
-        onTap: (int index) {
-          if (index != 3) {
-            Navigator.pop(context);
-            switch (index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
-                break;
-              case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
-                break;
-            }
-          }
-        },
-      ),
+      
     );
   }
 

@@ -27,11 +27,9 @@ class _TrainerBasePageState extends State<TrainerBasePage> {
 
     _pages = [
       TrainerMainPage(onTabSelected: _onTabSelected),
-      TrainerWorkoutPlanPage(),
+      TrainerPendingClientsPage(),
       TrainerMyClientPage(),
       TrainerProfilePage(),
-      //TrainerPendingClientsPage(),
-      //TrainerProfileSetting()
     ];
   }
 

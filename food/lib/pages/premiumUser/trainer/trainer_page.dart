@@ -201,7 +201,7 @@ class TrainersPage extends StatelessWidget {
 
   Widget _buildBottomNavigationBar(int selectedIndex) {
     return BottomNavigationBar(
-      currentIndex: selectedIndex,
+      currentIndex: 3,
       onTap: (index) {},
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),

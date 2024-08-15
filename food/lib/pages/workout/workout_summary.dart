@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:food/services/workout_service.dart';
 import '../../components/navbar.dart';
 import '../../components/base_page.dart';
-import '../discarded/community_page.dart';
 import '../user/view/profile_page.dart';
 import '../workout/views/workout_page_view.dart';
 import '../workout/views/edit_workout_view.dart';
@@ -182,28 +181,7 @@ class WorkoutSummaryPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Navbar(
-        currentIndex: 1,
-        onTap: (int index) {
-          if (index != 1) {
-            Navigator.pop(context);
-            switch (index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage()));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkoutPage()));
-                break;
-              case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const CommunityPage()));
-                break;
-              case 3:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));
-                break;
-            }
-          }
-        },
-      ),
+      
     );
   }
 }

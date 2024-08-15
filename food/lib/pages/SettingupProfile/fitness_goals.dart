@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food/pages/discarded/dietplan_page.dart';
+import 'package:food/components/base_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +29,7 @@ class _FitnessGoalScreenState extends State<FitnessGoalPage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DietPreferencePage(),
+          builder: (context) => BasePage(),
         ),
       );
     } catch (e) {

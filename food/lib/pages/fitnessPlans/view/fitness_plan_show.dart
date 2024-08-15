@@ -148,7 +148,7 @@ class _FitnessPlanPageState extends State<FitnessPlanPage> {
                     },
                   ),
                 ),
-                SizedBox(width: 10),
+                // SizedBox(width: 10),
                 // Level Dropdown
                 Expanded(
                   child: DropdownButton<String>(

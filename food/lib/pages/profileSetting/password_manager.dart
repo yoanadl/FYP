@@ -4,8 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food/components/navbar.dart';
 import 'package:food/components/base_page.dart';
-import 'package:food/pages/discarded/community_page.dart';
-import 'package:food/pages/workout/views/workout_page_view.dart';
+
 
 class PasswordManager extends StatefulWidget {
   @override
@@ -133,25 +132,7 @@ class _PasswordManagerState extends State<PasswordManager> {
           ],
         ),
       ),
-      bottomNavigationBar: Navbar(
-        currentIndex: 3,
-        onTap: (int index) {
-          if (index != 3) {
-            Navigator.pop(context);
-            switch (index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0,)));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1,)));
-                break;
-              case 2:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 2,)));
-                break;
-            }
-          }
-        },
-      ),
+      
     );
   }
 }

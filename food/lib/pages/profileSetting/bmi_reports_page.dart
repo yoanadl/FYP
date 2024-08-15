@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:food/components/navbar.dart';
 import 'package:food/components/base_page.dart';
-import 'package:food/pages/discarded/community_page.dart';
 import 'package:food/pages/workout/views/workout_page_view.dart';
 
 
@@ -120,20 +118,6 @@ class BmiReportsPage extends StatelessWidget {
           ],
         ),
 
-      ),
-
-      bottomNavigationBar: Navbar(
-        currentIndex: 4, // Set the current index to highlight the active page
-        onTap: (int index) {
-          if (index != 4) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => BasePage(initialIndex: index),
-              ),
-            );
-          }
-        },
       ),
     );
   }
