@@ -26,8 +26,81 @@ class _FitnessPlanDetailPageState extends State<FitnessPlanDetailPage> {
     super.initState();
   }
 
+  // Function to start a workout, either by finding an existing one or creating a new one
   void startWorkout() async {
-    // Workout logic...
+    try {
+      // Step 1: Check if a workout already exists for this fitness plan
+      List<Map<String, dynamic>> workouts = await _workoutService.getUserWorkouts(widget.userId);
+      String? existingWorkoutId;
+
+      for (var workout in workouts) {
+        if (workout['title'] == widget.fitnessPlan.title) {
+          existingWorkoutId = workout['id'];
+          break;
+        }
+      }
+
+      if (existingWorkoutId != null) {
+        // Workout exists, navigate to it
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WorkoutActivityView(
+              fitnessPlan: widget.fitnessPlan,
+              userId: widget.userId,
+              workoutId: existingWorkoutId!,
+              model: WorkoutActivityModel(
+                activityTitle: widget.fitnessPlan.activities.isNotEmpty ? widget.fitnessPlan.activities[0] : '',
+                duration: widget.fitnessPlan.durations.isNotEmpty ? widget.fitnessPlan.durations[0] : 0,
+                remainingTimeInSeconds: widget.fitnessPlan.durations.isNotEmpty ? widget.fitnessPlan.durations[0] * 60 : 0,
+                activities: widget.fitnessPlan.activities,
+                durations: widget.fitnessPlan.durations,
+                activityIndex: 0,
+                startTime: DateTime.now(),
+                endTime: null,
+              ),
+            ),
+          ),
+        );
+      } else {
+        // Step 2: Create a new workout
+        String newWorkoutId = await _workoutService.createWorkoutData(
+          widget.userId,
+          {
+            'title': widget.fitnessPlan.title,
+            'activities': widget.fitnessPlan.activities,
+            'durations': widget.fitnessPlan.durations,
+          },
+        );
+
+        // Step 3: Navigate to the newly created workout
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WorkoutActivityView(
+              fitnessPlan: widget.fitnessPlan,
+              userId: widget.userId,
+              workoutId: newWorkoutId,
+              model: WorkoutActivityModel(
+                activityTitle: widget.fitnessPlan.activities.isNotEmpty ? widget.fitnessPlan.activities[0] : '',
+                duration: widget.fitnessPlan.durations.isNotEmpty ? widget.fitnessPlan.durations[0] : 0,
+                remainingTimeInSeconds: widget.fitnessPlan.durations.isNotEmpty ? widget.fitnessPlan.durations[0] * 60 : 0,
+                activities: widget.fitnessPlan.activities,
+                durations: widget.fitnessPlan.durations,
+                activityIndex: 0,
+                startTime: DateTime.now(),
+                endTime: null,
+              ),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error starting workout: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to start workout')),
+      );
+    }
   }
 
   @override
