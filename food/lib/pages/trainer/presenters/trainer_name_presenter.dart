@@ -28,6 +28,8 @@ class TrainerNamePresenter {
     }
 
     print('User ID: ${user.uid}'); // Logging user ID
+    print('Saving name: $name');
+
 
 
     try {

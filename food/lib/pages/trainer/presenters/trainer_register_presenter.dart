@@ -16,7 +16,7 @@ class TrainerRegisterPresenter {
     }
 
     try {
-      UserCredential userCredential = await _authService.signUpWithEmailPassword(email, password);
+      UserCredential userCredential = await _authService.registerTrainer(email, password);
       _view.onRegisterSuccess(userCredential);
     } catch (e) {
       _view.showError(e.toString());

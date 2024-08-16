@@ -79,35 +79,6 @@ Widget _loadProfilePicture() {
     }
   }
 
-  // void showLogoutConfirmationDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         content: const Text(
-  //           'Are you sure you want to log out?',
-  //           style: TextStyle(fontSize: 15),
-  //           textAlign: TextAlign.center,
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: const Text('Cancel'),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //               logout(context);
-  //             },
-  //             child: const Text('Logout'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   void showLogoutConfirmationDialog(BuildContext context) {
     showCupertinoDialog(

@@ -48,8 +48,46 @@ class TrainerSettingProfileService {
   }
 
   // Method to update the profile or create a default profile if none exists
+  // Future<void> updateSettingProfile(String uid, Map<String, dynamic> newData) async {
+  //   try {
+  //     QuerySnapshot querySnapshot = await usersCollection
+  //         .doc(uid)
+  //         .collection('TrainerProfile')
+  //         .get();
+
+  //     if (querySnapshot.docs.isNotEmpty) {
+  //       // Update the existing profile
+  //       String profileId = querySnapshot.docs[0].id;
+  //       print('Updating profile ID: $profileId with data: $newData');
+
+  //       await usersCollection
+  //           .doc(uid)
+  //           .collection('TrainerProfile')
+  //           .doc(profileId)
+  //           .update(newData);
+  //       print('Profile updated successfully!');
+  //     } else {
+  //       print('No trainer profile found for uid: $uid');
+  //       // Create a default profile if it doesn't exist
+  //       await createProfile(
+  //         uid,
+  //         age: 0,
+  //         experience: 0,
+  //         expertise: ['Default Expertise'],
+  //         name: "Default Name",
+  //         profilePictureUrl: null,
+  //       );
+  //       print('Profile created successfully with default values!');
+  //     }
+  //   } catch (e) {
+  //     print('Error updating profile: $e');
+  //     throw Exception('Failed to update profile.');
+  //   }
+  // }
+
   Future<void> updateSettingProfile(String uid, Map<String, dynamic> newData) async {
     try {
+      // Fetch existing profiles
       QuerySnapshot querySnapshot = await usersCollection
           .doc(uid)
           .collection('TrainerProfile')
@@ -58,6 +96,8 @@ class TrainerSettingProfileService {
       if (querySnapshot.docs.isNotEmpty) {
         // Update the existing profile
         String profileId = querySnapshot.docs[0].id;
+        print('Updating profile ID: $profileId with data: $newData');
+
         await usersCollection
             .doc(uid)
             .collection('TrainerProfile')
@@ -65,17 +105,18 @@ class TrainerSettingProfileService {
             .update(newData);
         print('Profile updated successfully!');
       } else {
+        // Create a new profile with provided data if none exists
         print('No trainer profile found for uid: $uid');
-        // Create a default profile if it doesn't exist
+        // Ensure all required fields are included in the profile creation
         await createProfile(
           uid,
-          age: 0,
-          experience: 0,
-          expertise: ['Default Expertise'],
-          name: "Default Name",
-          profilePictureUrl: null,
+          age: newData['age'] ?? 0, // Default to 0 if not provided
+          experience: newData['experience'] ?? 0, // Default to 0 if not provided
+          expertise: newData['expertise'] ?? ['Default Expertise'], // Default if not provided
+          name: newData['name'] ?? 'Default Name', // Default to 'Default Name' if not provided
+          profilePictureUrl: newData['profilePictureUrl'], // Use provided URL if any
         );
-        print('Profile created successfully with default values!');
+        print('Profile created successfully with provided values!');
       }
     } catch (e) {
       print('Error updating profile: $e');

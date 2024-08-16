@@ -66,7 +66,7 @@ class _PremiumPlanPageState extends State<PremiumPlanPage> {
             BulletPoint(text: 'Access to all workout plans'),
             BulletPoint(text: 'Access to all meal plans'),
             BulletPoint(text: 'Contact verified trainers'),
-            BulletPoint(text: 'Personalized feedback and plans'),
+            BulletPoint(text: 'Personalized feedback'),
             SizedBox(height: 40),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,

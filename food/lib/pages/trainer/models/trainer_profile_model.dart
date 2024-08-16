@@ -39,11 +39,11 @@ class TrainerProfile {
         Map<String, dynamic>? userData = await TrainerSettingProfileService().fetchUserData(user.uid);
 
         if (userData != null) {
-          name = userData['Name'] ?? 'No name';
-          gender = userData['Gender'];
-          age = userData['Age'];
-          experience = userData['Experience'];
-          expertise = List<String>.from(userData['Expertise'] ?? []);
+          name = userData['name'] ?? 'No name';
+          gender = userData['gender'];
+          age = userData['age'];
+          experience = userData['experience'];
+          expertise = List<String>.from(userData['expertise'] ?? []);
           
           // Update other fields if needed
         } else {

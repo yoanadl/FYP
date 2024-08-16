@@ -208,25 +208,7 @@ class ChallengeViewerViewPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: Navbar(
-        currentIndex: 2,
-        onTap: (int index) {
-          if (index != 2) {
-            Navigator.pop(context);
-            switch (index) {
-              case 0:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 0)));
-                break;
-              case 1:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 1)));
-                break;
-              case 3:
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const BasePage(initialIndex: 3)));
-                break;
-            }
-          }
-        },
-      ),
+      
     );
   }
 }
