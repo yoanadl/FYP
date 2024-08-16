@@ -1,9 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:food/pages/workout/models/workout_done_model.dart';
 
 class WorkoutService {
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
+
+  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
 
   // Create a new workout and return its ID
   Future<String> createWorkoutData(
@@ -114,6 +120,11 @@ class WorkoutService {
           });
 
       print("Workout data saved successfully");
+
+      // Check and send notification
+      final workoutService = WorkoutService();
+      await workoutService.checkAndSendNotification(userId);
+
     } catch (e) {
       print("Error saving workout data: $e");
     }
@@ -141,6 +152,93 @@ class WorkoutService {
   }
 
 
+  Future<int> getWorkoutCountForCurrentWeek(String userId) async {
+  try {
+    final now = DateTime.now();
+    final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    final endOfWeek = startOfWeek.add(Duration(days: 6));
+
+    print('Fetching workouts from $startOfWeek to $endOfWeek');
+
+    // Get all workout documents for the user
+    final workoutsSnapshot = await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('workouts')
+        .get();
+
+    int workoutCount = 0;
+
+    for (var workoutDoc in workoutsSnapshot.docs) {
+      // For each workout document, query the 'instances' subcollection
+      final instancesSnapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('workouts')
+          .doc(workoutDoc.id)
+          .collection('instances')
+          .where('startTime', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfWeek))
+          .where('startTime', isLessThanOrEqualTo: Timestamp.fromDate(endOfWeek))
+          .get();
+
+      workoutCount += instancesSnapshot.docs.length;
+    }
+
+    print('Number of workouts completed this week: $workoutCount');
+    return workoutCount;
+  } catch (e) {
+    print('Error retrieving workout count: $e');
+    return 0;
+  }
+}
+
+  Future<void> sendWorkoutsCompletedNotification() async {
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      'workouts_channel_id',
+      'Workouts Channel',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+
+    await _flutterLocalNotificationsPlugin.show(
+      0, // Notification ID
+      'Congratulations!',
+      'You have completed 10 workouts this week! Take a break and keep up the great work!',
+      notificationDetails,
+      payload: 'workout_done',
+    );
+  }
+
+  // Future<void> checkAndSendNotification(String userId) async {
+  //   final workoutCount = await getWorkoutCountForCurrentWeek(userId);
+
+  //   if (workoutCount > 10) {
+  //     await sendWorkoutsCompletedNotification();
+  //   }
+  // }
+
+  Future<void> checkAndSendNotification(String userId) async {
+  try {
+    final workoutCount = await getWorkoutCountForCurrentWeek(userId);
+
+    // Debug statement to print the workout count
+    print('Workout count for current week: $workoutCount');
+
+    if (workoutCount > 1) {
+      print('User has completed more than 10 workouts. Sending notification...');
+      await sendWorkoutsCompletedNotification();
+    } else {
+      print('User has not completed more than 10 workouts. No notification sent.');
+    }
+  } catch (e) {
+    print('Error checking and sending notification: $e');
+  }
+}
 
 
 }
+

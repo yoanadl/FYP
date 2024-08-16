@@ -15,8 +15,6 @@ class NotificationService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   
 
-  bool _isBreakReminderEnabled = false;
-
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection('users');
 
