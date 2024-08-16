@@ -369,19 +369,19 @@ class _FitnessRemindersState extends State<FitnessReminders> {
     _loadSavedReminders();
   }
 
-  // For demo purposes, get a fixed interval of 1 minute
-  Duration _getFixedInterval() {
-    return Duration(minutes: 1); // Fixed interval of 1 minute
-  }
-
   void _schedulePeriodicChecks() {
-    print("insdie periodic checks");
-    _notificationTimer?.cancel(); // Cancel any existing timer
-    _notificationTimer = Timer.periodic(_getFixedInterval(), (timer) {
-      print("Timer triggered");
+  print("inside periodic checks");
+  _notificationTimer?.cancel(); // Cancel any existing timer
+
+  try {
+    _notificationTimer = Timer.periodic(Duration(seconds: 30), (timer) {
+      print("Timer triggered at ${DateTime.now()}");
       _checkAndNotifyGoals();
     });
+  } catch (e) {
+    print("Error scheduling periodic checks: $e");
   }
+}
 
   Future<void> _checkAndNotifyGoals() async {
     try {

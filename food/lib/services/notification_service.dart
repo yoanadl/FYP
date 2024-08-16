@@ -193,7 +193,7 @@ Future<void> checkDailyExerciseGoal() async {
 
       final userDoc = firestore.collection('users').doc(userId);
       final remindersCollection = userDoc.collection('fitnessReminders');
-      final snapshot = await remindersCollection.doc('dailyStepsGoal').get();
+      final snapshot = await remindersCollection.doc('Daily step count').get();
 
       if (snapshot.exists) {
         final data = snapshot.data();

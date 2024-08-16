@@ -269,7 +269,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> with SingleTickerProvid
                                     Icon(Icons.public),
                                     SizedBox(width: 8),
                                     Text(
-                                      'https://goodgritworkout.wordpress.com',
+                                      'https://bettergrit.wixsite.com/goodgrit',
                                       style: TextStyle(
                                         fontSize: 13,
                                         color: Colors.black,
