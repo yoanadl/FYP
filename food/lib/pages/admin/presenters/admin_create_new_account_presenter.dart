@@ -15,7 +15,7 @@ class AdminCreateNewAccountPresenter {
 
     try {
       await _userModel.createUser(email, password);
-      _onSuccess;
+      _onSuccess();
     }
     catch(e) {
       _onError();

@@ -374,7 +374,7 @@ class _FitnessRemindersState extends State<FitnessReminders> {
   _notificationTimer?.cancel(); // Cancel any existing timer
 
   try {
-    _notificationTimer = Timer.periodic(Duration(seconds: 30), (timer) {
+    _notificationTimer = Timer.periodic(Duration(seconds: 10), (timer) {
       print("Timer triggered at ${DateTime.now()}");
       _checkAndNotifyGoals();
     });

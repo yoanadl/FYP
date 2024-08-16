@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
+
 class UserModel {
   final String backendUrl = 'https://us-central1-fyp-goodgrit-a8601.cloudfunctions.net';
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -56,23 +57,28 @@ class UserModel {
     }
   }
 
-  Future<void> createUser(String email, String password) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$backendUrl/createUser'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
-      );
 
-      if (response.statusCode != 201) {
-        throw Exception('Failed to create user');
-      }
-    } catch (e) {
-      print('Error creating user account: $e');
+  Future<void> createUser(String email, String password) async {
+  try {
+    final response = await http.post(
+      Uri.parse('$backendUrl/createUser'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'email': email,
+        'password': password,
+      }),
+    );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode != 201) {
+      throw Exception('Failed to create user: ${response.body}');
     }
+  } catch (e) {
+    print('Error creating user account: $e');
   }
+}
+
 
 }

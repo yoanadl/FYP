@@ -64,7 +64,7 @@ class _PremiumPlanPageState extends State<PremiumPlanPage> {
             ),
             SizedBox(height: 20),
             BulletPoint(text: 'Contact verified trainers'),
-            BulletPoint(text: 'Personalized feedback and plans'),
+            BulletPoint(text: 'Personalized feedback'),
             SizedBox(height: 40),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
