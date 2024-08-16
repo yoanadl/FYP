@@ -14,40 +14,6 @@ import 'package:timezone/data/latest.dart' as tz;
 // initialize the HealthFactory globally
 final HealthFactory healthFactory = HealthFactory();
 
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   tz.initializeTimeZones();
-//   try {
-//     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-//     initializeDependencies();
-//     Stripe.publishableKey = "pk_test_51Pa6OlGwNxjo4qONIEwyIRRlgb2XX0QtOi1be81uw5s3UkWHqfx8q02QEhipq7Lo12dRFUdbxE2dXvMg5LXcRUi400ohnfhYtk";
-//     Stripe.instance.applySettings();
-    
-//     await requestHealthKitAuthorization();
-
-//     NotificationService().initNotification();
-//     tz.initializeTimeZones();
-//   } catch (e) {
-//     print('Initialization failed: $e');
-//   }
-
-//    final FirebaseAuth _auth = FirebaseAuth.instance;
-//   final User? user = _auth.currentUser;
-
-//   if (user != null) {
-//     final String userId = user.uid;
-//     final WorkoutService _workoutService = WorkoutService();
-
-//     // Call the function to test
-//     await _workoutService.checkAndSendNotification(userId);
-//     print('Notification check initiated for user ID: $userId');
-//   } else {
-//     print('No user is currently signed in.');
-//   }
-
-//   runApp(const MyApp());
-// }
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   tz.initializeTimeZones();
