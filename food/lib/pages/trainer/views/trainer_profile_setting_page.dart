@@ -140,10 +140,10 @@ void fetchTrainerProfileData() async {
     // Update state with fetched data
     setState(() {
       this.profileData = profileData;
-      nameController.text = profileData['Name']?.toString() ?? '';
-      ageController.text = profileData['Age']?.toString() ?? '';
-      experienceController.text = profileData['Experience']?.toString() ?? '';
-      expertiseController.text = (profileData['Expertise'] as List<dynamic>?)?.join(', ') ?? '';
+      nameController.text = profileData['name']?.toString() ?? '';
+      ageController.text = profileData['age']?.toString() ?? '';
+      experienceController.text = profileData['experience']?.toString() ?? '';
+      expertiseController.text = (profileData['expertise'] as List<dynamic>?)?.join(', ') ?? '';
       profilePictureUrlController.text = profilePictureUrl ?? '';
     });
   } catch (e) {
