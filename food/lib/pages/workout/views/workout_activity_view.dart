@@ -7,6 +7,8 @@ import 'package:food/pages/workout/views/workout_done_view.dart';
 import 'package:food/pages/workout/models/workout_done_model.dart';
 import 'package:food/pages/fitnessPlans/model/fitness_plan_model.dart';
 import 'package:food/services/notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class WorkoutActivityView extends StatefulWidget {
   final FitnessPlan? fitnessPlan;
@@ -32,10 +34,13 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
   late WorkoutActivityModel _currentModel;
   bool _isTimerRunning = false; // Track if the timer is running
   NotificationService notificationService = NotificationService();
+   bool _isBreakReminderEnabled = false; // Toggle state
+
 
   @override
   void initState() {
     super.initState();
+    _initializeToggleState();
 
     // Initialize model
     if (widget.fitnessPlan != null) {
@@ -51,17 +56,24 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
     _startWorkout();
   }
 
+  void _initializeToggleState() async {
+    // Retrieve the toggle state from SharedPreferences
+    final bool isBreakReminderEnabled = await notificationService.getBreakReminderStatus();
+    setState(() {
+       _isBreakReminderEnabled = isBreakReminderEnabled;
+    });
+  }
+
   void _startWorkout() async {
     // Capture the start time
     DateTime workoutStartTime = DateTime.now();
+      print('Workout Start Time in _Startworkout: $workoutStartTime');
 
-    // Check if break reminder is enabled
-    bool isBreakReminderEnabled = await notificationService.getBreakReminderStatus();
-
-    if (isBreakReminderEnabled) {
+    // if (_isBreakReminderEnabled) {
+      print('Scheduling Break Reminder Notification');
       // Schedule break reminder notification based on start time
       notificationService.scheduleBreakReminderNotification(workoutStartTime);
-    }
+    // }
   }
 
   @override

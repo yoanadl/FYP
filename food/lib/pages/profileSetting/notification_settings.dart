@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:food/services/notification_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 DateTime scheduleTime = DateTime.now();
 
@@ -12,47 +13,52 @@ class NotificationSettings extends StatefulWidget {
 
 class _NotificationSettingsState extends State<NotificationSettings> {
   final NotificationService _notificationService = NotificationService();
-  bool _isBreakReminderEnabled = false;
+  bool _isBreakReminderEnabled = false; // initial toggle state
 
   @override
   void initState() {
     super.initState();
     _notificationService.initNotification();
-    // Check current break reminder status and set the switch state accordingly
-    _loadBreakReminderStatus();
+    _loadToggleState();
   }
 
-  void _loadBreakReminderStatus() async {
-    // Load and set the break reminder status from persistent storage
-    final isEnabled = await _notificationService.getBreakReminderStatus();
+  Future<void> _loadToggleState() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _isBreakReminderEnabled = isEnabled;
+      _isBreakReminderEnabled = prefs.getBool('break_reminder_enabled') ?? false;
     });
   }
 
-  void _scheduleNotification() {
-    _notificationService.scheduleDailyNotification(
-      title: 'Goodgrit',
-      body: 'It\'s time for your exercise!',
-      scheduledTime: scheduleTime,
-    );
-    debugPrint('Notification Scheduled for $scheduleTime');
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Daily reminder set for ${_formatTime(scheduleTime)}!'),
-        duration: Duration(seconds: 2),
-      ),
-    );
+  Future<void> _saveToggleState(bool value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('break_reminder_enabled', value);
   }
 
-  void _toggleBreakReminder(bool value) async {
+   void _scheduleNotification() {
+    if (_isBreakReminderEnabled) {
+      _notificationService.scheduleDailyNotification(
+        title: 'Goodgrit',
+        body: 'It\'s time for your exercise!',
+        scheduledTime: scheduleTime,
+      );
+      debugPrint('Notification Scheduled for $scheduleTime');
+
+  
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Enable the break reminder toggle to set a notification.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+   void _toggleBreakReminder(bool value) async {
     setState(() {
       _isBreakReminderEnabled = value;
     });
-
-        // Save the break reminder status to persistent storage
-    await _notificationService.setBreakReminderStatus(value);
+    await _saveToggleState(value);
   }
 
   String _formatTime(DateTime dateTime) {

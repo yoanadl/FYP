@@ -4,6 +4,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:food/services/health_service.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -209,17 +211,39 @@ Future<void> checkDailyExerciseGoal() async {
 
   //for testing purposes
   Future<void> scheduleBreakReminderNotification(DateTime startTime) async {
+    print('inside scheudle break reminder notification');
     // Schedule the break reminder notification
+    final tz.TZDateTime reminderTime = tz.TZDateTime.from(startTime.add(Duration(minutes: 1)), tz.local);
+
+    print('Reminder Time:  ${reminderTime.toLocal()}');
+
     await notificationsPlugin.zonedSchedule(
       1,
       'Break Reminder',
       'It\'s time to take a break from your workout!',
-      _calculateBreakReminderTime(),
+      reminderTime,
       notificationDetails(),
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
+  }
+
+
+
+  Future<void> cancelBreakReminderNotification() async {
+    await notificationsPlugin.cancel(1);
+  }
+
+   // Method to set break reminder status
+  Future<void> setBreakReminderStatus(bool isEnabled) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('break_reminder_enabled', isEnabled);
+  }
+
+  Future<bool> getBreakReminderStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('break_reminder_enabled') ?? false;
   }
 
   // Future<void> scheduleBreakReminderNotification() async {
@@ -235,20 +259,6 @@ Future<void> checkDailyExerciseGoal() async {
   //         UILocalNotificationDateInterpretation.absoluteTime,
   //   );
   // }
-
-  Future<void> cancelBreakReminderNotification() async {
-    await notificationsPlugin.cancel(1);
-  }
-
-  Future<void> setBreakReminderStatus(bool status) async {
-    _isBreakReminderEnabled = status;
-    // Save status to persistent storage if needed
-  }
-
-  Future<bool> getBreakReminderStatus() async {
-    return _isBreakReminderEnabled;
-    // Retrieve status from persistent storage if needed
-  }
 
   // tz.TZDateTime _calculateBreakReminderTime() {
   //   // Calculate the time for the break reminder (e.g., 1 hour from now)

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/user/view/intro_page.dart';
 import 'package:food/services/auth/auth_service.dart';
@@ -16,7 +17,50 @@ class DeleteAccount extends StatefulWidget {
 class _DeleteAccountState extends State<DeleteAccount> {
 
   final AuthService _authService = AuthService();
+   String _userName = 'Loading...';
+  String _profilePicUrl = 'https://via.placeholder.com/150'; // Placeholder image URL
 
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+  try {
+    User? user = _authService.getCurrentUser();
+    if (user != null) {
+      String uid = user.uid;
+
+      // Fetch the user document
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (userDoc.exists) {
+        // Fetch the profile picture URL from the user document
+        _profilePicUrl = userDoc['profilePictureUrl'] ?? 'https://via.placeholder.com/150';
+
+        // Fetch the userprofile subcollection document
+        DocumentSnapshot profileDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('userprofile')
+            .doc('profile')  // Adjust if the document ID is dynamic
+            .get();
+
+        if (profileDoc.exists) {
+          setState(() {
+            _userName = profileDoc['name'] ?? 'No Name';  // Fetch the name field from userprofile
+          });
+        }
+      }
+    }
+  } catch (e) {
+    print('Error fetching user data: $e');
+  }
+}
+
+  
   void _deleteAccount() async {
 
     try {
@@ -62,10 +106,10 @@ class _DeleteAccountState extends State<DeleteAccount> {
   }
 
   void _showConfirmationDialog(BuildContext context) {
-    showDialog(
+    showCupertinoDialog(
       context: context, 
       builder: (BuildContext context) {
-        return AlertDialog(
+        return CupertinoAlertDialog(
           content: Text('Are you sure you want to delete your account? This action cannot be undone.'),
           actions: <Widget>[
             TextButton(
@@ -112,10 +156,11 @@ class _DeleteAccountState extends State<DeleteAccount> {
               CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.grey[300],
+                backgroundImage: NetworkImage(_profilePicUrl),
               ),
               SizedBox(height: 20,),
               Text(
-                'Placeholder Name',
+                _userName,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
