@@ -22,6 +22,7 @@ class WorkoutActivityPresenter {
   bool get isPaused => _isPaused;
   bool get isBreak => _isBreak;
 
+  
   void startTimer() {
     if (_isBreak) {
       _model = _model.copyWith(remainingTimeInSeconds: 30); // 30-second break
@@ -60,6 +61,7 @@ class WorkoutActivityPresenter {
             _isBreak = true;
             startTimer();
           } else {
+            print('Last activity reached, navigating to Workout Done');
             _model = _model.copyWith(endTime: DateTime.now());
             _view.navigateToWorkoutDone(_model);
           }

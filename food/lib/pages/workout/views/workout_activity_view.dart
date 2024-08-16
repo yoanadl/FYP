@@ -7,7 +7,6 @@ import 'package:food/pages/workout/views/workout_done_view.dart';
 import 'package:food/pages/workout/models/workout_done_model.dart';
 import 'package:food/pages/fitnessPlans/model/fitness_plan_model.dart';
 import 'package:food/services/notification_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class WorkoutActivityView extends StatefulWidget {
@@ -53,7 +52,10 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
     _presenter.startTimer();
     _isTimerRunning = true;
 
-    _startWorkout();
+    if (_isBreakReminderEnabled) {
+      _startWorkout();
+    }
+    
   }
 
   void _initializeToggleState() async {
@@ -83,12 +85,6 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
         _currentModel = _currentModel.copyWith(remainingTimeInSeconds: remainingTime);
       });
 
-      // Check if timer has reached 0
-      if (remainingTime == 0) {
-        _presenter.stopTimer();
-        _isTimerRunning = false;
-        navigateToWorkoutDone(_currentModel);
-      }
     }
   }
 
@@ -120,6 +116,37 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
     }
   }
 
+  // @override
+  // void navigateToWorkoutDone(WorkoutActivityModel model) {
+  //   if (model.startTime == null || model.endTime == null) {
+  //     print('Start time or end time is null');
+  //     return;
+  //   }
+
+  //   if (mounted) {
+  //     // Use a context that's definitely valid
+  //     WidgetsBinding.instance.addPostFrameCallback((_) {
+  //       if (mounted) {
+  //         Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (context) => WorkoutDoneView(
+  //               presenter: WorkoutDonePresenter(WorkoutDoneViewImplementation()),
+  //               startTime: model.startTime!,
+  //               endTime: model.endTime!,
+  //               activities: model.activities,
+  //               durations: model.durations,
+  //               userId: widget.userId,
+  //               workoutId: widget.workoutId,
+  //             ),
+  //           ),
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
+
+
   @override
   void navigateToWorkoutDone(WorkoutActivityModel model) {
     if (model.startTime == null || model.endTime == null) {
@@ -127,28 +154,23 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
       return;
     }
 
-    if (mounted) {
-      // Use a context that's definitely valid
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => WorkoutDoneView(
-                presenter: WorkoutDonePresenter(WorkoutDoneViewImplementation()),
-                startTime: model.startTime!,
-                endTime: model.endTime!,
-                activities: model.activities,
-                durations: model.durations,
-                userId: widget.userId,
-                workoutId: widget.workoutId,
-              ),
-            ),
-          );
-        }
-      });
-    }
-  }
+
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => WorkoutDoneView(
+        presenter: WorkoutDonePresenter(WorkoutDoneViewImplementation()),
+        startTime: model.startTime!,
+        endTime: model.endTime!,
+        activities: model.activities,
+        durations: model.durations,
+        userId: widget.userId,
+        workoutId: widget.workoutId,
+      ),
+    ),
+  );
+}
+    
 
   
   // Converting fitness plan to workout model
