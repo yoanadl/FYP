@@ -88,12 +88,17 @@ class TrainersPage extends StatelessWidget {
                             return Center(child: Text('No trainers available.'));
                           }
 
-                          // Display trainer cards
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: trainerSnapshot.data!.map((trainer) {
-                              return _buildTrainerCard(context, trainer);
-                            }).toList(),
+                          // Display trainer cards with horizontal scrolling
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: trainerSnapshot.data!.map((trainer) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: _buildTrainerCard(context, trainer),
+                                );
+                              }).toList(),
+                            ),
                           );
                         },
                       ),
@@ -163,7 +168,7 @@ class TrainersPage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => RecieveAdvicePage(
                               clientId: user?.uid ?? '',
-                              userName: trainerName ?? 'Client',
+                              userName: trainerName,
                               trainerId: trainerId,
                             ),
                           ),
@@ -197,7 +202,7 @@ class TrainersPage extends StatelessWidget {
               trainerDocId: trainer['profileId'] ?? '',
               userId: trainer['userId'],
               trainerName: trainer['name'] ?? 'No Name',
-              profilePictureUrl: trainer ['profilePictureUrl'] ?? ''
+              profilePictureUrl: trainer['profilePictureUrl'] ?? ''
             ),
           ),
         );
@@ -205,13 +210,12 @@ class TrainersPage extends StatelessWidget {
       child: Column(
         children: [
           CircleAvatar(
-  radius: 40,
-  backgroundImage: (trainer['profilePictureUrl'] != null && trainer['profilePictureUrl']!.isNotEmpty)
-      ? NetworkImage(trainer['profilePictureUrl']!)
-      : AssetImage('assets/images/no_profile_pic.png') as ImageProvider,
-  backgroundColor: Colors.grey[300],
-),
-
+            radius: 40,
+            backgroundImage: (trainer['profilePictureUrl'] != null && trainer['profilePictureUrl']!.isNotEmpty)
+                ? NetworkImage(trainer['profilePictureUrl']!)
+                : AssetImage('assets/images/no_profile_pic.png') as ImageProvider,
+            backgroundColor: Colors.grey[300],
+          ),
           SizedBox(height: 8),
           Text(
             trainer['name'],

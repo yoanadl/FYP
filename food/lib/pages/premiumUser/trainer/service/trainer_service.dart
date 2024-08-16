@@ -23,10 +23,10 @@ class TrainerService {
 
 
 
-          String name = data['Name'] ?? 'No Name';
-          List<dynamic> expertise = data['Expertise'] ?? [];
-          String age = data['Age'] ?? 'No Age';
-          String experience = data['Experience'] ?? 'No Experience';
+          String name = data['name'] ?? 'No Name';
+          List<dynamic> expertise = data['expertise'] ?? [];
+          String age = data['age'] ?? 'No Age';
+          String experience = data['experience'] ?? 'No Experience';
 
           // Add user document ID and TrainerProfile document ID
           trainers.add({

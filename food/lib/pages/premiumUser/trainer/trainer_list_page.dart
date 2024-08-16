@@ -130,7 +130,7 @@ class _TrainersListPageState extends State<TrainersListPage> {
 
   String trainerDocId = trainerProfileData['profileId'] ?? ''; // Get the TrainerProfile document ID
   String userId = trainerProfileData['userId'] ?? ''; // Get the user document ID
-  String trainerName = trainerProfileData['Name'] ?? ''; // Get the trainer's name
+  String trainerName = trainerProfileData['name'] ?? ''; // Get the trainer's name
   String profilePictureUrl = trainerProfileData['profilePictureUrl'] ?? 'No picture';
 
   return InkWell(
@@ -156,7 +156,7 @@ class _TrainersListPageState extends State<TrainersListPage> {
         ),
         backgroundColor: Colors.grey[300],
       ),
-      title: Text(trainerProfileData['Name'] ?? 'No Name'),
+      title: Text(trainerProfileData['name'] ?? 'No Name'),
       subtitle: Text(expertiseList.isNotEmpty ? expertiseList.join(', ') : 'No Expertise'),
     ),
   );
