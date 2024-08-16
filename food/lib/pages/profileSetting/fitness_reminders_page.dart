@@ -375,7 +375,8 @@ class _FitnessRemindersState extends State<FitnessReminders> {
   }
 
   void _schedulePeriodicChecks() {
-     _notificationTimer?.cancel(); // Cancel any existing timer
+    print("insdie periodic checks");
+    _notificationTimer?.cancel(); // Cancel any existing timer
     _notificationTimer = Timer.periodic(_getFixedInterval(), (timer) {
       print("Timer triggered");
       _checkAndNotifyGoals();
@@ -411,7 +412,7 @@ class _FitnessRemindersState extends State<FitnessReminders> {
           await _notificationService.checkAndNotifyWeeklyWorkoutGoal(); // Check if the weekly exercise count goal is met
         }
 
-          // Mark notification as sent
+        // Mark notification as sent
         setState(() {
           _notificationSent = true;
         });
@@ -552,21 +553,7 @@ class _FitnessRemindersState extends State<FitnessReminders> {
                   'Saved Fitness Reminders:',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
-                SizedBox(height: 10),
-                ...savedReminders.entries.map((entry) => ListTile(
-                      title: Text('${entry.key}: ${entry.value} ${_getUnitForGoal(entry.key)}'),
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        onPressed: () {
-                          setState(() {
-                            if (!selectedGoals.contains(entry.key)) {
-                              selectedGoals.add(entry.key);
-                            }
-                            reminders[entry.key] = entry.value;
-                          });
-                        },
-                      ),
-                    )),
+                
               ],
             ],
           ),
