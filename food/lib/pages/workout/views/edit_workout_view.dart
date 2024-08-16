@@ -139,6 +139,7 @@ class _EditWorkoutViewState extends State<EditWorkoutView> implements EditWorkou
       _presenter.saveWorkout(widget.userId, widget.workoutId, _titleController.text, activities, durations, widget.isPremade);
     }
   }
+  
 
   @override
   void onSaveSuccess() {

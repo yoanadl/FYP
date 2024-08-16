@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food/pages/workout/models/workout_activity_model.dart';
 import 'package:food/pages/workout/presenters/workout_activity_presenter.dart';
@@ -51,7 +52,7 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
   }
 
   void _startWorkout() async {
-      // Capture the start time
+    // Capture the start time
     DateTime workoutStartTime = DateTime.now();
 
     // Check if break reminder is enabled
@@ -69,6 +70,13 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
       setState(() {
         _currentModel = _currentModel.copyWith(remainingTimeInSeconds: remainingTime);
       });
+
+      // Check if timer has reached 0
+      if (remainingTime == 0) {
+        _presenter.stopTimer();
+        _isTimerRunning = false;
+        navigateToWorkoutDone(_currentModel);
+      }
     }
   }
 
@@ -100,7 +108,6 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
     }
   }
 
-  
   @override
   void navigateToWorkoutDone(WorkoutActivityModel model) {
     if (model.startTime == null || model.endTime == null) {
@@ -108,62 +115,30 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
       return;
     }
 
-  if (mounted) {
-    // Use a context that's definitely valid
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WorkoutDoneView(
-              presenter: WorkoutDonePresenter(WorkoutDoneViewImplementation()),
-              startTime: model.startTime!,
-              endTime: model.endTime!,
-              activities: model.activities,
-              durations: model.durations,
-              userId: widget.userId,
-              workoutId: widget.workoutId,
+    if (mounted) {
+      // Use a context that's definitely valid
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WorkoutDoneView(
+                presenter: WorkoutDonePresenter(WorkoutDoneViewImplementation()),
+                startTime: model.startTime!,
+                endTime: model.endTime!,
+                activities: model.activities,
+                durations: model.durations,
+                userId: widget.userId,
+                workoutId: widget.workoutId,
+              ),
             ),
-          ),
-        );
-      }
-    });
-  }
-}
-
-
-  Future<void> _confirmStopWorkout() async {
-    if (!_isTimerRunning) return; 
-
-    bool? confirm = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Stop Workout'),
-          content: Text('Are you sure you want to stop the workout?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Stop'),
-            ),
-          ],
-        );
-      },
-    );
-
-    if (confirm == true) {
-      if (mounted) {
-        _presenter.stopTimer();
-        _isTimerRunning = false; // Update state
-        navigateToWorkoutDone(_currentModel);
-      }
+          );
+        }
+      });
     }
   }
 
+  
   // Converting fitness plan to workout model
   WorkoutActivityModel convertFitnessPlanToWorkoutActivityModel(FitnessPlan plan) {
     return WorkoutActivityModel(
@@ -234,28 +209,25 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
                 ),
               ),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 50,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xFFBA1200),
-                    ),
-                    child: TextButton(
-                      onPressed: _confirmStopWorkout,
-                      child: Text(
-                        'Stop',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
+              Container(
+                height: 50,
+                width: 220,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color(0xFFBA1200),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    'Stop Workout',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
                     ),
                   ),
-                ],
+                ),
               ),
             ],
           ),
@@ -267,7 +239,6 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
   @override
   void dispose() {
     _presenter.stopTimer();
-    _isTimerRunning = false; // Clean up state
     super.dispose();
   }
 }
@@ -275,7 +246,6 @@ class _WorkoutActivityViewState extends State<WorkoutActivityView>
 class WorkoutDoneViewImplementation implements WorkoutDoneViewInterface {
   @override
   void updateView(WorkoutDoneModel model) {
-    // Implement view update logic here if needed
+    // Update view logic
   }
 }
-

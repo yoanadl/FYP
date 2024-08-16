@@ -26,7 +26,7 @@ class EditWorkoutPresenter {
     Map<String, dynamic> newData = {
       'title': title,
       'activities': activities,
-      'duration': durations,
+      'durations': durations,
     };
 
     try {
