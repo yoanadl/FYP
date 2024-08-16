@@ -639,27 +639,11 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
           backgroundColor: Colors.white, 
           centerTitle: false,
           actions: [
-            // Notification icon
-            Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[300],
-                ),
-                child: IconButton(
-                  onPressed: () {}, 
-                  icon: Icon(Icons.notifications),
-                  iconSize: 25,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            
+          
             //profile icon
             if (user != null)
               Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.only(right: 10.0),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -671,7 +655,10 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                   },
                 child: loadProfilePicture(context, user.uid),
               ),
+
             ),
+
+            SizedBox(width: 25,)
           ],
           iconTheme: IconThemeData(color: Colors.white),
           title: Column(
