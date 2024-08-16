@@ -170,7 +170,17 @@ class PaymentMethodPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            // ... (other options like Paypal, Apple Pay)
+            SizedBox(height: 20),
+            Center(
+            child: Text(
+              'Coming Soon....',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                
+              ),
+            ),
+          ),
           ],
         ),
       ),
