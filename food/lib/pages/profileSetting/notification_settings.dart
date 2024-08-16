@@ -51,13 +51,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       _isBreakReminderEnabled = value;
     });
 
-    if (value) {
-      await _notificationService.scheduleBreakReminderNotification();
-    } else {
-      await _notificationService.cancelBreakReminderNotification();
-    }
-    
-    // Save the break reminder status to persistent storage
+        // Save the break reminder status to persistent storage
     await _notificationService.setBreakReminderStatus(value);
   }
 

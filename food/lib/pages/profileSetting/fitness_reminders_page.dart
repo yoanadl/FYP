@@ -58,7 +58,7 @@ class _FitnessRemindersState extends State<FitnessReminders> {
   // }
 
   // for testing purposes
-  // get random duration between 1 and 5 minutes
+  // get random duration between 1 and 3 minutes
   Duration _getRandomInterval() {
     final random = Random();
     final minMinutes = 1; // 1 minute
