@@ -278,3 +278,4 @@ class WorkoutDoneViewImplementation implements WorkoutDoneViewInterface {
     // Implement view update logic here if needed
   }
 }
+

@@ -59,7 +59,7 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                       color: Colors.black,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                      fontSize: 19,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -68,7 +68,7 @@ class _TrainerMainPageState extends State<TrainerMainPage> {
                     style: const TextStyle(
                       color: Colors.black,
                       fontFamily: 'Poppins',
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
                 ],

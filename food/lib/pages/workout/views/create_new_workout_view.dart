@@ -179,19 +179,6 @@ class _CreateNewWorkoutViewState extends State<CreateNewWorkoutView> implements 
       startTime: DateTime.now(),
       endTime: null,
     );
-
-    // Navigate to WorkoutActivityView
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => WorkoutActivityView(
-          model: workoutModel,
-          userId: FirebaseAuth.instance.currentUser!.uid,
-          workoutId: workoutId,
-          // isPremade: false,
-        ),
-      ),
-    );
 }
 
 
