@@ -81,33 +81,33 @@ class _ChallengeResultsPageState extends State<ChallengeResultsPage> {
                       children: [
                         Text(
                           challenge['title'] ?? 'No Title',
-                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                         ),
                         SizedBox(height: 15),
                         Text(
                           challenge['description'] ?? 'No Description',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                         SizedBox(height: 15),
                         Text(
                           'Duration: ${challenge['duration'] ?? 'N/A'}',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                         SizedBox(height: 15),
                         
                         Text(
                           'Start Date: ${formatDateTime((challenge['startDate'] as Timestamp?)?.toDate())}',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                         SizedBox(height: 15),
                 
                         Text(
                           'End Date: ${formatDateTime((challenge['endDate'] as Timestamp?)?.toDate())}',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 14),
                         ),
                        SizedBox(height: 15),
 
-                       Text('Activities', style: TextStyle(fontSize: 17),),
+                       Text('Activities', style: TextStyle(fontSize: 14),),
 
                         SizedBox(height: 10),
                        
@@ -121,12 +121,12 @@ class _ChallengeResultsPageState extends State<ChallengeResultsPage> {
                                     ),
                                     Text(
                                       '${activity['duration']} mins',
-                                      style: TextStyle(fontSize: 16),
+                                      style: TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 );
                               }).toList()
-                            : [Text('N/A', style: TextStyle(fontSize: 16))],
+                            : [Text('N/A', style: TextStyle(fontSize: 14))],
                       ),
                         SizedBox(height: 16),
 

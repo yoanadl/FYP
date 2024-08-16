@@ -37,7 +37,7 @@ class ChallengeViewerViewPage extends StatelessWidget {
             var challengeData = snapshot.data!.data() as Map<String, dynamic>;
             return Text(
               challengeData['title'] ?? 'No title',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             );
           },
         ),

@@ -111,7 +111,7 @@ class _ExploreWorkoutsPageState extends State<ExploreWorkoutsPage> {
                       height: 180,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(9),
-                        color: Colors.grey[200],
+                        color: Color(0xFFC8E0F4).withOpacity(0.7),
                       ),
                       child: Center(
                         child: Text(

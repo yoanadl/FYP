@@ -41,7 +41,7 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
             final title = challengeData['title'] ?? 'No Title';
 
             return Text(title, style: TextStyle(
-              fontSize: 24, 
+              fontSize: 20, 
               fontWeight: FontWeight.bold
             ));
           },
@@ -148,7 +148,6 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
           final challengeData = snapshot.data!.data() as Map<String, dynamic>;
           final creator = challengeData['creatorName'] ?? 'Unknown Creator';
           final description = challengeData['description'] ?? 'No Description';
-          final rewards = challengeData['rewards'] ?? '00 pts';
           final duration = challengeData['duration'] ?? 'Unknown Duration';
           final activities = challengeData['activities'] as List<dynamic>? ?? [];
           final startDate = (challengeData['startDate'] as Timestamp).toDate();
@@ -163,7 +162,7 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
                 SizedBox(height: 16),
                 Text(description),
                 SizedBox(height: 16),
-                Text('Rewards: $rewards'),
+                Text('Rewards: 100 pts'),
                 SizedBox(height: 16),
                 Text('Duration: $duration'),
                 SizedBox(height: 16),
@@ -175,6 +174,7 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
                 SizedBox(height: 8),
                 _buildActivityList(activities),
                 
+                SizedBox(height: 20,),
                 Center(
                   child: ElevatedButton(
                     child: Text(
@@ -186,12 +186,20 @@ class ChallengeViewerViewJoinedPage extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF031927),
                       foregroundColor: Colors.white),
-                    onPressed: () => Navigator.push(
-                      context, 
-                      MaterialPageRoute(
-                        builder: (context) => ChallengeActivityPage(challengeId: challengeId),
+                    // onPressed: () => Navigator.push(
+                    //   context, 
+                    //   MaterialPageRoute(
+                    //     builder: (context) => ChallengeActivityPage(challengeId: challengeId),
+                    //   ),
+                    // )
+                    onPressed: endDate.isBefore(DateTime.now()) 
+                    ? null // Disable the button if the challenge has ended
+                    : () => Navigator.push(
+                        context, 
+                        MaterialPageRoute(
+                          builder: (context) => ChallengeActivityPage(challengeId: challengeId),
+                        ),
                       ),
-                    )
                   ),
                 ),
               ],

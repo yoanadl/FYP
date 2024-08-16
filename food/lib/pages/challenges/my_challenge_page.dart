@@ -338,6 +338,18 @@ class _MyChallengePageState extends State<MyChallengePage> {
                 ),
               ),
             ),
+            if (type == 'own')
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              decoration: BoxDecoration(
+                color:  Color(0xFF031927),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                'Own',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
             if (type == 'joined')
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),

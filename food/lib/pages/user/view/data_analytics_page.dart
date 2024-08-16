@@ -320,7 +320,7 @@ class _DataAnalyticsPageState extends State<DataAnalyticsPage> {
                 ),
               ),
               Text(
-                '${filterAverageHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
+                '${filterMaxHeartRate?.toStringAsFixed(1) ?? 'N/A'} bpm',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 14,
