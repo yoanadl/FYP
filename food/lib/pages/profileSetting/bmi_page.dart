@@ -56,11 +56,11 @@ class _BmiPageState extends State<BmiPage> {
         Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
 
         setState(() {
-          heightController.text = data['Height(cm)'] ?? '';
-          weightController.text = data['Weight(kg)'] ?? '';
+          heightController.text = data['height'] ?? '';
+          weightController.text = data['weight'] ?? '';
 
-          userHeight = double.tryParse(data['Height(cm)'] ?? '0') ?? 0.0;
-          userWeight = double.tryParse(data['Weight(kg)'] ?? '0') ?? 0.0;
+          userHeight = double.tryParse(data['height'] ?? '0') ?? 0.0;
+          userWeight = double.tryParse(data['weight'] ?? '0') ?? 0.0;
         });
       } else {
         print('No profile document found');

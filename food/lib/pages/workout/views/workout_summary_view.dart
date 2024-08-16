@@ -36,12 +36,6 @@ class WorkoutSummaryView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () async {
-              await presenter.markWorkoutComplete(context);
-            },
-            icon: const Icon(Icons.check_box),
-          ),
-          IconButton(
             onPressed: () => presenter.confirmDelete(context),
             icon: const Icon(Icons.delete),
           ),

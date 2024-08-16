@@ -27,8 +27,8 @@ class FitnessPlanPresenter {
         DocumentSnapshot docSnapshot = querySnapshot.docs.first;
         Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
 
-        userHeight = double.tryParse(data['Height(cm)'] ?? '0') ?? 0.0;
-        userWeight = double.tryParse(data['Weight(kg)'] ?? '0') ?? 0.0;
+        userHeight = double.tryParse(data['height'] ?? '0') ?? 0.0;
+        userWeight = double.tryParse(data['weight'] ?? '0') ?? 0.0;
         
       } else {
         print('No profile document found');

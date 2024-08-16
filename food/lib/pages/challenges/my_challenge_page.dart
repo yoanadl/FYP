@@ -5,7 +5,6 @@
 // import 'package:food/pages/challenges/challenge_viewer_view_joined_page.dart'; 
 // import 'package:food/services/challenge_service.dart';
 
-
 // class MyChallengePage extends StatefulWidget {
 //   @override
 //   _MyChallengePageState createState() => _MyChallengePageState();
@@ -193,6 +192,13 @@
 //           return Center(child: Text('User not found.'));
 //         }
 
+//         // Cast userDoc.data() to Map<String, dynamic> and check if the 'challenges' field exists and is not null
+//         final userData = userDoc.data() as Map<String, dynamic>?;
+
+//         if (userData == null || !userData.containsKey('challenges') || userData['challenges'] == null) {
+//           return Center(child: Text('No challenges created/joined.'));
+//         }
+
 //         final challenges = userDoc['challenges'] as List<dynamic>? ?? [];
 //         if (challenges.isEmpty) {
 //           return Center(child: Text('No challenges found.'));
@@ -269,6 +275,7 @@
 //     return filteredChallenges;
 //   }
 
+
 //   Widget _buildChallengeCard(Map<String, dynamic> challenge) {
 //     final challengeId = challenge['challengeId'] ?? '';
 //     final title = challenge['title'] ?? 'Challenge Title';
@@ -292,7 +299,7 @@
 //       },
 //       child: Container(
 //         decoration: BoxDecoration(
-//           color: Colors.grey[200],
+//           color: Colors.grey[100],
 //           borderRadius: BorderRadius.circular(10),
 //           boxShadow: [
 //             BoxShadow(
@@ -331,7 +338,15 @@
 //       ),
 //     );
 //   }
+
+
+
+
+
+
 // }
+
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -477,7 +492,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
                   children: [
                     Text('All'),
                     if (sortOption == 'All')
-                      Icon(Icons.check, color: Colors.blue),
+                      Icon(Icons.check, color:  Color(0xFF031927)),
                   ],
                 ),
               ),
@@ -487,7 +502,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
                   children: [
                     Text('Own'),
                     if (sortOption == 'own')
-                      Icon(Icons.check, color: Colors.blue),
+                      Icon(Icons.check, color:  Color(0xFF031927)),
                   ],
                 ),
               ),
@@ -497,7 +512,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
                   children: [
                     Text('Joined'),
                     if (sortOption == 'joined')
-                      Icon(Icons.check, color: Colors.blue),
+                      Icon(Icons.check, color:  Color(0xFF031927)),
                   ],
                 ),
               ),
@@ -527,7 +542,6 @@ class _MyChallengePageState extends State<MyChallengePage> {
           return Center(child: Text('User not found.'));
         }
 
-        // Cast userDoc.data() to Map<String, dynamic> and check if the 'challenges' field exists and is not null
         final userData = userDoc.data() as Map<String, dynamic>?;
 
         if (userData == null || !userData.containsKey('challenges') || userData['challenges'] == null) {
@@ -556,12 +570,35 @@ class _MyChallengePageState extends State<MyChallengePage> {
 
             final filteredChallenges = _filterChallenges(challengeDetails);
 
+            final ongoingChallenges = filteredChallenges
+                .where((challenge) {
+                  final endDate = challenge['endDate'];
+                  if (endDate is Timestamp) {
+                    final endDateTime = endDate.toDate();
+                    return endDateTime.isAfter(DateTime.now());
+                  }
+                  return endDate == null; // No end date means ongoing
+                })
+                .toList();
+            final completedChallenges = filteredChallenges
+                .where((challenge) {
+                  final endDate = challenge['endDate'];
+                  if (endDate is Timestamp) {
+                    final endDateTime = endDate.toDate();
+                    return endDateTime.isBefore(DateTime.now());
+                  }
+                  return false; // No end date means ongoing
+                })
+                .toList();
+
+            final displayChallenges = isOngoing ? ongoingChallenges : completedChallenges;
+
             return ListView.separated(
               padding: EdgeInsets.all(16),
-              itemCount: filteredChallenges.length,
+              itemCount: displayChallenges.length,
               separatorBuilder: (context, index) => SizedBox(height: 16),
               itemBuilder: (context, index) {
-                final challenge = filteredChallenges[index];
+                final challenge = displayChallenges[index];
                 return _buildChallengeCard(challenge);
               },
             );
@@ -585,6 +622,7 @@ class _MyChallengePageState extends State<MyChallengePage> {
           'challengeId': challengeId,
           'title': details['title'] ?? 'Challenge Title',
           'type': type,
+          'endDate': details['endDate'], // Ensure endDate is handled correctly
         });
       }
     }
@@ -610,74 +648,61 @@ class _MyChallengePageState extends State<MyChallengePage> {
     return filteredChallenges;
   }
 
-
   Widget _buildChallengeCard(Map<String, dynamic> challenge) {
-    final challengeId = challenge['challengeId'] ?? '';
-    final title = challenge['title'] ?? 'Challenge Title';
-    final type = challenge['type'] ?? 'own'; // 'own' or 'joined'
+    final challengeId = challenge['challengeId'] as String;
+    final title = challenge['title'] as String;
+    final type = challenge['type'] as String;
 
     return GestureDetector(
       onTap: () {
         if (challengeId.isNotEmpty) {
           final route = type == 'own'
               ? ChallengeOwnerViewPage(challengeId: challengeId)
-              : ChallengeViewerViewJoinedPage(challengeId: challengeId); // Updated route
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => route),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Challenge ID is missing.')),
-          );
+              : ChallengeViewerViewJoinedPage(challengeId: challengeId);
+
+          Navigator.push(context, MaterialPageRoute(builder: (context) => route));
         }
       },
       child: Container(
+        padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 2,
-              blurRadius: 5,
-              offset: Offset(0, 3),
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 4,
+              offset: Offset(0, 2),
             ),
           ],
         ),
-        padding: EdgeInsets.all(16),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Text(
                 title,
                 style: TextStyle(
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
                 ),
-                overflow: TextOverflow.ellipsis,
               ),
             ),
-            SizedBox(width: 8),
-            Text(
-              type == 'own' ? 'Own ' : 'Joined ',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: type == 'own' ? Colors.blue : Colors.green,
+            if (type == 'joined')
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Color(0xFF031927),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'Joined',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
           ],
         ),
       ),
     );
   }
-
-
-
-
-
-
 }
-

@@ -226,9 +226,9 @@ Widget build(BuildContext context) {
               title: 'Basic',
               price: 'Free',
               features: [
-                'limited workout plan',
-                'analytics & workout history',
-                'communities',
+                'recommended workout plans',
+                'workout history',
+                'challenges',
               ],
               isCurrentPlan: role == 'user', // Highlight if the role is user
               buttonColor: role == 'user' ? Colors.grey : Colors.blue,
@@ -244,9 +244,8 @@ Widget build(BuildContext context) {
               title: 'Premium',
               price: role == 'premium user' && plan != null ? '$plan' : '9.9 SGD/mth or 109.9 SGD/yr',
               features: [
-                'access to all workout plan',
                 'contact verified trainers',
-                'personalized feedback and plans',
+                'personalized feedback',
                 if (role == 'premium user' && startDate != null && endDate != null) ...[
                   'Subscription Start: $startDate',
                   'Subscription End: $endDate',

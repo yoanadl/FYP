@@ -163,7 +163,7 @@ class TrainersPage extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => RecieveAdvicePage(
                               clientId: user?.uid ?? '',
-                              userName: user?.displayName ?? 'Client',
+                              userName: trainerName ?? 'Client',
                               trainerId: trainerId,
                             ),
                           ),
@@ -196,7 +196,7 @@ class TrainersPage extends StatelessWidget {
               currentUserId: user?.uid ?? '',
               trainerDocId: trainer['profileId'] ?? '',
               userId: trainer['userId'],
-              trainerName: trainer['Name'] ?? 'No Name',
+              trainerName: trainer['name'] ?? 'No Name',
               profilePictureUrl: trainer ['profilePictureUrl'] ?? ''
             ),
           ),
@@ -214,7 +214,7 @@ class TrainersPage extends StatelessWidget {
 
           SizedBox(height: 8),
           Text(
-            trainer['Name'],
+            trainer['name'],
             style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.bold,

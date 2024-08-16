@@ -243,7 +243,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> with SingleTickerProvid
                                   'If you have any further inquiries, don\'t hesitate \n to contact us through:',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 13,
                                   ),
                                 ),
                                 SizedBox(height: 10),
@@ -255,7 +255,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> with SingleTickerProvid
                                     Text(
                                       'goodgrit@gmail.com',
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 13,
                                         color: Colors.black,
                                         decoration: TextDecoration.underline,
                                       ),
@@ -271,7 +271,7 @@ class _HelpCenterPageState extends State<HelpCenterPage> with SingleTickerProvid
                                     Text(
                                       'https://goodgritworkout.wordpress.com',
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 13,
                                         color: Colors.black,
                                         decoration: TextDecoration.underline,
                                       ),
