@@ -113,6 +113,11 @@ class _RewardPageState extends State<RewardPage> {
                       .collection('users')
                       .doc(userId)
                       .update({'totalRewardPoints': newPoints});
+
+                   // Update the state to reflect the new points immediately
+                  setState(() {
+                    _totalRewardPoints = newPoints;
+                  });
                   
                   // Update the user role
                   if (FirebaseAuth.instance.currentUser != null) {

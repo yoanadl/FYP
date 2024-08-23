@@ -371,10 +371,10 @@ class _FitnessRemindersState extends State<FitnessReminders> {
 
   void _schedulePeriodicChecks() {
   print("inside periodic checks");
-  _notificationTimer?.cancel(); // Cancel any existing timer
+  // _notificationTimer?.cancel(); // Cancel any existing timer
 
   try {
-    _notificationTimer = Timer.periodic(Duration(seconds: 10), (timer) {
+    _notificationTimer = Timer.periodic(Duration(seconds: 3), (timer) {
       print("Timer triggered at ${DateTime.now()}");
       _checkAndNotifyGoals();
     });

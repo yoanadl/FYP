@@ -112,6 +112,7 @@ class NotificationService {
   // Check if the daily step goal is met and send a notification if not
 Future<void> checkDailyStepGoal() async {
   try {
+    print("in checkDailyStepGoal()");
     // Fetch the daily step goal
     final stepGoal = await _fetchStepGoalFromFirestore();
 

@@ -208,6 +208,14 @@ class _NotificationSettingsState extends State<NotificationSettings> {
       scheduledTime: scheduleTime,
     );
     debugPrint('Notification Scheduled for $scheduleTime');
+
+    // Show Snackbar with the scheduled time
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text('Daily reminder set for ${_formatTime(scheduleTime)}'),
+      duration: Duration(seconds: 2),
+    ),
+  );
     return Future.value(); // Placeholder for async completion
   }
 

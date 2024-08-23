@@ -17,21 +17,24 @@ class _TrainersListPageState extends State<TrainersListPage> {
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(() {
-      setState(() {});
-    });
+    _searchController.addListener(_onSearchChanged);
   }
 
   @override
   void dispose() {
+     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _onSearchChanged() {
+    setState(() {});
   }
 
   List<Map<String, dynamic>> _filterTrainers(List<Map<String, dynamic>> trainers) {
     final query = _searchController.text.toLowerCase();
     return trainers.where((trainer) {
-      final name = trainer['Name']?.toLowerCase() ?? '';
+      final name = trainer['name']?.toLowerCase() ?? '';
       return name.contains(query);
     }).toList();
   }
