@@ -26,54 +26,49 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSHealthShareUsageDescription</key>
-	<string>We will sync your data with the Apple Health app to give you better insights</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>We will sync your data with the Apple Health app to give you better insights</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library to select profile pictures.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This app needs access to save and share screenshots.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera to take profile pictures.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need access to your microphone to record videos.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>UIUserNotificationSettings</key>
-	<dict>
-	<key>UIUserNotificationType</key>
-	<integer>7</integer>
-	</dict>
+	<key>NSCalendarsUsageDescription</key>
+	<string>We need calendar access to schedule reminders.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to take profile pictures.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We will sync your data with the Apple Health app to give you better insights</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We will sync your data with the Apple Health app to give you better insights</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need access to your location for sending you notifications.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need access to your location for sending you notifications.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location for sending you notifications.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to your microphone to record videos.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs access to save and share screenshots.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to select profile pictures.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We need your permission for sending you reminders and notifications.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 		<string>arm64</string>
 	</array>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need access to your location for sending you notifications.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need access to your location for sending you notifications.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need access to your location for sending you notifications.</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>We need calendar access to schedule reminders.</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>We need your permission for sending you reminders and notifications.</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -87,5 +82,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIUserNotificationSettings</key>
+	<dict>
+		<key>UIUserNotificationType</key>
+		<integer>7</integer>
+	</dict>
 </dict>
 </plist>

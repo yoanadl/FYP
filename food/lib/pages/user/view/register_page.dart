@@ -132,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 25.0, left: 8.0),
+                  padding: const EdgeInsets.only(top: 40.0, left: 8.0),
                   child: Text(
                     'Get Started',
                     style: TextStyle(
@@ -143,12 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                 ),
               
-              //  // full name textfield
-              // MyTextField(
-              //   controller: emailController, 
-              //   hintText: "Full Name", 
-              //   obscureText: false,  
-              // ),
+              
 
               // email textfield
               MyTextField(

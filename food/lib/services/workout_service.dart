@@ -192,6 +192,27 @@ class WorkoutService {
   }
 }
 
+  // Future<void> sendWorkoutsCompletedNotification() async {
+  //   const AndroidNotificationDetails androidNotificationDetails =
+  //       AndroidNotificationDetails(
+  //     'workouts_channel_id',
+  //     'Workouts Channel',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //     ticker: 'ticker',
+  //   );
+  //   const NotificationDetails notificationDetails =
+  //       NotificationDetails(android: androidNotificationDetails);
+
+  //   await _flutterLocalNotificationsPlugin.show(
+  //     0, // Notification ID
+  //     'Congratulations!',
+  //     'You have completed 10 workouts this week! Take a break and keep up the great work!',
+  //     notificationDetails,
+  //     payload: 'workout_done',
+  //   );
+  // }
+  // demo
   Future<void> sendWorkoutsCompletedNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
@@ -207,7 +228,7 @@ class WorkoutService {
     await _flutterLocalNotificationsPlugin.show(
       0, // Notification ID
       'Congratulations!',
-      'You have completed 10 workouts this week! Take a break and keep up the great work!',
+      'You have completed 2 workouts this week! Take a break and keep up the great work!',
       notificationDetails,
       payload: 'workout_done',
     );

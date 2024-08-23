@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:food/applewatch/injector.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
@@ -69,7 +70,7 @@ class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDon
     print("Fetching health data...");
 
     // Adjust the start and end times to cover the entire workout period
-    DateTime workoutStartTime = startTime.subtract(Duration(minutes: 30));
+    DateTime workoutStartTime = startTime.subtract(Duration(minutes: 10));
     DateTime workoutEndTime = endTime;
 
     double totalCaloriesBurned = 0;
@@ -87,6 +88,7 @@ class _WorkoutDoneViewState extends State<WorkoutDoneView> implements WorkoutDon
     // Fetch total steps for the entire workout period
     print('Fetching steps from $workoutStartTime to $workoutEndTime');
     int? steps = await _healthService.getStepsForThatActivity(workoutStartTime, workoutEndTime);
+
     if (steps != null) {
       totalSteps = steps;
     }

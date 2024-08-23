@@ -107,6 +107,16 @@ class ChallengeViewerViewPage extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 Text(
+                  'Start date: ${challengeData['startDate'] != null ? startDate.toLocal().toString().split(' ')[0] : 'Not specified'}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 16),
+                Text(
+                 'End date: ${challengeData['endDate'] != null ? endDate.toLocal().toString().split(' ')[0] : 'Not specified'}',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 16),
+                Text(
                   'Duration: ${challengeData['duration'] ?? 'Not specified'}',
                   style: TextStyle(fontSize: 16),
                 ),
