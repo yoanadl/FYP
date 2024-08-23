@@ -19,7 +19,7 @@ class _RewardPageState extends State<RewardPage> {
   @override
   void initState() {
     super.initState();
-    challengeService.calculateAndStoreTotalRewardPoints(userId);
+    // challengeService.calculateAndStoreTotalRewardPoints(userId);
     _fetchTotalRewardPoints();
   }
 

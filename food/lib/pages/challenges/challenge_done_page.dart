@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:food/services/challenge_service.dart';
 
 class ChallengeDonePage extends StatelessWidget {
   final int points;
@@ -57,6 +58,7 @@ class ChallengeDonePage extends StatelessWidget {
 
   Future<void> _updateChallengeStats() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
+    ChallengeService challengeService = ChallengeService(); 
 
     if (currentUser != null) {
       final userId = currentUser.uid;
@@ -84,6 +86,9 @@ class ChallengeDonePage extends StatelessWidget {
 
           // Update the challenge document with the new participants array
           await challengeDocRef.update({'participants': participants});
+
+          // calculate and store total reward points after updating the challenge stats
+          await challengeService.calculateAndStoreTotalRewardPoints(userId);
         } else {
           print('Challenge document not found');
         }
