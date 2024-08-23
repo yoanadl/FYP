@@ -82,6 +82,10 @@ class _RewardPageState extends State<RewardPage> {
                   onPressed: () {
                     _showRedeemDialog(context);
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF031927),
+                    foregroundColor: Colors.white,
+                  ),
                   child: Text('Redeem'),
                 ),
               ),

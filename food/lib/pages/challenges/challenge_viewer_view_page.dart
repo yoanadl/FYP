@@ -211,6 +211,10 @@ class ChallengeViewerViewPage extends StatelessWidget {
                           }
                         : null, // Disable button if challenge is not active
                     child: Text('Join Challenge'),
+                    style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF031927),
+                    foregroundColor: Colors.white,
+                  ),
                   ),
                 )
               ],

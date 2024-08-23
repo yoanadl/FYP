@@ -18,13 +18,13 @@ class TrainersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF031927),
         elevation: 0,
       ),
       body: Column(
         children: [
           Container(
-            color: Colors.black,
+            color: Color(0xFF031927),
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
