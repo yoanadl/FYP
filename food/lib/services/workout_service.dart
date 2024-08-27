@@ -192,27 +192,6 @@ class WorkoutService {
   }
 }
 
-  // Future<void> sendWorkoutsCompletedNotification() async {
-  //   const AndroidNotificationDetails androidNotificationDetails =
-  //       AndroidNotificationDetails(
-  //     'workouts_channel_id',
-  //     'Workouts Channel',
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     ticker: 'ticker',
-  //   );
-  //   const NotificationDetails notificationDetails =
-  //       NotificationDetails(android: androidNotificationDetails);
-
-  //   await _flutterLocalNotificationsPlugin.show(
-  //     0, // Notification ID
-  //     'Congratulations!',
-  //     'You have completed 10 workouts this week! Take a break and keep up the great work!',
-  //     notificationDetails,
-  //     payload: 'workout_done',
-  //   );
-  // }
-  // demo
   Future<void> sendWorkoutsCompletedNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
@@ -228,19 +207,12 @@ class WorkoutService {
     await _flutterLocalNotificationsPlugin.show(
       0, // Notification ID
       'Congratulations!',
-      'You have completed 2 workouts this week! Take a break and keep up the great work!',
+      'You have completed 10 workouts this week! Take a break and keep up the great work!',
       notificationDetails,
       payload: 'workout_done',
     );
   }
 
-  // Future<void> checkAndSendNotification(String userId) async {
-  //   final workoutCount = await getWorkoutCountForCurrentWeek(userId);
-
-  //   if (workoutCount > 10) {
-  //     await sendWorkoutsCompletedNotification();
-  //   }
-  // }
 
   Future<void> checkAndSendNotification(String userId) async {
   try {
@@ -249,7 +221,7 @@ class WorkoutService {
     // Debug statement to print the workout count
     print('Workout count for current week: $workoutCount');
 
-    if (workoutCount > 1) {
+    if (workoutCount > 10) {
       print('User has completed more than 10 workouts. Sending notification...');
       await sendWorkoutsCompletedNotification();
     } else {
